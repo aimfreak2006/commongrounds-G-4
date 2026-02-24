@@ -1,0 +1,33 @@
+{% extends 'diyprojects/project_base.html' %}
+
+{% block contents %}
+    <style>
+        ul { margin-top: 5px; margin-bottom: 10px; }
+        h3, h4 { margin-top: 5px; margin-bottom: 10px; }
+    </style>
+    <ul>
+        <ul>
+            {% for category in projectcategory_list %}
+                <h3><b>{{ category.name }}</b></h3>
+                <ul>
+                    <table><tr>
+                        <td><b>Description:</b></td>
+                        <td>{{ category.description }}</td>
+                    </tr></table>
+                    <h4><b>Project List</b></h4>
+                    <ul>
+                        {% for project in category.projects.all %}
+                            <li>{{ project.title }} | 
+                                <a href="{{ project.get_absolute_url }}">See Project</a>
+                            </li>
+                            {% empty %}
+                                <li>No projects listed.</li>
+                        {% endfor %}
+                    </ul>
+                </ul>
+                {% empty %}
+                    No project categories for now.
+            {% endfor %}
+        </ul>
+    </ul>
+{% endblock %}
