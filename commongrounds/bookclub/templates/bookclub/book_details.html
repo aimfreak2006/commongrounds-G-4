@@ -1,1 +1,24 @@
 {% extends 'bookclub/book_base.html' %}
+
+{% block contents %}
+    <style>
+        div { margin-left: 40px; }
+    </style>
+
+    <div>
+        <div>
+            <h3 style="margin-top: 5px; margin-bottom: 5px;"><b>{{ book.title }}</b></h3> 
+            <div>
+                <b>Genre:</b> {{book.genre}} <br>
+                <b>Author:</b> {{book.author}} <br>
+                <b>Publication Year:</b> {{book.publication_year}}
+            </div>
+            <br>Created on {{ book.created_on }}
+            <br>Last updated on {{ book.updated_on }}
+        </div>
+
+        <br>
+        <i>Looking for another book?</i>
+        <a href="/bookclub/books">Back to Home Page</a>
+    </div>
+{% endblock %}
