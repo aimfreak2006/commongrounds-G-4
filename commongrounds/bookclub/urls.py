@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
-# from .views import 
+from .views import BookListView, BookDetailView
 
 urlpatterns = [
-#    path('books/', null, name=''),
-#    path('book/<int:pk>', null, name=''),
+    path('books/', BookListView.as_view(), name='book_list'),
+    path('book/<int:pk>', BookDetailView.as_view(), name='book_details'),
 ]
 
 app_name = "bookclub"
