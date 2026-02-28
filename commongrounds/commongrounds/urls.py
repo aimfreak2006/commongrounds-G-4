@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('/commissions/requests', include('commissionrequests.urls', namespace='commissionsrequest')),
     path('admin/', admin.site.urls),
     
 
