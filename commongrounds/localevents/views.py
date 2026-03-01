@@ -5,10 +5,10 @@ from .models import EventType, Event
 
 # Create your views here.
 
-def EventListView(request):
+class EventListView(ListView):
     model = EventType
     template_name = "localevents/event_list.html"
 
-def EventDetailView(request, pk):
+class EventDetailView(DetailView):
     model = Event
     template_name = "localevents/event_details.html"
