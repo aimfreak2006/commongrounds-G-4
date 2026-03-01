@@ -32,9 +32,9 @@ class Event(models.Model):
 
     end_time = models.DateTimeField()
 
-    created_on = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField()
 
-    updated_on = models.DateTimeField(auto_now=True)
+    updated_on = models.DateTimeField()
 
     def __str__(self):
         return '{} last update on {}'.format(self.title, self.updated_on)
