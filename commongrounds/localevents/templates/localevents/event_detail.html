@@ -1,0 +1,25 @@
+{% extends 'localevents/event_base.html' %}
+
+{% block contents %}
+    <style>
+        div { margin-left: 40px; }
+    </style>
+
+    <div>
+        <div>
+            <h3 style="margin-top: 5px ; margin-bottom: 5px;"><b>{{ event.title }}</b></h3>
+            <div>
+                <b>Category:</b> {{event.category}} <br>
+                <b>Description:</b> {{event.description}} <br>
+                <b>Location:</b> {{event.location}} <br>
+                <b>Start Time:</b> {{event.start_time}} <br>
+                <b>End Time:</b> {{event.end_time}} <br>
+            </div>
+
+
+            <br>
+            <i>Interested in another event?</i>
+            <a href="/localevents/events">Back to Home Page</a>
+        </div>
+    </div>
+{% endblock %}

@@ -5,14 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Common Grounds</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 
 <body>
-    <h1><b>Welcome to Common Grounds!</b></h1>
-    {% block header %} <!-- This block is for your appnames that you will display as header in your app. -->
-    {% endblock %}
-    {% block contents %}
+    {% block home %}
     {% endblock %}
 </body>
 </html>
-

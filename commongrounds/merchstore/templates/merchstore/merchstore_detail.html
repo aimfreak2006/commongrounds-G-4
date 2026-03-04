@@ -1,0 +1,17 @@
+{% extends 'merchstore/merchstore_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <h3>{{object.name}}</h3>
+    <ul>
+        <li><strong>Product Type:</strong> {{object.product_type}}</li>
+        <li><strong>Description:</strong> {{object.description}}</li>
+        <li><strong>Price:</strong> {{object.price}}</li>
+    </ul>
+    <button>Buy now!</button>
+    <a href='{% url 'merchstore:merchstore-list' %}'>
+        <button>
+            Go Back to Merchandise List
+        </button>
+    </a>
+{% endblock %}

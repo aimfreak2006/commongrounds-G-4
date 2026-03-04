@@ -1,0 +1,19 @@
+{% extends 'merchstore/merchstore_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <ol>
+        {% for type in object_list %}
+            <li>
+                <h3>{{type.name}}</h3>
+                <p><em>{{type.description}}</em></p>
+                <ul>
+                    {% for product in type.products.all %}
+                        <li><a href='{{product.get_absolute_url}}'>{{ product.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            
+        {% endfor %}
+    </ol>
+{% endblock %}
