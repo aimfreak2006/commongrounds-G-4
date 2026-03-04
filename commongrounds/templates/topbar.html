@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block home %}
+
+    <link rel="stylesheet" href="{% static 'css/diyprojects.css' %}">
+    <input type="checkbox" id="side-tab-toggle" style="display: none;">
+    
+    <div class="topbar">    
+        <div class="nav-project">
+            <label for="side-tab-toggle" id="hamburger">☰</label>
+            <img src="{% static 'images/logo.png' %}" alt="logo" class="logo">
+        </div>
+    </div>
+
+    <div id="side-tab">
+        <nav>
+            <a href="/">Home</a>
+            <a href="/merchstore/items">Merch Store</a>
+            <a href="/localevents/events">Local Events</a>
+            <a href="/bookclub/books">Book Club</a>
+            <a href="/diyprojects/projects">DIY Projects</a>
+            <a href="/commissions/requests">Commissions</a>
+        </nav>
+    </div>
+
+    {% block header %}
+    {% endblock %}
+    {% block contents %}
+    {% endblock %}
+
+{% endblock %}

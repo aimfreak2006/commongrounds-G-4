@@ -1,0 +1,35 @@
+{% extends 'diyprojects/project_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <div class="ctx-container">
+        {% for category in projectcategory_list %}
+            <input type="checkbox" id="menu-toggle-{{ category.pk }}" class="menu-checkbox" style="display: none;">
+
+            <div class="cat-container">
+                <h3 class="cat-name-header"><b>{{ category.name }}</b></h3>
+                
+                <div class="cat-content">
+                    <p class="cat-description">{{ category.description }}</p>
+                </div>
+                
+                <div class="project-menu-wrapper">
+                    <label for="menu-toggle-{{ category.pk }}" class="menu-trigger">View Projects</label>
+                    
+                    <div class="project-menu-content">
+                        <ul>
+                            {% for project in category.projects.all %}
+                                <li><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></li>
+                                {% empty %}
+                                    <li>No projects listed.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+            {% empty %}
+                No project categories for now.
+        {% endfor %}
+    </div>
+{% endblock %}
