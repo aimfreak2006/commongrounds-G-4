@@ -1,0 +1,30 @@
+{% extends 'bookclub/book_base.html' %}
+
+{% block contents %}
+    <style>
+        div { margin-left: 40px; }
+        h3, h4 { margin-top: 5px; margin-bottom: 5px; }
+    </style>
+
+    <div>
+        <div>
+            {% for genre in genre_list %}
+                <h3><b>{{ genre.name }}</b></h3>
+                <div>
+                    <b>Description:</b> {{ genre.description }}
+                    <h4><b>Books Available</b></h4>
+                    <ul>
+                        {% for book in genre.books.all %}
+                            <li>
+                                {{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a>
+                            </li>
+                            {% empty %} <li>There are no books for this genre.</li>
+                        {% endfor %}
+                        <br>
+                    </ul>
+                </div>
+                {% empty %} <li>No books available.</li>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
