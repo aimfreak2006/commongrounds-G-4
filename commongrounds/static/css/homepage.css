@@ -1,0 +1,104 @@
+@import url(base.css);
+
+.fullscreen-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.fullscreen-center::before {
+    content:"";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height:-webkit-fill-available;
+    width:-webkit-fill-available;
+
+    background-image: 
+        radial-gradient(circle, rgb(215, 238, 244, 0.5), rgb(102, 155, 188, 0.8), rgb(0, 48, 73, 1)),
+        url('../images/bg-header.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;    
+    z-index: -1;
+}
+
+.box-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    height: 600px;
+    width: 350px;
+    gap: 0;
+
+    background-image: url('../images/bg-header.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    width: 75%;
+    gap: 20px;
+}
+
+.logo {
+    width: 270px;
+    height: 70px;
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.logo-container #welcome-message {
+    text-align: center;
+    font-size: 13px;
+    font-style: italic;
+    color: #000000;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    width: 90%;
+    line-height: 0;
+}
+
+.btn-container .nav-btn {
+    text-decoration: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+    margin-top: 10px;
+    width: 290px;
+    height: 60px;
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #780000;
+    color: #fdf0d5;
+
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    transform: scale(1);
+}
+
+.btn-container .nav-btn:hover {
+    background-color: #d09a9d;
+    color: #471313;
+    transform: scale(1.35);
+    z-index: 100;
+}

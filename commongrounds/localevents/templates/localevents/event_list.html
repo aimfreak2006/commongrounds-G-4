@@ -1,0 +1,30 @@
+{% extends 'localevents/event_base.html' %}
+
+{% block contents %}
+    <style>
+        div { margin-left: 40px; }
+        h3, h4 { margin-top: 5px; margin-bottom: 5px; }
+    </style>
+
+    <div>
+        <div>
+            {% for category in categories %}
+                <h3><b>{{ category.name }}</b></h3>
+                <div>
+                    <b>Description:</b> {{ category.description }}
+                    <h4><b>Events Available</b></h4>
+                    <ul>
+                        {% for event in category.events.all %}
+                            <li>
+                                {{ event.title }} | <a href="{{ event.get_absolute_url }}">Details</a>
+                            </li>
+                            {% empty %} <li>There are no events for this category</li>
+                        {% endfor %}
+                        <br>
+                    </ul>
+                </div>
+                {% empty %} <li>No upcoming events.</li>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
