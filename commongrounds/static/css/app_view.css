@@ -1,0 +1,93 @@
+@import url(base.css); /*when importing, include semi-colon at the end of each imports!!*/
+
+.topbar {
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    /* An error occurred with the positioning of the top bar because I added a line for padding with
+       top padding equal to 20px. To fix that, I removed the padding, it it basically just moved the
+       topbar up by 20px. The padding automatically moves outside the box. */
+}
+
+.topbar .nav-project {
+    position: relative;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    height: 85px; 
+
+    background-image: 
+        radial-gradient(circle, rgb(215, 238, 244, 0.1), rgb(102, 155, 188, 0.5), rgb(0, 48, 73, 0.7)),
+        url('../images/bg-header.png');
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 10px rgb(0, 0, 0, 70%);
+    z-index: 1000;
+}
+
+.topbar .nav-project .logo {
+    margin-left: 30px;
+    width: 180px;
+    height: 50px;
+    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 1));
+}
+
+.topbar .nav-project #hamburger {
+    margin: 0 0 0 40px;   /* Top: 0, Right: 0, Bottom: 0, Left: 25px */
+    line-height: 1;       /* Prevents text-spacing from pushing it up or down */
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fffefe;
+    display: inline-flex; /* Changed from block to inline-flex for better centering */
+    align-items: center;
+    transition: transform 1s ease-in-out;
+}
+
+.topbar .nav-project #hamburger:hover{
+    filter: drop-shadow(0 0 2px rgba(88, 88, 86, 0.6));
+}
+
+#side-tab {
+    position: fixed;
+    width: 250px;
+    height: 100%;
+    left: -250px;
+    padding-top: 90px;
+    background-color: #fdf0d5;
+    /*for transition eme eme slidee*/
+    transition: left 1s ease-in-out;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+    z-index: 998;
+}
+
+#side-tab-toggle:checked ~ .topbar .nav-project #hamburger {
+    color: #ffffff;
+    transform: rotate(90deg); /* Rotates the ☰ icon when open */
+}
+
+#side-tab-toggle:checked ~ .topbar .nav-project #hamburger:hover {
+    filter: drop-shadow(0 0 2px rgba(88, 88, 86, 0.6));
+}
+
+#side-tab-toggle:checked ~ #side-tab {
+    left: 0;
+}
+
+.app-title-container {
+    position: fixed;
+    height: 30px;
+    width: 100%;
+    
+    background-color: rgb(0, 48, 73, 1);
+    box-shadow: 0 0 10px rgb(0, 0, 0, 70%);
+    z-index: 999;
+}
+
+.app-title-container .app-title {
+    margin: 4px 0 0 40px;
+    font-size: 13px;
+    color: #fffefe;
+}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block home %}
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+    <div class="fullscreen-center">
+        <div class="box-container">
+            <div class="logo-container">
+                <a href="/"><img src="{% static 'images/logo.png' %}" alt="Common Grounds Logo" class="logo"></a>
+                <p id="welcome-message">Welcome to Common Grounds, your one-stop destination for all your interests!</p>
+            </div>
+            <br>
+            <div class="btn-container">
+                <a href="/merchstore/items" class="nav-btn"><b>Merch Store</b></a>
+                <br>
+                <a href="/localevents/events" class="nav-btn"><b>Local Events</b></a>
+                <br>
+                <a href="/bookclub/books" class="nav-btn"><b>Book Club</b></a>
+                <br>
+                <a href="/diyprojects/projects" class="nav-btn"><b>DIY Projects</b></a>
+                <br>
+                <a href="/commissions/requests" class="nav-btn"><b>Commissions</b></a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

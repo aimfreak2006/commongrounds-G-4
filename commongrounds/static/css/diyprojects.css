@@ -1,0 +1,114 @@
+@import url(app_view.css);
+
+.ctx-container {
+    position: relative;
+    padding-top: 80px;
+    z-index: 995;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-auto-rows: minmax(150px, auto);
+
+    transition: left 1s ease-in-out, width 1s ease-in-out;
+    left: 0;
+    
+    margin: 0 10px 0 10px;
+    gap: 20px;
+}
+
+#side-tab-toggle:checked ~ .ctx-container {
+    left: 300px; /* Adjust based on your sidebar width */
+    width: calc(100% - 300px); /* Shrink width to prevent overflow */
+}
+
+.cat-container {
+    position: relative;
+    overflow: visible; /* Important: Menu needs to float outside */
+    border-radius: 40px;
+    background-image: linear-gradient(to bottom, #780000 25%, #fdf0d5 25%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; 
+    box-shadow: 0 0 10px rgb(0, 0, 0, 70%);
+}
+
+.cat-name-header {
+    width: 100%;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+    margin: -11px;
+    font-size: 20px;
+}
+
+.cat-content {
+    padding: 15px;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.cat-description {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+}
+
+.project-menu-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+    z-index: 1000;
+}
+
+.menu-trigger {
+    background-color: #003049;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.project-menu-content {
+    /* 1. HIDE STATE (Use height/opacity, not display/visibility) */
+    display: block;
+    opacity: 0;
+    max-height: 0; /* Starts with no height */
+    
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* 2. TRANSITION */
+    transition: max-height 0.5s ease-out, opacity 0.3s ease-out;
+    
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 0 10px; /* Padding needs to be handled carefully when height is 0 */
+    overflow: hidden; /* Hide content while height is 0 */
+    z-index: 1000;
+}
+
+/* --- THE ANIMATION TRIGGER --- */
+.menu-checkbox:checked ~ .cat-container .project-menu-content {
+    /* 3. SHOW STATE */
+    opacity: 1;
+    overflow-y: auto;
+    max-height: 200px; /* Set to a value larger than your actual content */
+    padding: 10px; /* Bring back padding */
+}
+
+.project-menu-content a {
+    color: #003049;
+    text-decoration: none;
+    display: block;
+    padding: 5px 0;
+}

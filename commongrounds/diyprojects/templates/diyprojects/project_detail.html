@@ -1,0 +1,55 @@
+{% extends 'diyprojects/project_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <ul>
+        <h3><b>{{ project.category.name }}</b></h3>
+        <ul>
+            <h4><b>{{ project.title }}</b></h4>
+            <ul>
+                Created on {{ project.created_on }}
+                <br/>
+                Last updated {{ project.updated_on }}
+                <br>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Materials</th>
+                            <th>Steps</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ project.title }}</td>
+                            <td>{{ project.category.name }}</td>
+                            <td>{{ project.description }}</td>
+                            <td>{{ project.materials }}</td>
+                            <td>{{ project.steps }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <i>See also:</i>
+                <br>
+                |
+                {% for proj in project.category.projects.all %}
+                    {% if proj != project %}
+                        <a href="{{ proj.get_absolute_url }}">{{ proj.title }}</a> |
+                    {% endif %}
+                {% endfor %}
+                <br>
+            </ul>
+        </ul>
+
+        <br>
+        <i>Want to know more projects?</i>
+        <a href="/diyprojects/projects">Back to DIY Projects</a>
+        <br>
+        <i>Or check out other app?</i>
+        <a href="/">Back to Home</a>
+    </ul>
+{% endblock %}
