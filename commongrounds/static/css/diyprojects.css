@@ -1,24 +1,13 @@
 @import url(app_view.css);
 
 .ctx-container {
-    position: relative;
-    padding-top: 80px;
-    z-index: 995;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     grid-auto-rows: minmax(150px, auto);
     width: 100%;
-
-    transition: left 1s ease-in-out, width 1s ease-in-out;
-    left: 0;
     
     margin: 0 10px 0 10px;
     gap: 20px;
-}
-
-#side-tab-toggle:checked ~ .ctx-container {
-    left: 250px;
-    width: calc(100% - 250px);
 }
 
 .cat-container {
@@ -46,13 +35,10 @@
     font-size: 20px;
 }
 
-.cat-content {
+.cat-description {
     padding: 15px;
     text-align: center;
     flex-grow: 1;
-}
-
-.cat-description {
     font-size: 14px;
     color: #333;
     margin: 0;
@@ -96,7 +82,7 @@
     z-index: 1000;
 }
 
-.menu-checkbox:checked ~ .cat-container .project-menu-content {
+.menu-checkbox:checked + .cat-container .project-menu-content {
     opacity: 1;
     overflow-y: auto;
     max-height: 200px;
