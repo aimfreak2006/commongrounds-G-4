@@ -2,13 +2,9 @@
 {% load static %}
 
 {% block contents %}
-    <style>
-        div { margin-left: 40px; }
-    </style>
-
-    <div>
+    <div class="contents-container">
         <div>
-            <h3 style="margin-top: 5px; margin-bottom: 5px;"><b>{{ book.title }}</b></h3> 
+            <h3><b>{{ book.title }}</b></h3> 
             <div>
                 <b>Genre:</b> {{book.genre}} <br>
                 <b>Author:</b> {{book.author}} <br>

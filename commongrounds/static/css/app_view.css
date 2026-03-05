@@ -1,13 +1,13 @@
-@import url(base.css); /*when importing, include semi-colon at the end of each imports!!*/
+@import url(base.css);
 
+/* For Topbar  */
 .topbar {
     justify-content: left;
     align-items: center;
     width: 100%;
-    position: relative;
-    /* An error occurred with the positioning of the top bar because I added a line for padding with
-       top padding equal to 20px. To fix that, I removed the padding, it it basically just moved the
-       topbar up by 20px. The padding automatically moves outside the box. */
+    position: fixed;
+    z-index: 998;
+    height: 85px;
 }
 
 .topbar .nav-project {
@@ -35,13 +35,13 @@
 }
 
 .topbar .nav-project #hamburger {
-    margin: 0 0 0 40px;   /* Top: 0, Right: 0, Bottom: 0, Left: 25px */
-    line-height: 1;       /* Prevents text-spacing from pushing it up or down */
+    margin: 0 0 0 40px;
+    line-height: 1;
     font-size: 30px;
     font-weight: bold;
     cursor: pointer;
     color: #fffefe;
-    display: inline-flex; /* Changed from block to inline-flex for better centering */
+    display: inline-flex;
     align-items: center;
     transition: transform 1s ease-in-out;
 }
@@ -50,22 +50,26 @@
     filter: drop-shadow(0 0 2px rgba(88, 88, 86, 0.6));
 }
 
+/* For side-tab */
 #side-tab {
     position: fixed;
+    display: grid;
+
+    margin-top: 90px;
     width: 250px;
     height: 100%;
-    left: -250px;
+    left: -255px;
+    z-index: 996;
     padding-top: 90px;
-    background-color: #fdf0d5;
-    /*for transition eme eme slidee*/
-    transition: left 1s ease-in-out;
     box-shadow: 5px 0 15px rgba(0,0,0,0.3);
-    z-index: 998;
+
+    background-color: #fdf0d5;
+    transition: left 1s ease-in-out;
 }
 
 #side-tab-toggle:checked ~ .topbar .nav-project #hamburger {
     color: #ffffff;
-    transform: rotate(90deg); /* Rotates the ☰ icon when open */
+    transform: rotate(90deg);
 }
 
 #side-tab-toggle:checked ~ .topbar .nav-project #hamburger:hover {
@@ -76,18 +80,82 @@
     left: 0;
 }
 
+#side-tab .side-button {
+    text-decoration: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+    margin-left: -30px;
+    margin-bottom: 10px;
+    width: 125%;
+    height: 40px;
+
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.42);
+    background-color: #fdf0d5;
+    color: rgb(0, 48, 73, 1);
+    font-weight: bolder;
+
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease, width 0.3s ease;
+    transform: scale(1);
+}
+
+#side-tab-toggle:checked ~ #side-tab .side-button:hover {
+    width: 125%;
+    transform: scale(1.35);
+    z-index: 1002;
+    background-color: rgb(0, 48, 73, 1);
+    color: #fdf0d5;
+    font-weight: bolder;
+
+    box-shadow: 2px 2px 15px rgb(255 255 255 / 42%);
+}
+
+#side-tab .side-button:hover {
+    width: 250px;
+    transform: translateX(290px);
+    z-index: 1002;
+    background-color: rgb(0, 48, 73, 1);
+    color: #fdf0d5;
+    font-weight: bolder;
+
+    box-shadow: 2px 2px 15px rgb(255 255 255 / 42%);
+}
+
+/* For app-title container under topbar */
 .app-title-container {
     position: fixed;
+    margin-top: 85px;
     height: 30px;
     width: 100%;
     
     background-color: rgb(0, 48, 73, 1);
     box-shadow: 0 0 10px rgb(0, 0, 0, 70%);
-    z-index: 999;
+    z-index: 997;
 }
 
 .app-title-container .app-title {
     margin: 4px 0 0 40px;
     font-size: 13px;
     color: #fffefe;
+}
+
+.contents-container {
+    position: relative;
+    padding-top: 90px;
+    padding-right: 20px;
+    padding-left: 30px;
+    width: 100%;
+    z-index: 995;
+
+    left: 0;
+    transition: left 1s ease-in-out, width 1s ease-in-out, padding-right 1s ease-in-out;
+}
+
+#side-tab-toggle:checked ~ .contents-container {
+    padding-right: 90px;
+    left: 300px;
+    width: calc(100% - 300px);
 }

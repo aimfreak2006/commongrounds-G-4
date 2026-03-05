@@ -2,16 +2,31 @@
 {% load static %}
 
 {% block contents %}
-    <h3>{{object.name}}</h3>
-    <ul>
-        <li><strong>Product Type:</strong> {{object.product_type}}</li>
-        <li><strong>Description:</strong> {{object.description}}</li>
-        <li><strong>Price:</strong> {{object.price}}</li>
-    </ul>
-    <button>Buy now!</button>
-    <a href='{% url 'merchstore:merchstore-list' %}'>
-        <button>
-            Go Back to Merchandise List
-        </button>
-    </a>
+    <div class="contents-container">
+        
+        <div class="merch-contents">
+            
+            <div class="merch-product-image"><img src="{{object.image}}" alt="Product Image"></div>
+
+            <div class="merch-specifics">
+                <h3 class="merch-name">{{object.name}}</h3>
+                <hr class="hr-line"></hr>
+                <div class="merch-tags">
+                    <p class="product-type">{{object.product_type}}</p>
+                    <p class="middot">&#x2022;</p>
+                    <p class="product-price"><strong class="price-tag">Price |</strong>Php {{object.price}}</p>
+                </div>
+                <p class="description">Description</p>
+                <div class="description-wrapper">
+                    <hr class="vr-line">
+                    <p class="product-description">{{ object.description }}</p>
+                </div>
+
+                <div class="redirect-buttons">
+                    <a href="" class="buy-now-button">Buy now!</a>
+                    <a href="{% url 'merchstore:merchstore-list' %}" class="see-more-merch">See More Merch</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

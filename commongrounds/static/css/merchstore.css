@@ -1,0 +1,302 @@
+@import url(app_view.css);
+
+.merch-contents {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    grid-auto-rows: minmax(150px, auto);
+    width: 100%;
+    gap: 20px;
+    max-width: 1200px;
+}
+
+.type-container {
+    position: relative;
+    overflow: visible;
+    border-radius: 40px;
+    background-image: linear-gradient(to bottom, #780000 25%, #fdf0d5 25%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; 
+    box-shadow: 0 0 10px rgb(0, 0, 0, 70%);
+}
+
+.type-name-header {
+    width: 100%;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+    margin: -11px;
+    font-size: 20px;
+}
+
+.type-description {
+    padding: 15px;
+    text-align: center;
+    flex-grow: 1;
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+}
+
+.merch-menu-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+    z-index: 1000;
+}
+
+.menu-trigger {
+    background-color: #003049;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.type-menu-contents {
+    display: block;
+    opacity: 0;
+    max-height: 0;
+    
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    transition: max-height 0.5s ease-out, opacity 0.3s ease-out;
+    
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 0 10px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.menu-checkbox:checked + .type-container .type-menu-contents {
+    opacity: 1;
+    overflow-y: auto;
+    max-height: 200px;
+    padding: 10px;
+}
+
+.type-menu-contents a {
+    color: #003049;
+    text-decoration: none;
+    display: block;
+    padding: 5px 0;
+}
+
+.merch-product-image {
+    margin: 0 auto;
+    height: auto;
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 1 / 1;
+    background-color: #898989;
+    border-radius: 20px;
+    box-shadow: 0 0 9px rgb(0, 0, 0, 80%);
+    align-content: center;
+    text-align: center;
+}
+
+.merch-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.merch-specifics {
+    height: auto;
+    width: 100%;
+    max-width: 700px;
+    min-width: 300px;
+}
+
+.merch-tags {
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    width: 100%;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+}
+
+.merch-name {
+    height: 50px;
+    width: auto;
+    font-size: 50px;
+    margin-bottom: 20px;
+    text-align: -webkit-left;
+    font-family: "Quicksand", sans-serif;
+    font-weight: bold;
+    color: #003049;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.hr-line {
+    width: auto;
+    height: 2px;
+    border: none; 
+    outline: none;
+    background-color: #003049;
+    margin: 0 0 15px 0;  
+}
+
+.product-type {
+    width: fit-content;
+    padding: 0 20px 0 20px;
+    height: 30px;
+    font-size: 15px;
+    background-color: white;
+    border-radius: 30px;
+    font-weight: bolder;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 9px rgb(0, 0, 0, 80%);
+    color: #003049;
+    text-align: center;
+    align-content: center;
+    margin-right: 10px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.product-type:hover {
+    background-color: #003049;
+    color: white;
+}
+
+.product-price {
+    margin-left: 10px;
+    height: 30px;
+    width: fit-content;
+    padding: 0 30px 0 30px;
+    font-size: 15px;
+    background-color: white;
+    border-radius: 25px;
+    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 9px rgb(0, 0, 0, 80%);
+    align-content: center;
+    text-align: center;
+    color: #003049;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.product-price .price-tag {
+    margin-right: 15px;
+}
+
+.product-price:hover {
+    background-color: #003049;
+    color: white;
+}
+
+.middot {
+    font-size: 20px;
+    color: white;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
+}
+
+.description {
+    font-size: 16px;
+    color: #003049;
+    font-weight: bolder;
+    font-family: "Inconsolata", monospace;
+    margin-bottom: 5px;
+}
+
+.description-wrapper {
+    display: flex;
+    align-items: stretch;
+    gap: 15px;
+    height: fit-content;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.product-description {
+    font-size: 15px;
+    color: rgba(0, 48, 73, 0.8);
+    font-family: "Inconsolata", monospace;
+    margin: 10px 0 10px 0;
+    flex: 1;
+}
+
+.vr-line {
+    border: none; 
+    outline: none;
+    width: 1px;
+    background-color: rgba(0, 48, 73, 0.6);
+    margin: 0 0 0 15px;
+}
+
+.redirect-buttons {
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+}
+
+.redirect-buttons .buy-now-button {
+    height: 40px;
+    width: fit-content;
+    text-align: center;
+    align-content: center;
+    font-weight: bold;
+    padding: 10px 15px 10px 20px;
+    font-size: 15px;
+    background-color: white;
+    color: #003049;
+    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: -10px 2px 10px -9px rgba(0, 0, 0, 60%);
+    text-decoration: none;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    margin-right: 2px;
+    z-index: 985;
+    
+}
+
+.redirect-buttons .see-more-merch {
+    height: 40px;
+    width: fit-content;
+    text-align: center;
+    align-content: center;
+    font-weight: bold;
+    padding: 10px 20px 10px 15px;
+    font-size: 15px;
+    background-color: white;
+    color: #003049;
+    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 10px 2px 10px -9px rgba(0, 0, 0, 60%);
+    text-decoration: none;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-left: 2px;
+    z-index: 985;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, transform 0.3s ease-in-out, z-index 0.3s ease-in-out;
+}
+
+.redirect-buttons .buy-now-button:hover {
+    color: white;
+    background-color: #003049;
+    transform: scale(1.1);
+    z-index: 986;
+}
+
+.redirect-buttons .see-more-merch:hover {
+    color: white;
+    background-color: #003049;
+    transform: scale(1.1);
+    z-index: 986;
+}

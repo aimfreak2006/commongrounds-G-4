@@ -2,12 +2,7 @@
 {% load static %}
 
 {% block contents %}
-    <style>
-        div { margin-left: 40px; }
-        h3, h4 { margin-top: 5px; margin-bottom: 5px; }
-    </style>
-
-    <div>
+    <div class="contents-container">
         <div>
             {% for category in categories %}
                 <h3><b>{{ category.name }}</b></h3>

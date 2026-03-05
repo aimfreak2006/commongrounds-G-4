@@ -2,13 +2,9 @@
 {% load static %}
 
 {% block contents %}
-    <style>
-        div { margin-left: 40px; }
-    </style>
-
-    <div>
+    <div class="contents-container">
         <div>
-            <h3 style="margin-top: 5px ; margin-bottom: 5px;"><b>{{ event.title }}</b></h3>
+            <h3><b>{{ event.title }}</b></h3>
             <div>
                 <b>Category:</b> {{event.category}} <br>
                 <b>Description:</b> {{event.description}} <br>

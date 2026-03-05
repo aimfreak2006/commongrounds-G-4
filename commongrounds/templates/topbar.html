@@ -3,7 +3,12 @@
 
 {% block home %}
 
-    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app_view.css' %}">
+    <link rel="stylesheet" href="{% static 'css/merchstore.css' %}">
+    <link rel="stylesheet" href="{% static 'css/localevents.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bookclub.css' %}">
+    <link rel="stylesheet" href="{% static 'css/diyprojects.css' %}">
+    <link rel="stylesheet" href="{% static 'css/commissions.css' %}">
     <input type="checkbox" id="side-tab-toggle" style="display: none;">
     
     <div class="topbar">    
@@ -15,18 +20,21 @@
 
     <div id="side-tab">
         <nav>
-            <a href="/">Home</a>
-            <a href="/merchstore/items">Merch Store</a>
-            <a href="/localevents/events">Local Events</a>
-            <a href="/bookclub/books">Book Club</a>
-            <a href="/diyprojects/projects">DIY Projects</a>
-            <a href="/commissions/requests">Commissions</a>
+            <a href="/" class="side-button">Home</a>
+            <a href="/merchstore/items" class="side-button">Merch Store</a>
+            <a href="/localevents/events" class="side-button">Local Events</a>
+            <a href="/bookclub/books" class="side-button">Book Club</a>
+            <a href="/diyprojects/projects" class="side-button">DIY Projects</a>
+            <a href="/commissions/requests" class="side-button">Commissions</a>
         </nav>
     </div>
 
     {% block header %}
     {% endblock %}
-    {% block contents %}
-    {% endblock %}
+
+    <div class="contents-container">
+        {% block contents %}
+        {% endblock %}
+    </div>
 
 {% endblock %}
