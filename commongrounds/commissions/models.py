@@ -6,6 +6,9 @@ class CommissionType(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return self.name
 
@@ -14,8 +17,11 @@ class Commission(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     people_required = models.IntegerField()
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
+    created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_on = models.DateTimeField(auto_now=True, null=True, blank=True)
+
+    class Meta:
+        ordering = ['created_on']
 
     def __str__(self):
         return self.title

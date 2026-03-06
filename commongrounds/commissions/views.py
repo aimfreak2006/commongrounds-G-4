@@ -3,8 +3,8 @@ from .models import Commission, CommissionType
 
 
 def list_view(request):
-    commission_requests = Commission.objects.all().order_by('created_on')
-    commission_types = CommissionType.objects.all().order_by('name')
+    commission_requests = Commission.objects.all()
+    commission_types = CommissionType.objects.all()
     dictionary = {
         "requests": commission_requests,
         "types": commission_types,
