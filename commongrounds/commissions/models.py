@@ -2,7 +2,6 @@ from django.db import models
 from django.urls import reverse
 
 
-# Must be sorted by name (ascending) .order_by(name)
 class CommissionType(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -11,7 +10,6 @@ class CommissionType(models.Model):
         return self.name
 
 
-# Must be sorted by the date it was created (ascending) .order_by(created_on)
 class Commission(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
