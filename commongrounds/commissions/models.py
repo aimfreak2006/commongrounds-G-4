@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
+
 # Must be sorted by name (ascending) .order_by(name)
 class CommissionType(models.Model):
     name = models.CharField(max_length=255)
@@ -8,6 +9,7 @@ class CommissionType(models.Model):
 
     def __str__(self):
         return self.name
+
 
 # Must be sorted by the date it was created (ascending) .order_by(created_on)
 class Commission(models.Model):
@@ -19,6 +21,6 @@ class Commission(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def get_absolute_url(self):
         return reverse('commissions:detail_view', args=[int(self.id)])

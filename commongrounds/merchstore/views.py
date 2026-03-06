@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 
 from django.views.generic import (
     ListView,
@@ -13,7 +13,9 @@ class MerchStoreListView(ListView):
     model = ProductType
 
     def get_queryset(self):
-        return ProductType.objects.prefetch_related("products").order_by("name")
+        return (
+            ProductType.objects.prefetch_related("products").order_by("name")
+        )
 
 
 class MerchStoreDetailView(DetailView):
