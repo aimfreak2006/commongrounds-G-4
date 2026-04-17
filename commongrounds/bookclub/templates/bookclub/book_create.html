@@ -1,2 +1,16 @@
 {% extends 'bookclub/book_base.html' %}
 {% load static %}
+
+{% block contents %}
+    <div class="contents-container">
+        <h3>Add a Book</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Book</button>
+        </form>
+
+        <br>
+        <a href="{% url 'bookclub:book_list' %}">Back to all books</a>
+    </div>
+{% endblock %}

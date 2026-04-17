@@ -1,2 +1,26 @@
 {% extends 'bookclub/book_base.html' %}
 {% load static %}
+
+{% block contents %}
+    <div class="contents-container">
+        <h3>Borrow a Book</h3>
+
+        <div>
+            <p><b>Title:</b> {{ book.title }}</p>
+            <p><b>Author:</b> {{ book.author }}</p>
+            <p><b>Genre:</b> {{ book.genre }}</p>
+            <p><b>Publication Year:</b> {{ book.publication_year }}</p>
+        </div>
+
+        <hr>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Borrow</button>
+        </form>
+
+        <br>
+        <a href="{{ book.get_absolute_url }}">Cancel</a>
+    </div>
+{% endblock %}
