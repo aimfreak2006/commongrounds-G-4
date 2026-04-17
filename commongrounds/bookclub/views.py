@@ -1,16 +1,89 @@
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from .models import Genre, Book
+from django.views.generic.edit import CreateView, UpdateView
+from .models import Book, BookReview, Bookmark, Borrow
+from .forms import BookReviewForm, BookContributeForm, BookUpdateForm, BookBorrowForm
 
 
 class BookListView(ListView):
-    model = Genre
+    model = Book
     template_name = "bookclub/book_list.html"
+    context_object_name = "books"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        all_books = Book.objects.all()
+
+        if self.request.user.is_authenticated:
+            profile = self.request.user.profile
+
+            contributed = Book.objects.filter(contributor=profile)
+            bookmarked = Book.objects.filter(bookmarks__profile=profile)
+            reviewed = Book.objects.filter(reviews__user_reviewer=profile)
+
+            grouped_pks = (
+                contributed.values('pk') |
+                bookmarked.values('pk') |
+                reviewed.values('pk')
+            )
+
+            context['contributed_books'] = contributed
+            context['bookmarked_books'] = bookmarked
+            context['reviewed_books'] = reviewed
+            context['all_books'] = all_books.exclude(pk__in=grouped_pks)
+        else:
+            context['all_books'] = all_books
+
+        return context
 
 
 class BookDetailView(DetailView):
     model = Book
     template_name = "bookclub/book_details.html"
+    context_object_name = "book"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        book = self.get_object()
+
+        context['review_form'] = BookReviewForm()
+        context['reviews'] = book.reviews.all()
+        context['bookmark_count'] = book.bookmarks.count()
+
+        if self.request.user.is_authenticated:
+            profile = self.request.user.profile
+            context['is_bookmarked'] = book.bookmarks.filter(profile=profile).exists()
+            context['is_contributor'] = book.contributor == profile
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        book = self.get_object()
+
+        if 'bookmark' in request.POST:
+            if request.user.is_authenticated:
+                profile = request.user.profile
+                bookmark = Bookmark.objects.filter(profile=profile, book=book)
+                if bookmark.exists():
+                    bookmark.delete()
+                else:
+                    Bookmark.objects.create(profile=profile, book=book)
+            return redirect('bookclub:book_details', pk=book.pk)
+
+        form = BookReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.book = book
+            if request.user.is_authenticated:
+                review.user_reviewer = request.user.profile
+            else:
+                review.anon_reviewer = 'Anonymous'
+            review.save()
+            return redirect('bookclub:book_details', pk=book.pk)
+
+        context = self.get_context_data()
+        context['review_form'] = form
+        return self.render_to_response(context)
 
 
 class BookCreateView():
