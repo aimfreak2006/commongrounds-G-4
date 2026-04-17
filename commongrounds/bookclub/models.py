@@ -68,7 +68,7 @@ class BookReview(models.Model):
     comment = models.TextField()
 
     def __str__(self):
-        reviewer = self.user_reviewer or self.anon_reviewer or 'Anonymous'
+        reviewer_name = self.user_reviewer or self.anon_reviewer or 'Anonymous'
         return '{} on {}'.format(reviewer, self.book.title)
 
 
@@ -95,17 +95,17 @@ class Borrow(models.Model):
         on_delete=models.CASCADE,
         related_name='borrows'
     )
-    user_borrower = models.ForeignKey(
+    borrower = models.ForeignKey(
         'accounts.Profile',
         on_delete=models.CASCADE,
         related_name='borrows',
         null=True,
         blank=True
     )
-    anon_borrower = models.CharField(max_length=255, blank=True)
+    name = models.CharField(max_length=255, blank=True)
     date_borrowed = models.DateField()
     date_to_return = models.DateField()
 
     def __str__(self):
-        borrower = self.user_borrower or self.anon_borrower or 'Anonymous'
-        return '{} borrowed {}'.format(borrower, self.book.title)
+        borrower_name = self.borrower or self.name or 'Anonymous'
+        return '{} borrowed {}'.format(borrower_name, self.book.title)
