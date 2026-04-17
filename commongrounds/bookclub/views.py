@@ -6,7 +6,7 @@ from .forms import BookReviewForm, BookContributeForm, BookUpdateForm, BookBorro
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from datetime import timedelta
-from accounts.mixin import RoleRequiredMixin # tentative
+from accounts.mixin import RoleRequiredMixin
 
 
 class BookListView(ListView):
@@ -90,22 +90,22 @@ class BookDetailView(DetailView):
         return self.render_to_response(context)
 
 
-class BookCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView): # tentative
+class BookCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     model = Book
     form_class = BookContributeForm
     template_name = "bookclub/book_create.html"
-    required_role = '' # tentative
+    required_role = 'Book Contributor'
 
     def form_valid(self, form):
         form.instance.contributor = self.request.user.profile
         return super().form_valid(form)
 
 
-class BookUpdateView(LoginRequiredMixin, RoleRequiredMixin, UpdateView): # tentative
+class BookUpdateView(LoginRequiredMixin, RoleRequiredMixin, UpdateView):
     model = Book
     form_class = BookUpdateForm
     template_name = "bookclub/book_update.html"
-    required_role = '' # tentative
+    required_role = 'Book Contributor'
 
     def get_queryset(self):
         return Book.objects.filter(contributor=self.request.user.profile)
