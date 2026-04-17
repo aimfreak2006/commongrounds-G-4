@@ -11,3 +11,15 @@ class BookListView(ListView):
 class BookDetailView(DetailView):
     model = Book
     template_name = "bookclub/book_details.html"
+
+
+class BookCreateView():
+    pass
+
+
+class BookUpdateView():
+    pass
+
+
+class BookBorrowView():
+    pass
