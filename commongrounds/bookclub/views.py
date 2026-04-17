@@ -3,6 +3,10 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from .models import Book, BookReview, Bookmark, Borrow
 from .forms import BookReviewForm, BookContributeForm, BookUpdateForm, BookBorrowForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
+from datetime import timedelta
+from accounts.mixin import RoleRequiredMixin # tentative
 
 
 class BookListView(ListView):
@@ -86,13 +90,49 @@ class BookDetailView(DetailView):
         return self.render_to_response(context)
 
 
-class BookCreateView():
-    pass
+class BookCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView): # tentative
+    model = Book
+    form_class = BookContributeForm
+    template_name = "bookclub/book_create.html"
+    required_role = '' # tentative
+
+    def form_valid(self, form):
+        form.instance.contributor = self.request.user.profile
+        return super().form_valid(form)
 
 
-class BookUpdateView():
-    pass
+class BookUpdateView(LoginRequiredMixin, RoleRequiredMixin, UpdateView): # tentative
+    model = Book
+    form_class = BookUpdateForm
+    template_name = "bookclub/book_update.html"
+    required_role = '' # tentative
+
+    def get_queryset(self):
+        return Book.objects.filter(contributor=self.request.user.profile)
 
 
-class BookBorrowView():
-    pass
+class BookBorrowView(CreateView):
+    model = Borrow
+    form_class = BookBorrowForm
+    template_name = "bookclub/book_borrow.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['book'] = get_object_or_404(Book, pk=self.kwargs['pk'])
+        return context
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        if self.request.user.is_authenticated:
+            form.fields['name'].required = False
+        return form
+
+    def form_valid(self, form):
+        book = get_object_or_404(Book, pk=self.kwargs['pk'])
+        borrow = form.save(commit=False)
+        borrow.book = book
+        borrow.date_to_return = borrow.date_borrowed + timedelta(weeks=2)
+        if self.request.user.is_authenticated:
+            borrow.borrower = self.request.user.profile
+        borrow.save()
+        return redirect('bookclub:book_details', pk=book.pk)
