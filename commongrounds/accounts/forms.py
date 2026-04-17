@@ -11,9 +11,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
 
 class RegisterForm(UserCreationForm):
-    display_name = forms.CharField(max_length=63)
-    email = forms.EmailField()
-    role = forms.ChoiceField(choices=Profile._meta.get_field('role').choices)
+    email = forms.EmailField(required=True)
 
     class Meta:
         model = User
