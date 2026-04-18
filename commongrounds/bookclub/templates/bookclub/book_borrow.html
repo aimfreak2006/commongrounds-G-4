@@ -3,7 +3,8 @@
 
 {% block contents %}
     <div class="contents-container">
-        <h3>Borrow a Book</h3>
+        <h2>Borrow this book?</h2>
+        <br>
 
         <div>
             <p><b>Title:</b> {{ book.title }}</p>
@@ -12,8 +13,7 @@
             <p><b>Publication Year:</b> {{ book.publication_year }}</p>
         </div>
 
-        <hr>
-
+        <br><hr><br>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}

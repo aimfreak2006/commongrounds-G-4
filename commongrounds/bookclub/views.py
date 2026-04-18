@@ -5,8 +5,8 @@ from .models import Book, BookReview, Bookmark, Borrow
 from .forms import BookReviewForm, BookContributeForm, BookUpdateForm, BookBorrowForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
-from datetime import timedelta
-from accounts.mixin import RoleRequiredMixin
+from datetime import timedelta, date
+from django.core.exceptions import PermissionDenied
 
 
 class BookListView(ListView):
@@ -90,22 +90,34 @@ class BookDetailView(DetailView):
         return self.render_to_response(context)
 
 
-class BookCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
+class BookCreateView(LoginRequiredMixin, CreateView):
     model = Book
     form_class = BookContributeForm
     template_name = "bookclub/book_create.html"
-    required_role = 'Book Contributor'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('accounts:login')
+        if request.user.profile.role != 'Book Contributor':
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.contributor = self.request.user.profile
         return super().form_valid(form)
 
 
-class BookUpdateView(LoginRequiredMixin, RoleRequiredMixin, UpdateView):
+class BookUpdateView(LoginRequiredMixin, UpdateView):
     model = Book
     form_class = BookUpdateForm
     template_name = "bookclub/book_update.html"
-    required_role = 'Book Contributor'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('accounts:login')
+        if request.user.profile.role != 'Book Contributor':
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         return Book.objects.filter(contributor=self.request.user.profile)
@@ -128,11 +140,18 @@ class BookBorrowView(CreateView):
         return form
 
     def form_valid(self, form):
-        book = get_object_or_404(Book, pk=self.kwargs['pk'])
         borrow = form.save(commit=False)
-        borrow.book = book
+        borrow.date_borrowed = form.cleaned_data['date_borrowed'] or date.today()
+        
+        if borrow.date_borrowed < date.today():
+            form.add_error('date_borrowed', 'Borrow date cannot be in the past.')
+            return self.form_invalid(form)
+        
+        borrow.book = self.book
         borrow.date_to_return = borrow.date_borrowed + timedelta(weeks=2)
         if self.request.user.is_authenticated:
             borrow.borrower = self.request.user.profile
+            if not borrow.name:
+                borrow.name = self.request.user.profile.display_name
         borrow.save()
-        return redirect('bookclub:book_details', pk=book.pk)
+        return redirect('bookclub:book_details', pk=self.book.pk)

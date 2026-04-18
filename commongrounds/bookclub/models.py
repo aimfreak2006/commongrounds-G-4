@@ -31,7 +31,7 @@ class Book(models.Model):
         null=True
     )
     author = models.CharField(max_length=255)
-    synopsis = models.TextField()
+    synopsis = models.TextField(default="No sypnosis added.")
     publication_year = models.IntegerField()
     available_to_borrow = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)

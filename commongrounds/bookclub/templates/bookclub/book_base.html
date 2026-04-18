@@ -8,3 +8,23 @@
 
 {% block contents %}
 {% endblock %}
+
+<!--
+TODO: 
+    - fix profile and user problem
+    - create better templates with better naming
+    - fix date borrowed to more appropiate form type
+    - sypnosis default bug (?)
+
+LIST OF QUESTIONS:
+    - by automatically filling out the name entry, do you mean that the name 
+    field in the form shouldnt be editable or visible anymore to the user, or 
+    is it still editable either way whether youre logged in or not?
+    - is the link to the create book still accessible to logged in users even 
+    if they dont have the role of Book Contributor? and why is the Books you
+    contributed part still visible to any logged in user even if theyre blocked 
+    from contributing any books in the first place if they dont have the role?
+    - will the book be unavailable to borrow if its within the date it was borrowed
+    and returned? and does this mean we should assume that the book is automatically
+    returned by the date?
+-->

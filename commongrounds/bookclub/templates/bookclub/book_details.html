@@ -4,88 +4,81 @@
 {% block contents %}
     <div class="contents-container">
         <div>
-            <h3>{{ book.title }}</h3>
+            <h1>{{ book.title }}</h1>
+            <br>
             <p><b>Author:</b> {{ book.author }}</p>
             <p><b>Genre:</b> {{ book.genre }}</p>
+            <p><b>Genre Description:</b> {{ book.genre.description }}</p>
             <p><b>Synopsis:</b> {{ book.synopsis }}</p>
             <p><b>Publication Year:</b> {{ book.publication_year }}</p>
-            <p><b>Available to Borrow:</b> {{ book.available_to_borrow }}</p>
+            <br>
 
             {% if is_contributor %}
-                <a href="{% url 'bookclub:book_update' pk=book.pk %}">Edit Book</a>
+                <p>Make changes as the contributor of this book.</p>
+                <p><a href="{% url 'bookclub:book_update' pk=book.pk %}">Edit Book</a></p>
+                <br>
             {% endif %}
+
+            {% if book.available_to_borrow %}
+                <p>Currently available for borrowing.</p>
+                <p><a href="{% url 'bookclub:book_borrow' pk=book.pk %}">Borrow this Book</a></p>
+            {% else %}
+                <p>Currently unavailable for borrowing. Try again at another time.</p>
+            {% endif %}
+            <br>
+
+            <p>{{ bookmark_count }} people added this to their bookmarks.</p>
+            {% if user.is_authenticated %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="hidden" name="bookmark">
+                    <button type="submit">
+                        {% if is_bookmarked %} Unbookmark {% else %} Bookmark {% endif %}
+                    </button>
+                </form>
+            {% else %}
+                <p>Login to bookmark.</p>
+            {% endif %}
+            <br>
+
+            <p>Created on {{ book.created_on }}</p>
+            <p>Last updated on {{ book.updated_on }}</p>
+            <br>
+
+            <p><a href="{% url 'bookclub:book_list' %}">Back to all books</a></p>
         </div>
 
-        <hr>
-
+        <br><hr><br>
         <div>
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="bookmark">
-                <button type="submit">
-                    {% if is_bookmarked %} Unbookmark {% else %} Bookmark {% endif %}
-                </button>
-            </form>
-            <p>{{ bookmark_count }} bookmark{{ bookmark_count|pluralize }}</p>
-        </div>
-
-        <hr>
-
-        <div>
-            <a href="{% url 'bookclub:book_borrow' pk=book.pk %}">Borrow this Book</a>
-        </div>
-
-        <hr>
-
-        <div>
-            <h4>Leave a Review</h4>
+            <h4>Leave a Review?</h4>
             <form method="post">
                 {% csrf_token %}
                 {{ review_form.as_p }}
                 <button type="submit">Submit Review</button>
             </form>
         </div>
-
-        <hr>
-
+        
+        <br><hr><br>
         <div>
-            <h4>Reviews</h4>
+            <h2>Reviews</h2>
+            <br>
             <ul>
                 {% for review in reviews %}
                     <li>
-                        <b>{{ review.title }}</b> by
+                        <h3 style="display: inline;">{{ review.title }}</h3> | by
                         {% if review.user_reviewer %}
                             {{ review.user_reviewer }}
                         {% else %}
                             Anonymous
                         {% endif %}
-                        <p>{{ review.comment }}</p>
+                        <p style="margin-top: 8px;">{{ review.comment }}</p>
+                        <br>
                     </li>
                 {% empty %}
                     <li>No reviews yet.</li>
                 {% endfor %}
             </ul>
         </div>
-
-        <br>
-        <a href="{% url 'bookclub:book_list' %}">Back to all books</a>
     </div>
 {% endblock %}
-
-
-<!--
-        <div>
-            <h3><b>{{ book.title }}</b></h3> 
-            <div>
-                <b>Genre:</b> {{book.genre}} <br>
-                <b>Author:</b> {{book.author}} <br>
-                <b>Publication Year:</b> {{book.publication_year}}
-            </div>
-            <br>Created on {{ book.created_on }}
-            <br>Last updated on {{ book.updated_on }}
-        </div>
-
-        <br>
-        <i>Looking for another book?</i>
-        <a href="/bookclub/books">See more books.</a>
--->
