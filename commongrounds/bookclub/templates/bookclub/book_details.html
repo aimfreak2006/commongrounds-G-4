@@ -20,10 +20,10 @@
             {% endif %}
 
             {% if book.available_to_borrow %}
-                <p>Currently available for borrowing.</p>
+                <p>Available for borrowing.</p>
                 <p><a href="{% url 'bookclub:book_borrow' pk=book.pk %}">Borrow this Book</a></p>
             {% else %}
-                <p>Currently unavailable for borrowing. Try again at another time.</p>
+                <p>Unavailable for borrowing.</p>
             {% endif %}
             <br>
 

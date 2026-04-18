@@ -33,12 +33,12 @@ class Book(models.Model):
     author = models.CharField(max_length=255)
     synopsis = models.TextField(default="No sypnosis added.")
     publication_year = models.IntegerField()
-    available_to_borrow = models.BooleanField(default=True)
+    available_to_borrow = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return '{} last updated on {}'.format(self.title, self.updated_on)
+        return self.title
 
     def get_absolute_url(self):
         return reverse('bookclub:book_details', args=[str(self.pk)])
@@ -69,7 +69,7 @@ class BookReview(models.Model):
 
     def __str__(self):
         reviewer_name = self.user_reviewer or self.anon_reviewer or 'Anonymous'
-        return '{} on {}'.format(reviewer, self.book.title)
+        return '{} on {}'.format(reviewer_name, self.book.title)
 
 
 class Bookmark(models.Model):

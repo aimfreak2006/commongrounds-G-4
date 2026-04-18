@@ -128,9 +128,13 @@ class BookBorrowView(CreateView):
     form_class = BookBorrowForm
     template_name = "bookclub/book_borrow.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        self.book = get_object_or_404(Book, pk=self.kwargs['pk'])
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['book'] = get_object_or_404(Book, pk=self.kwargs['pk'])
+        context['book'] = self.book
         return context
 
     def get_form(self, form_class=None):
