@@ -106,6 +106,9 @@ class BookCreateView(LoginRequiredMixin, CreateView):
         form.instance.contributor = self.request.user.profile
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
 
 class BookUpdateView(LoginRequiredMixin, UpdateView):
     model = Book
@@ -121,6 +124,9 @@ class BookUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_queryset(self):
         return Book.objects.filter(contributor=self.request.user.profile)
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
 
 class BookBorrowView(CreateView):
