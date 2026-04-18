@@ -2,7 +2,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from .models import Book, BookReview, Bookmark, Borrow
-from .forms import BookReviewForm, BookContributeForm, BookUpdateForm, BookBorrowForm
+from .forms import BookReviewForm, BookContributeForm, BookUpdateForm, BookBorrowForm, BookFormFactory
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from datetime import timedelta, date
@@ -18,7 +18,7 @@ class BookListView(ListView):
         context = super().get_context_data(**kwargs)
         all_books = Book.objects.all()
 
-        if self.request.user.is_authenticated:
+        if self.request.user.is_authenticated: # hasattr might not be needed, should be handled in accounts
             profile = self.request.user.profile
 
             contributed = Book.objects.filter(contributor=profile)
@@ -50,7 +50,7 @@ class BookDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         book = self.get_object()
 
-        context['review_form'] = BookReviewForm()
+        context['review_form'] = BookFormFactory.get_form('review', self.request)
         context['reviews'] = book.reviews.all()
         context['bookmark_count'] = book.bookmarks.count()
 
@@ -74,7 +74,7 @@ class BookDetailView(DetailView):
                     Bookmark.objects.create(profile=profile, book=book)
             return redirect('bookclub:book_details', pk=book.pk)
 
-        form = BookReviewForm(request.POST)
+        form = BookFormFactory.get_form('review', request)
         if form.is_valid():
             review = form.save(commit=False)
             review.book = book
@@ -92,7 +92,6 @@ class BookDetailView(DetailView):
 
 class BookCreateView(LoginRequiredMixin, CreateView):
     model = Book
-    form_class = BookContributeForm
     template_name = "bookclub/book_create.html"
 
     def dispatch(self, request, *args, **kwargs):
@@ -101,6 +100,9 @@ class BookCreateView(LoginRequiredMixin, CreateView):
         if request.user.profile.role != 'Book Contributor':
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
+
+    def get_form(self, form_class=None):
+            return BookFormFactory.get_form('contribute', self.request)
 
     def form_valid(self, form):
         form.instance.contributor = self.request.user.profile
@@ -112,7 +114,6 @@ class BookCreateView(LoginRequiredMixin, CreateView):
 
 class BookUpdateView(LoginRequiredMixin, UpdateView):
     model = Book
-    form_class = BookUpdateForm
     template_name = "bookclub/book_update.html"
 
     def dispatch(self, request, *args, **kwargs):
@@ -121,6 +122,9 @@ class BookUpdateView(LoginRequiredMixin, UpdateView):
         if request.user.profile.role != 'Book Contributor':
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
+
+    def get_form(self, form_class=None):
+            return BookFormFactory.get_form('update', self.request, instance=self.object)
 
     def get_queryset(self):
         return Book.objects.filter(contributor=self.request.user.profile)
@@ -143,13 +147,14 @@ class BookBorrowView(CreateView):
         context['book'] = self.book
         return context
 
-    def get_form(self, form_class=None):
+    def get_form(self, form_class=None): # double check if name should still editable if logged in
         form = super().get_form(form_class)
         if self.request.user.is_authenticated:
             form.fields['name'].required = False
+            form.fields['name'].initial = self.request.user.profile.display_name
         return form
 
-    def form_valid(self, form):
+    def form_valid(self, form): # double check if available_to_borrow should be changed
         borrow = form.save(commit=False)
         borrow.date_borrowed = form.cleaned_data['date_borrowed'] or date.today()
         
