@@ -2,7 +2,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from .models import Book, BookReview, Bookmark, Borrow
-from .forms import BookReviewForm, BookContributeForm, BookUpdateForm, BookBorrowForm, BookFormFactory
+from .forms import BookBorrowForm, BookFormFactory
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from datetime import timedelta, date
@@ -142,17 +142,17 @@ class BookBorrowView(CreateView):
         self.book = get_object_or_404(Book, pk=self.kwargs['pk'])
         return super().dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['book'] = self.book
-        return context
-
     def get_form(self, form_class=None): # double check if name should still editable if logged in
         form = super().get_form(form_class)
         if self.request.user.is_authenticated:
             form.fields['name'].required = False
             form.fields['name'].initial = self.request.user.profile.display_name
         return form
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['book'] = self.book
+        return context
 
     def form_valid(self, form): # double check if available_to_borrow should be changed
         borrow = form.save(commit=False)

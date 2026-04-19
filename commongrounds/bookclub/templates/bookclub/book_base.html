@@ -1,4 +1,5 @@
 {% extends 'topbar.html' %}
+{% load static %}
 
 {% block header %}
     <div class="app-title-container"><ul>
@@ -13,9 +14,13 @@
 TODO: 
     - fix profile and user problem
     - improve book_create and book_update
-    - sypnosis default bug (?)
+    - determine whether or not name is visible or editable when user is authenticated
+    - determine if borrowing will affect whether or not a book is still available for borrowing
 
 LIST OF QUESTIONS:
+    - when listing out books when logged in, will books appear more than once 
+    if it was, for example, both bookmarked and reviewed? meaning that i list 
+    the books within each group regardless if it was listed down previously
     - by automatically filling out the name entry, do you mean that the name 
     field in the form shouldnt be editable or visible anymore to the user, or 
     is it still editable even when youre logged in?
