@@ -55,7 +55,9 @@ class BookmarkAdmin(admin.ModelAdmin):
 
 class BorrowAdmin(admin.ModelAdmin):
     model = Borrow
-    list_display = ('book', 'borrower', 'name', 'date_borrowed', 'date_to_return',)
+    list_display = (
+        'book', 'borrower', 'name', 'date_borrowed', 'date_to_return',
+    )
     list_filter = ('book', 'date_borrowed',)
     readonly_fields = ('date_to_return',)
 

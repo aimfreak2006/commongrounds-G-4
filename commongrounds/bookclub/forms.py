@@ -12,13 +12,19 @@ class BookReviewForm(forms.ModelForm):
 class BookContributeForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ['title', 'genre', 'author', 'synopsis', 'publication_year', 'available_to_borrow',]
+        fields = [
+            'title', 'genre', 'author', 'synopsis',
+            'publication_year', 'available_to_borrow',
+        ]
 
 
 class BookUpdateForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ['title', 'genre', 'author', 'synopsis', 'publication_year', 'available_to_borrow',]
+        fields = [
+            'title', 'genre', 'author', 'synopsis',
+            'publication_year', 'available_to_borrow',
+        ]
 
 
 class BookBorrowForm(forms.ModelForm):
@@ -31,10 +37,11 @@ class BookBorrowForm(forms.ModelForm):
                 'min': date.today().isoformat(),
             }),
         }
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['date_borrowed'].required = False
+
 
 class BookFormFactory:
     @classmethod
@@ -42,7 +49,9 @@ class BookFormFactory:
         if context == 'review':
             form = BookReviewForm(request.POST or None,)
             if request.user.is_authenticated:
-                form.fields['title'].widget.attrs['placeholder'] = request.user.profile.display_name
+                profile = request.user.profile
+                attrs = form.fields['title'].widget.attrs
+                attrs['placeholder'] = profile.display_name
             return form
 
         elif context == 'contribute':

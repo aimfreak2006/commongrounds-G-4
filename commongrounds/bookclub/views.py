@@ -1,7 +1,7 @@
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
-from .models import Book, BookReview, Bookmark, Borrow
+from .models import Book, Bookmark, Borrow
 from .forms import BookBorrowForm, BookFormFactory
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -18,7 +18,7 @@ class BookListView(ListView):
         context = super().get_context_data(**kwargs)
         all_books = Book.objects.all()
 
-        if self.request.user.is_authenticated: # hasattr might not be needed, should be handled in accounts
+        if self.request.user.is_authenticated:
             profile = self.request.user.profile
 
             contributed = Book.objects.filter(contributor=profile)
@@ -50,13 +50,17 @@ class BookDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         book = self.get_object()
 
-        context['review_form'] = BookFormFactory.get_form('review', self.request)
+        context['review_form'] = (
+            BookFormFactory.get_form('review', self.request)
+        )
         context['reviews'] = book.reviews.all()
         context['bookmark_count'] = book.bookmarks.count()
 
         if self.request.user.is_authenticated:
             profile = self.request.user.profile
-            context['is_bookmarked'] = book.bookmarks.filter(profile=profile).exists()
+            context['is_bookmarked'] = (
+                book.bookmarks.filter(profile=profile).exists()
+            )
             context['is_contributor'] = book.contributor == profile
 
         return context
@@ -102,7 +106,7 @@ class BookCreateView(LoginRequiredMixin, CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_form(self, form_class=None):
-            return BookFormFactory.get_form('contribute', self.request)
+        return BookFormFactory.get_form('contribute', self.request)
 
     def form_valid(self, form):
         form.instance.contributor = self.request.user.profile
@@ -124,7 +128,9 @@ class BookUpdateView(LoginRequiredMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_form(self, form_class=None):
-            return BookFormFactory.get_form('update', self.request, instance=self.object)
+        return BookFormFactory.get_form(
+            'update', self.request, instance=self.object
+        )
 
     def get_queryset(self):
         return Book.objects.filter(contributor=self.request.user.profile)
@@ -142,11 +148,12 @@ class BookBorrowView(CreateView):
         self.book = get_object_or_404(Book, pk=self.kwargs['pk'])
         return super().dispatch(request, *args, **kwargs)
 
-    def get_form(self, form_class=None): # double check if name should still editable if logged in
+    def get_form(self, form_class=None):  # double check if name should still editable if logged in
         form = super().get_form(form_class)
         if self.request.user.is_authenticated:
-            form.fields['name'].required = False
-            form.fields['name'].initial = self.request.user.profile.display_name
+            name_field = form.fields['name']
+            name_field.required = False
+            name_field.initial = self.request.user.profile.display_name
         return form
 
     def get_context_data(self, **kwargs):
@@ -154,14 +161,18 @@ class BookBorrowView(CreateView):
         context['book'] = self.book
         return context
 
-    def form_valid(self, form): # double check if available_to_borrow should be changed
+    def form_valid(self, form):  # double check if available_to_borrow should be changed
         borrow = form.save(commit=False)
-        borrow.date_borrowed = form.cleaned_data['date_borrowed'] or date.today()
-        
+        borrow.date_borrowed = (
+            form.cleaned_data['date_borrowed'] or date.today()
+        )
+
         if borrow.date_borrowed < date.today():
-            form.add_error('date_borrowed', 'Borrow date cannot be in the past.')
+            form.add_error(
+                'date_borrowed', 'Borrow date cannot be in the past.'
+            )
             return self.form_invalid(form)
-        
+
         borrow.book = self.book
         borrow.date_to_return = borrow.date_borrowed + timedelta(weeks=2)
         if self.request.user.is_authenticated:
