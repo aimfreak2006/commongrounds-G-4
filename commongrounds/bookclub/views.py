@@ -6,7 +6,7 @@ from .forms import BookBorrowForm, BookFormFactory
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from datetime import timedelta, date
-from django.core.exceptions import PermissionDenied
+from accounts.mixins import RoleRequiredMixin
 
 
 class BookListView(ListView):
@@ -94,16 +94,10 @@ class BookDetailView(DetailView):
         return self.render_to_response(context)
 
 
-class BookCreateView(LoginRequiredMixin, CreateView):
+class BookCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     model = Book
     template_name = "bookclub/book_create.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('accounts:login')
-        if request.user.profile.role != 'Book Contributor':
-            raise PermissionDenied
-        return super().dispatch(request, *args, **kwargs)
+    allowed_roles = ['Book Contributor']
 
     def get_form(self, form_class=None):
         return BookFormFactory.get_form('contribute', self.request)
@@ -116,16 +110,10 @@ class BookCreateView(LoginRequiredMixin, CreateView):
         return self.object.get_absolute_url()
 
 
-class BookUpdateView(LoginRequiredMixin, UpdateView):
+class BookUpdateView(LoginRequiredMixin, RoleRequiredMixin, UpdateView):
     model = Book
     template_name = "bookclub/book_update.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('accounts:login')
-        if request.user.profile.role != 'Book Contributor':
-            raise PermissionDenied
-        return super().dispatch(request, *args, **kwargs)
+    allowed_roles = ['Book Contributor']
 
     def get_form(self, form_class=None):
         return BookFormFactory.get_form(
