@@ -11,7 +11,9 @@
                 {% empty %}
                     <li>You have not contributed any books.</li>
                 {% endfor %}
-                <li><a href="{% url 'bookclub:book_create' %}">Add a new book</a></li>
+                {% if user.is_authenticated and user.profile.role == 'Book Contributor' %}
+                    <li><a href="{% url 'bookclub:book_create' %}">Add a new book</a></li>
+                {% endif %}
             </ul><br><br>
 
             <h2 style="margin-bottom: 8px;">Books You Bookmarked</h2>
@@ -43,26 +45,3 @@
         </ul><br>
     </div>
 {% endblock %}
-
-
-<!--
-        <div>
-            {% for genre in genre_list %}
-                <h3><b>{{ genre.name }}</b></h3>
-                <div>
-                    <b>Description:</b> {{ genre.description }}
-                    <h4><b>Books Available</b></h4>
-                    <ul>
-                        {% for book in genre.books.all %}
-                            <li>
-                                {{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a>
-                            </li>
-                            {% empty %} <li>There are no books for this genre.</li>
-                        {% endfor %}
-                        <br>
-                    </ul>
-                </div>
-                {% empty %} <li>No books available.</li>
-            {% endfor %}
-        </div>
--->

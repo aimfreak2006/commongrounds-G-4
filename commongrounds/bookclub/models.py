@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from datetime import date, timedelta
 
 
 class Genre(models.Model):
@@ -42,6 +43,16 @@ class Book(models.Model):
 
     def get_absolute_url(self):
         return reverse('bookclub:book_details', args=[str(self.pk)])
+
+    def update_availability(self):
+        today = date.today()
+        two_weeks_later = today + timedelta(weeks=2)
+        active_or_conflicting = self.borrows.filter(
+            date_borrowed__lt=two_weeks_later,
+            date_to_return__gt=today
+        ).exists()
+        self.available_to_borrow = not active_or_conflicting
+        self.save()
 
     class Meta:
         ordering = ['-publication_year',]

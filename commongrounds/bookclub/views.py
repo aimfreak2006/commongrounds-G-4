@@ -20,7 +20,6 @@ class BookListView(ListView):
 
         if self.request.user.is_authenticated:
             profile = self.request.user.profile
-
             contributed = Book.objects.filter(contributor=profile)
             bookmarked = Book.objects.filter(bookmarks__profile=profile)
             reviewed = Book.objects.filter(reviews__user_reviewer=profile)
@@ -30,7 +29,6 @@ class BookListView(ListView):
                 bookmarked.values('pk') |
                 reviewed.values('pk')
             )
-
             context['contributed_books'] = contributed
             context['bookmarked_books'] = bookmarked
             context['reviewed_books'] = reviewed
@@ -49,7 +47,15 @@ class BookDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         book = self.get_object()
+        book.update_availability()
+        book.refresh_from_db()
+        context['book'] = book
+        active_borrow = book.borrows.filter(
+            date_borrowed__lt=date.today() + timedelta(weeks=2),
+            date_to_return__gt=date.today()
+        ).order_by('date_to_return').first()
 
+        context['active_borrow'] = active_borrow
         context['review_form'] = (
             BookFormFactory.get_form('review', self.request)
         )
@@ -136,7 +142,7 @@ class BookBorrowView(CreateView):
         self.book = get_object_or_404(Book, pk=self.kwargs['pk'])
         return super().dispatch(request, *args, **kwargs)
 
-    def get_form(self, form_class=None):  # double check if name should still editable if logged in
+    def get_form(self, form_class=None):
         form = super().get_form(form_class)
         if self.request.user.is_authenticated:
             name_field = form.fields['name']
@@ -149,20 +155,32 @@ class BookBorrowView(CreateView):
         context['book'] = self.book
         return context
 
-    def form_valid(self, form):  # double check if available_to_borrow should be changed
+    def form_valid(self, form):
         borrow = form.save(commit=False)
         borrow.date_borrowed = (
             form.cleaned_data['date_borrowed'] or date.today()
         )
+        borrow.date_to_return = borrow.date_borrowed + timedelta(weeks=2)
 
         if borrow.date_borrowed < date.today():
             form.add_error(
-                'date_borrowed', 'Borrow date cannot be in the past.'
+                'date_borrowed',
+                'Borrow date cannot be in the past.'
+            )
+            return self.form_invalid(form)
+
+        conflict = self.book.borrows.filter(
+            date_borrowed__lt=borrow.date_to_return,
+            date_to_return__gt=borrow.date_borrowed
+        ).exists()
+        if conflict:
+            form.add_error(
+                'date_borrowed',
+                'Conflicts with an existing borrow period.'
             )
             return self.form_invalid(form)
 
         borrow.book = self.book
-        borrow.date_to_return = borrow.date_borrowed + timedelta(weeks=2)
         if self.request.user.is_authenticated:
             borrow.borrower = self.request.user.profile
             if not borrow.name:

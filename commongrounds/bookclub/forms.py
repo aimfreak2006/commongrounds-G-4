@@ -53,14 +53,11 @@ class BookFormFactory:
                 attrs = form.fields['title'].widget.attrs
                 attrs['placeholder'] = profile.display_name
             return form
-
         elif context == 'contribute':
             form = BookContributeForm(request.POST or None,)
             return form
-
         elif context == 'update':
             form = BookUpdateForm(request.POST or None, instance=instance,)
             return form
-
         else:
             raise ValueError('Unknown form context: {}'.format(context))

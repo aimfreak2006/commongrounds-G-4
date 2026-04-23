@@ -23,7 +23,8 @@
                 <p>Available for borrowing.</p>
                 <p><a href="{% url 'bookclub:book_borrow' pk=book.pk %}">Borrow this Book</a></p>
             {% else %}
-                <p>Unavailable for borrowing.</p>
+                <p>Unavailable for borrowing until {{ active_borrow.date_to_return }}.</p>
+                <p><a href="{% url 'bookclub:book_borrow' pk=book.pk %}">Schedule a borrow</a></p>
             {% endif %}
             <br>
 
@@ -31,7 +32,6 @@
             {% if user.is_authenticated %}
                 <form method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
                     <input type="hidden" name="bookmark">
                     <button type="submit">
                         {% if is_bookmarked %} Unbookmark {% else %} Bookmark {% endif %}
@@ -58,7 +58,7 @@
                 <button type="submit">Submit Review</button>
             </form>
         </div>
-        
+
         <br><hr><br>
         <div>
             <h2>Reviews</h2>

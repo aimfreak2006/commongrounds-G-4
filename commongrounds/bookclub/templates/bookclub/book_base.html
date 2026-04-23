@@ -9,26 +9,3 @@
 
 {% block contents %}
 {% endblock %}
-
-<!--
-TODO: 
-    - fix profile and user problem
-    - improve book_create and book_update
-    - determine whether or not name is visible or editable when user is authenticated
-    - determine if borrowing will affect whether or not a book is still available for borrowing
-
-LIST OF QUESTIONS:
-    - when listing out books when logged in, will books appear more than once 
-    if it was, for example, both bookmarked and reviewed? meaning that i list 
-    the books within each group regardless if it was listed down previously
-    - by automatically filling out the name entry, do you mean that the name 
-    field in the form shouldnt be editable or visible anymore to the user, or 
-    is it still editable even when youre logged in?
-    - is the link to the create book still accessible to logged in users even 
-    if they dont have the role of Book Contributor? and why is the Books you
-    contributed section still visible to any logged in user even if they dont
-    have access to book creation in the first place if they dont have the role?
-    - will the book be unavailable to borrow if its within the date it was borrowed
-    and returned? and does this mean we should assume that the book is automatically
-    returned by the date?
--->
