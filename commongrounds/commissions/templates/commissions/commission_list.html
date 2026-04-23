@@ -5,31 +5,34 @@
     <div class="contents-container">
         <h2> Created Commissions </h2>
         <ul>
-            {% for request in requests %}
-                <h3>{{request.title}}</h3>
-                <li> <a href='{{ request.get_absolute_url }}'>{{request.title}}_details</a> </li>
+            {% for commission in created_commissions %}
+                <h3>{{commission.title}}</h3>
+                <li> <a href='{{ commission.get_absolute_url }}'>{{commission.title}}_details</a> </li>
             {% endfor %}
         </ul>
         <br>
         <br>
         <h2> Applied Commissions </h2>
         <ul>
-            {% for request in requests %}
-                <h3>{{request.title}}</h3>
-                <li> <a href='{{ request.get_absolute_url }}'>{{request.title}}_details</a> </li>
+            {% for commission in commission %}
+                <h3>{{commission.title}}</h3>
+                <li> <a href='{{ commission.get_absolute_url }}'>{{commission.title}}_details</a> </li>
             {% endfor %}
         </ul>
         <br>
         <br>
         <h2> Other Commissions </h2>
         <ul>
-            {% for request in requests %}
-                <h3>{{request.title}}</h3>
-                <li> <a href='{{ request.get_absolute_url }}'>{{request.title}}_details</a> </li>
+            {% for commission in commissions %}
+                <h3>{{commission.title}}</h3>
+                <li> <a href='{{ commission.get_absolute_url }}'>{{commission.title}}_details</a> </li>
             {% endfor %}
         </ul>
         <br>
         <br>
-        
+
+        <a href="/request/add"> 
+            <button type="button">Create Commission </button>
+        </a>
     </div>
 {% endblock %}

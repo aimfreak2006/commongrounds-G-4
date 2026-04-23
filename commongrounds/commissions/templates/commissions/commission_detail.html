@@ -10,7 +10,33 @@
             <li>Created on: {{commission.created_on}}</li>
             <li>Updated on: {{commission.updated_on}}</li>
         </ul>
-    
+
+        <br>
+        <br>
+
+        <h2> Jobs Needed </h2>
+        <ul>
+            {% for job in jobs %}
+            <li>{{job.role}}</li>
+            {% endfor %}
+        </ul>
+
+        {% if user.is_authenticated %}
+            <a href="">
+                <button type="button">Apply For a Job</button>
+            </a>
+        {% else %}
+            <a href="">
+                <button type="button" disabled>Apply For a Job</button>
+            </a>
+        {% endif %}
+
+        {% if user == commission.maker %}
+            <a href="{{ commission.get_edit_url }}">
+                <button type="button">Back to Commission</button>
+            </a>
+        {% endif %}
+            
         <a href="/commissions/requests/">
             <button type="button">Back to Commission</button>
         </a>
