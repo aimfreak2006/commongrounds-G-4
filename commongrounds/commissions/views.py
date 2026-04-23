@@ -16,3 +16,9 @@ def detail_view(request, pk):
     commission = Commission.objects.get(pk=pk)
     dictionary = {"commission": commission}
     return render(request, 'commissions/commission_detail.html', dictionary)
+
+def add_view(request):
+    pass
+
+def edit_view(request, pk):
+    pass
