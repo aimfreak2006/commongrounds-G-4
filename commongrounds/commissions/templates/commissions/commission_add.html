@@ -1,0 +1,10 @@
+{% extends 'commissions/commission_base.html' %}
+
+
+{% block body %}
+<form action="/recipes/list" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" name="submit" value="Save Form">
+</form>
+{% endblock %}

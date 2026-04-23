@@ -16,6 +16,12 @@ class CommissionType(models.Model):
 
 
 class Commission(models.Model):
+    class Status(models.TextChoices):
+        OPEN = '0O', _("Open")
+        FULL = '1F', _("Full")
+        COMPLETED = '2C', _("Completed")
+        DISCONTINUED = '3D', _("Discontinued")
+
     title = models.CharField(max_length=255)
     description = models.TextField()
     type = models.ForeignKey(
@@ -25,11 +31,15 @@ class Commission(models.Model):
         null=True
     )
     people_required = models.IntegerField()
+    status = models.CharField(
+        choices=Status,
+        default=Status.OPEN
+    )
     created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_on = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
-        ordering = ['created_on']
+        ordering = ['status','created_on']
 
     def __str__(self):
         return self.title
