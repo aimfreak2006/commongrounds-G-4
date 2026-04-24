@@ -33,6 +33,7 @@ class Commission(models.Model):
     maker = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
+        null=True
     )
     people_required = models.IntegerField()
     status = models.CharField(
@@ -52,7 +53,7 @@ class Commission(models.Model):
         return reverse('commissions:detail_view', args=[int(self.id)])
     
     def get_edit_url(self):
-        return reverse('commission:edit_view', args=[int(self.id)])
+        return reverse('commissions:edit_view', args=[int(self.id)])
     
 
 class Job(models.Model):

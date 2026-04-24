@@ -1,0 +1,13 @@
+{% extends "commissions/commission_base.html" %}
+{% load static %}
+
+{% block contents %}
+<br>
+<br>
+<br>
+<form action="{{ commission.get_absolute_url }}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Save Changes</button>
+</form>
+{% endblock %}

@@ -5,8 +5,10 @@
     <div class="contents-container">
         <h3> {{commission.title}} </h3>
         <ul>
+            <li>Creator: {{commission.maker.display_name}}</li>
             <li>Description: {{commission.description}}</li>
             <li>Number of People Required: {{commission.people_required}}</li>
+            <li>Status: {{commission.get_status_display}}</li>
             <li>Created on: {{commission.created_on}}</li>
             <li>Updated on: {{commission.updated_on}}</li>
         </ul>
@@ -31,9 +33,9 @@
             </a>
         {% endif %}
 
-        {% if user == commission.maker %}
-            <a href="{{ commission.get_edit_url }}">
-                <button type="button">Back to Commission</button>
+        {% if user.profile == commission.maker %}
+            <a href="{{commission.get_edit_url}}">
+                <button type="button">Edit Commission</button>
             </a>
         {% endif %}
             

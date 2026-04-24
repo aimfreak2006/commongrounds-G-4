@@ -7,32 +7,49 @@
         <ul>
             {% for commission in created_commissions %}
                 <h3>{{commission.title}}</h3>
-                <li> <a href='{{ commission.get_absolute_url }}'>{{commission.title}}_details</a> </li>
+                <li> 
+                    <a href='{{ commission.get_absolute_url }}'>
+                        <button type="button">{{commission.title}}_details</button>
+                    </a> 
+                </li>
+                <p>{{commission.get_status_display}}</p>
             {% endfor %}
         </ul>
         <br>
         <br>
         <h2> Applied Commissions </h2>
         <ul>
-            {% for commission in commission %}
+            {% for commission in created_commissions %}
                 <h3>{{commission.title}}</h3>
-                <li> <a href='{{ commission.get_absolute_url }}'>{{commission.title}}_details</a> </li>
+                <li> 
+                    <a href='{{ commission.get_absolute_url }}'>
+                        <button type="button">{{commission.title}}_details</button>
+                    </a> 
+                </li>
+                <p>{{commission.get_status_display}}</p>
             {% endfor %}
         </ul>
         <br>
         <br>
         <h2> Other Commissions </h2>
         <ul>
-            {% for commission in commissions %}
+            {% for commission in other_commissions %}
                 <h3>{{commission.title}}</h3>
-                <li> <a href='{{ commission.get_absolute_url }}'>{{commission.title}}_details</a> </li>
+                <li> 
+                    <a href='{{ commission.get_absolute_url }}'>
+                        <button type="button">{{commission.title}}_details</button>
+                    </a> 
+                </li>
+                <p>{{commission.get_status_display}}</p>
             {% endfor %}
         </ul>
         <br>
         <br>
 
-        <a href="/request/add"> 
-            <button type="button">Create Commission </button>
-        </a>
+        {% if user.profile.role == 'Commission Maker' %}
+            <a href="/commissions/request/add"> 
+                <button type="button">Create Commission</button>
+            </a>
+        {% endif %}
     </div>
 {% endblock %}
