@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.forms import inlineformset_factory
-from .models import Commission, Job
+from .models import Commission, Job, JobApplication
 from .forms import CommissionForm, JobForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
@@ -43,6 +43,16 @@ def detail_view(request, pk):
         commission_form = CommissionForm(request.POST, instance=commission)
         if (commission_form.is_valid()):
             commission_form.save()
+
+        if ("apply_to_job" in request.POST):
+            job_id = request.POST.get("job_id")
+            job = Job.objects.get(pk=job_id)
+            
+            JobApplication.objects.create(
+                job=job,
+                applicant=request.user.profile
+            )
+            return redirect('commissions:detail_view', pk=pk)
     return render(request, 'commissions/commission_detail.html', dictionary)
 
 def add_view(request):

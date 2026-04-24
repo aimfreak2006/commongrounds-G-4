@@ -30,4 +30,7 @@ class JobForm(forms.ModelForm):
     class Meta:
         model = Job
         fields = ['role', 'manpower_required']
-            
+
+
+class JobApplicationForm(forms.ModelForm):
+    job = forms.ModelChoiceField

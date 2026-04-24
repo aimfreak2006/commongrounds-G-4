@@ -19,19 +19,23 @@
         <h2> Jobs Needed </h2>
         <ul>
             {% for job in jobs %}
-            <li>{{job.role}}</li>
+                <li>{{job.role}}</li>
+
+                {% if user.is_authenticated %}
+                    {% if job.applicant == user.profile %}
+                        <button type="button" disabled>Applied</button>
+                    {% else %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="job_id" value="{{ job.pk }}">
+                            <button type="submit" name="apply_to_job">Apply Job</button>
+                        </form>
+                    {% endif %}
+                {% else %}
+                    <button type="button" disabled>Apply Job: Full</button>
+                {% endif %}
             {% endfor %}
         </ul>
-
-        {% if user.is_authenticated %}
-            <a href="">
-                <button type="button">Apply For a Job</button>
-            </a>
-        {% else %}
-            <a href="">
-                <button type="button" disabled>Apply For a Job</button>
-            </a>
-        {% endif %}
 
         {% if user.profile == commission.maker %}
             <a href="{{commission.get_edit_url}}">
