@@ -89,12 +89,12 @@ class JobApplication(models.Model):
     job = models.ForeignKey(
         Job,
         on_delete=models.CASCADE,
-        null=True
+        null=True,
+        related_name='application'
     )
     applicant = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
-        related_name='applicant_job'
     )
     status = models.CharField(
         max_length=255,

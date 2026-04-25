@@ -32,12 +32,21 @@ def list_view(request):
             return redirect('/commissions/requests/')
     return render(request, 'commissions/commission_list.html', dictionary)
 
+def is_applied(request, jobs):
+    for job in jobs:
+        if (job.application.filter(applicant=request.user.profile)):
+            return True
+        return False
+
+
 def detail_view(request, pk):
     commission = Commission.objects.get(pk=pk)
     jobs = Job.objects.filter(commission=commission)
+    is_user_applied = is_applied(request, jobs)
     dictionary = {
         "commission": commission,
-        "jobs": jobs
+        "jobs": jobs,
+        "is_applied" : is_user_applied
     }
     if (request.method == "POST"):
         commission_form = CommissionForm(request.POST, instance=commission)

@@ -22,8 +22,8 @@
                 <li>{{job.role}}</li>
 
                 {% if user.is_authenticated %}
-                    {% if job.applicant == user.profile %}
-                        <button type="button" disabled>Applied</button>
+                    {% if is_applied %}
+                        <button type="button" disabled> You already Applied For a Job</button>
                     {% else %}
                         <form method="POST">
                             {% csrf_token %}
@@ -32,7 +32,7 @@
                         </form>
                     {% endif %}
                 {% else %}
-                    <button type="button" disabled>Apply Job: Full</button>
+                    <button type="button" disabled>Apply Job</button>
                 {% endif %}
             {% endfor %}
         </ul>
