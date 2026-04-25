@@ -1,14 +1,14 @@
 from django.urls import path
 
 from django.contrib.auth import views
-from .views import ProfileUpdateView, RegisterView
+from .views import ProfileUpdateView, RegisterView, CustomLoginView
 
 app_name = 'accounts'
 
 
 urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
-    path("login/", views.LoginView.as_view(), name="login"),
+    path("login/", CustomLoginView.as_view(), name="login"),
     path("password-reset/", views.PasswordResetView.as_view(
         success_url='/accounts/password-reset/done'
     ), name="password_reset"),
