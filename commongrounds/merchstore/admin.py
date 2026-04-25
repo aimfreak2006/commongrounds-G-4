@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProductType, Product
+from .models import ProductType, Product, Transaction
 
 
 class ProductInLine(admin.TabularInline):
@@ -24,5 +24,11 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
 
+class TransactionAdmin(admin.ModelAdmin):
+    model = Transaction
+    list_display = ("buyer", "product", "amount", "status", "created_on")
+
+
 admin.site.register(ProductType, ProductTypeAdmin)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Transaction, TransactionAdmin)

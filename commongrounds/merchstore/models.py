@@ -23,7 +23,6 @@ class Product(models.Model):
         ProductType,
         on_delete=models.SET_NULL,
         related_name='products',
-        editable=False,
         null=True,
         blank=True
     )
@@ -40,7 +39,7 @@ class Product(models.Model):
         choices=[
             ('Available', 'Available'),
             ('On Sale', 'On Sale'),
-            ('Unavailable', 'Unavailable'),
+            ('Out of Stock', 'Out of Stock'),
         ],
         default='Available'
     )
@@ -85,3 +84,6 @@ class Transaction(models.Model):
         ]
     )
     created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.buyer}: {self.amount} {self.product}"
