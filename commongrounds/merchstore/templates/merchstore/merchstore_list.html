@@ -4,30 +4,22 @@
 {% block contents %}
     <div class="contents-container">
         <div class="merch-contents">
-                {% for type in object_list %}
-                    <input type="checkbox" id="type-menu-toggle-{{ type.pk }}" class="menu-checkbox" style="display: none;">
+                <a href="{% url "merchstore:merchstore-create" %}">Create a new product</a>
+                <h2>Your Products</h2>
+                {% if my_products %}
+                    <ul>
+                        {% for product in my_products %}
+                            <li><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
 
-                    <div class="type-container">
-                        <h3 class="type-name-header"><b>{{ type.name }}</b></h3>
-                        
-                        <div class="type-description">
-                            <p><em>{{type.description}}</em></p>
-                        </div>
-                        
-                        <div class="merch-menu-wrapper">
-                            <label for="type-menu-toggle-{{ type.pk }}" class="menu-trigger">View Products</label>
-                            <div class="type-menu-contents"> 
-                                <ul>
-                                    {% for product in type.products.all %}
-                                        <li><a href='{{product.get_absolute_url}}'>{{ product.name }}</a></li>
-                                    {% empty %}
-                                        <li>No products yet.</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+                <h2>All Products</h2>
+                <ul>
+                        {% for product in all_products %}
+                            <li><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></li>
+                        {% endfor %}
+                </ul>
         </div>
     </div>
 {% endblock %}

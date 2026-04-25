@@ -6,7 +6,13 @@
         
         <div class="merch-contents">
             
-            <div class="merch-product-image"><img src="{{object.image}}" alt="Product Image"></div>
+            <div class="merch-product-image">
+                {% if object.product_image %}
+                <img src="{{object.product_image.url}}" alt="Product Image">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
+            </div>
 
             <div class="merch-specifics">
                 <h3 class="merch-name">{{object.name}}</h3>
@@ -15,6 +21,7 @@
                     <p class="product-type">{{object.product_type}}</p>
                     <p class="middot">&#x2022;</p>
                     <p class="product-price"><strong class="price-tag">Price |</strong>Php {{object.price}}</p>
+                    <p class="product-stock"><strong class="price-tag">Stock |</strong> {{ object.stock }}</p>
                 </div>
                 <p class="description">Description</p>
                 <div class="description-wrapper">
@@ -23,7 +30,18 @@
                 </div>
 
                 <div class="redirect-buttons">
-                    <a href="" class="buy-now-button">Buy now!</a>
+                    {% if not is_owner %}
+                        <form method = "post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" {% if object.stock == 0 %}disabled{% endif %}>
+                                Buy Now
+                            </button>
+                        </form>
+                    {% endif %}
+                    {% if is_owner %}
+                        <a href="{% url "merchstore:merchstore-update" object.id %}">Edit Product</a>
+                    {% endif %}
                     <a href="{% url 'merchstore:merchstore-list' %}" class="see-more-merch">See More Merch</a>
                 </div>
             </div>
