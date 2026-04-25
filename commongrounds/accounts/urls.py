@@ -19,5 +19,6 @@ urlpatterns = [
     ), name="password_reset_confirm"),
     path("reset/done", views.PasswordResetCompleteView.as_view(),
          name="password_reset_complete"),
+    path('logout/', views.LogoutView.as_view(), name="logout"),
     path('<str:display_name>/', ProfileUpdateView.as_view(), name='profile_update'),
 ]

@@ -13,7 +13,8 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        Profile.objects.create(user=user, display_name=user.username, email=user.email)
+        Profile.objects.create(
+            user=user, display_name=user.username, email=user.email)
         return super().form_valid(form)
 
 
