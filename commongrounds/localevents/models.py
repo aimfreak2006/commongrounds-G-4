@@ -35,6 +35,7 @@ class Event(models.Model):
         on_delete=models.CASCADE,
         related_name='events'
     )
+
     event_image = models.ImageField(
         upload_to='event_images/',
         null=True,
@@ -77,7 +78,7 @@ class EventSignup(models.Model):
     event = models.ForeignKey(
         Event,
         on_delete=models.CASCADE,
-        related_name='event signups',
+        related_name='event_signups',
         null=True,
         blank=True,
     )
