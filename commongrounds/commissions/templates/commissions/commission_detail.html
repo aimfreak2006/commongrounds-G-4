@@ -20,6 +20,7 @@
         <ul>
             {% for job in jobs %}
                 <li>{{job.role}}</li>
+                <p>Slots: {{job.manpower_required}}</p>
 
                 {% if user.is_authenticated %}
                     {% if is_applied %}

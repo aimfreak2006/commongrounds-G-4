@@ -95,6 +95,7 @@ class JobApplication(models.Model):
     applicant = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
+        related_name='application'
     )
     status = models.CharField(
         max_length=255,

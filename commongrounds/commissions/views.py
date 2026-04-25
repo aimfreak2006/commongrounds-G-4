@@ -5,10 +5,35 @@ from .forms import CommissionForm, JobForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 
+def get_applied_commissions(request):
+    jobs = []
+    applied_commissions = dict()
+    job_forms_answered = JobApplication.objects.filter(applicant=request.user.profile)
+    
+    for job_form_answered in job_forms_answered:
+        jobs.append(job_form_answered.job)
+
+    for job in jobs:
+        applied_commissions[job.commission] = job.commission
+
+    return applied_commissions
+
+def get_remaining_commissions(request, applied_commissions):
+    commissions_without_created = Commission.objects.exclude(maker=request.user.profile)
+    remaining_commissions = []
+    for commission in commissions_without_created:
+        if (commission not in applied_commissions):
+            remaining_commissions.append(commission)
+
+    return remaining_commissions
+
+
 
 def list_view(request):
     created_commissions = Commission.objects.filter(maker=request.user.profile)
-    other_commissions = Commission.objects.exclude(maker=request.user.profile)
+    applied_commissions = get_applied_commissions(request)
+    other_commissions = get_remaining_commissions(request, applied_commissions)
+
     JobFormSet = inlineformset_factory(
         Commission, 
         Job, 
@@ -18,6 +43,7 @@ def list_view(request):
     )
     dictionary = {
         "created_commissions": created_commissions,
+        "applied_commissions": applied_commissions,
         "other_commissions": other_commissions
     }
     if (request.method == "POST"):
@@ -35,13 +61,14 @@ def list_view(request):
 def is_applied(request, jobs):
     for job in jobs:
         if (job.application.filter(applicant=request.user.profile)):
+            print(job.application.filter(applicant=request.user.profile))
             return True
-        return False
-
+    return False
 
 def detail_view(request, pk):
     commission = Commission.objects.get(pk=pk)
     jobs = Job.objects.filter(commission=commission)
+    print(jobs)
     is_user_applied = is_applied(request, jobs)
     dictionary = {
         "commission": commission,

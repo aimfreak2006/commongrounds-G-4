@@ -9,7 +9,7 @@
                 <h3>{{commission.title}}</h3>
                 <li> 
                     <a href='{{ commission.get_absolute_url }}'>
-                        <button type="button">{{commission.title}}_details</button>
+                        <button type="button">{{commission.title}} Details</button>
                     </a> 
                 </li>
                 <p>{{commission.get_status_display}}</p>
@@ -19,11 +19,11 @@
         <br>
         <h2> Applied Commissions </h2>
         <ul>
-            {% for commission in created_commissions %}
+            {% for commission in applied_commissions %}
                 <h3>{{commission.title}}</h3>
                 <li> 
                     <a href='{{ commission.get_absolute_url }}'>
-                        <button type="button">{{commission.title}}_details</button>
+                        <button type="button">{{commission.title}} Details</button>
                     </a> 
                 </li>
                 <p>{{commission.get_status_display}}</p>
@@ -37,7 +37,7 @@
                 <h3>{{commission.title}}</h3>
                 <li> 
                     <a href='{{ commission.get_absolute_url }}'>
-                        <button type="button">{{commission.title}}_details</button>
+                        <button type="button">{{commission.title}} Details</button>
                     </a> 
                 </li>
                 <p>{{commission.get_status_display}}</p>
