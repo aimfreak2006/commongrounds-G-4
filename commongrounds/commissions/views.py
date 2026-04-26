@@ -27,8 +27,17 @@ def get_remaining_commissions(request, applied_commissions):
 
     return remaining_commissions
 
+def get_jobs_current_manpowers(commission):
+    ACCEPTED = '1A'
+    jobs = Job.objects.filter(commission=commission)
+    current_manpowers = dict()
+    for job in jobs:
+        accepted_applicants_count = JobApplication.objects.filter(job=job, status=ACCEPTED).count()
+        current_manpowers[job] = job.manpower_required - accepted_applicants_count
 
+    return current_manpowers
 
+@login_required
 def list_view(request):
     created_commissions = Commission.objects.filter(maker=request.user.profile)
     applied_commissions = get_applied_commissions(request)
@@ -65,16 +74,19 @@ def is_applied(request, jobs):
             return True
     return False
 
+@login_required
 def detail_view(request, pk):
     commission = Commission.objects.get(pk=pk)
-    jobs = Job.objects.filter(commission=commission)
-    print(jobs)
+    jobs = get_jobs_current_manpowers(commission)
     is_user_applied = is_applied(request, jobs)
+
     dictionary = {
         "commission": commission,
         "jobs": jobs,
-        "is_applied" : is_user_applied
+        "is_applied" : is_user_applied,
     }
+
+
     if (request.method == "POST"):
         commission_form = CommissionForm(request.POST, instance=commission)
         if (commission_form.is_valid()):
@@ -91,6 +103,7 @@ def detail_view(request, pk):
             return redirect('commissions:detail_view', pk=pk)
     return render(request, 'commissions/commission_detail.html', dictionary)
 
+@login_required
 def add_view(request):
     commission_form = CommissionForm()
     JobFormSet = inlineformset_factory(
@@ -107,6 +120,7 @@ def add_view(request):
     }
     return render(request, 'commissions/commission_add.html', dictionary)
 
+@login_required
 def edit_view(request, pk):
     commission = Commission.objects.get(pk=pk)
     commission_form = CommissionForm(request.POST, instance=commission)

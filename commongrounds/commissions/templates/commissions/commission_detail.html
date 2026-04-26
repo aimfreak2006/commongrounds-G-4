@@ -18,13 +18,16 @@
 
         <h2> Jobs Needed </h2>
         <ul>
-            {% for job in jobs %}
+            {% for job, current_manpower in jobs.items %}
                 <li>{{job.role}}</li>
-                <p>Slots: {{job.manpower_required}}</p>
+                <p>Total Manpower Required: {{job.manpower_required}}</p>
+                <p>Open Manpower Slots: {{current_manpower}}</p>
 
                 {% if user.is_authenticated %}
                     {% if is_applied %}
                         <button type="button" disabled> You already Applied For a Job</button>
+                    {% elif current_manpower == 0 %}
+                        <button type="button" disabled>Job Full</button>
                     {% else %}
                         <form method="POST">
                             {% csrf_token %}
