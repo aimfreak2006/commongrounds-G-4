@@ -2,8 +2,13 @@
 {% load static %}
 
 {% block header %}
-    <div class="app-title-container"><ul>
-        <h2 class="app-title"><b>Merchandise Store</b></h2></ul>
+    <div class="app-title-container">
+        <h2 class="app-title"><b>Merchandise Store</b></h2>
+        <br>
+        {% if user.is_authenticated %}
+            <a href="{% url "merchstore:merchstore-cart" %}">My Cart</a>
+            <a href="{% url "merchstore:merchstore-transactions" %}">My Transactions</a>
+        {% endif %}
     </div>
 {% endblock %}
 

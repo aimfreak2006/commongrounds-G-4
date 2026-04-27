@@ -1,0 +1,12 @@
+{% extends 'merchstore/merchstore_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <br><br><br><br>
+    <h1> Create a new product </h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create product</button>
+    </form>
+{% endblock %}
