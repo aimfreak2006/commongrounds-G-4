@@ -3,24 +3,45 @@
 
 {% block contents %}
     <div class="contents-container">
-        <div>
-            {% for genre in genre_list %}
-                <h3><b>{{ genre.name }}</b></h3>
-                <div>
-                    <b>Description:</b> {{ genre.description }}
-                    <h4><b>Books Available</b></h4>
-                    <ul>
-                        {% for book in genre.books.all %}
-                            <li>
-                                {{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a>
-                            </li>
-                            {% empty %} <li>There are no books for this genre.</li>
-                        {% endfor %}
-                        <br>
-                    </ul>
-                </div>
-                {% empty %} <li>No books available.</li>
+        {% if user.is_authenticated %}
+            <h2 style="margin-bottom: 8px;">Books You Contributed</h2>
+            <ul>
+                {% for book in contributed_books %}
+                    <li>{{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a></li>
+                {% empty %}
+                    <li>You have not contributed any books.</li>
+                {% endfor %}
+                {% if user.is_authenticated and user.profile.role == 'Book Contributor' %}
+                    <li><a href="{% url 'bookclub:book_create' %}">Add a new book</a></li>
+                {% endif %}
+            </ul><br><br>
+
+            <h2 style="margin-bottom: 8px;">Books You Bookmarked</h2>
+            <ul>
+                {% for book in bookmarked_books %}
+                    <li>{{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a></li>
+                {% empty %}
+                    <li>You have not bookmarked any books.</li>
+                {% endfor %}
+            </ul><br><br>
+
+            <h2 style="margin-bottom: 8px;">Books You Reviewed</h2>
+            <ul>
+                {% for book in reviewed_books %}
+                    <li>{{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a></li>
+                {% empty %}
+                    <li>You have not reviewed any books.</li>
+                {% endfor %}
+            </ul><br><br>
+        {% endif %}
+
+        <h2 style="margin-bottom: 8px;">All Books</h2>
+        <ul>
+            {% for book in all_books %}
+                <li>{{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a></li>
+            {% empty %}
+                <li>No books available.</li>
             {% endfor %}
-        </div>
+        </ul><br>
     </div>
 {% endblock %}
