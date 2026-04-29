@@ -1,0 +1,18 @@
+{% extends 'localevents/event_base.html' %}
+{% load static %}
+
+{% block contents %}
+<div class="contents-container">
+    <h2>Create a new Event</h2>
+    <br>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Event</button>
+    </form>
+
+    <a href="{% url 'localevents:event_list' %}">Look for Upcoming Events</a>
+</div>
+
+{% endblock %}
