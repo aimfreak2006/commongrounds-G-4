@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-
 from accounts.models import Profile
 
 
@@ -25,7 +24,6 @@ class Event(models.Model):
         EventType,
         on_delete=models.CASCADE,
         related_name='events',
-        editable=False,
         null=True,
         blank=True,
     )
@@ -61,6 +59,17 @@ class Event(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if self.pk:
+            current_signups = self.event_signups.count()
+            if current_signups >= self.event_capacity:
+                self.status = 'Full'
+            else:
+                if self.status not in ['Done', 'Cancelled']:
+                    self.statsus = 'Available'
+
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return '{} last update on {}'.format(self.title, self.updated_on)
 
@@ -85,9 +94,11 @@ class EventSignup(models.Model):
     user_registrant = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
-        
+        null=True,
+        blank=True,        
     )
     new_registrant = models.CharField(
+        max_length=255,
         null=True, 
         blank=True,
         )

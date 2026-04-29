@@ -6,14 +6,40 @@
         <div>
             <h3><b>{{ event.title }}</b></h3>
             <div>
-                <b>Category:</b> {{event.category}} <br>
-                <b>Description:</b> {{event.description}} <br>
-                <b>Location:</b> {{event.location}} <br>
-                <b>Start Time:</b> {{event.start_time}} <br>
-                <b>End Time:</b> {{event.end_time}} <br>
+                {% if event.event_image %}
+                    <img src="{{ event.event_image.url }}" alt="{{ event.title }}" style="max-width: 500px">
+                {% else %}
+                    <p>No image available for this event</p>
+                {% endif %}
+            </div>
+            <div>
+                <b>Organizer:</b> {{ event.organizer }} <br>
+                <b>Category:</b> {{ event.category }} <br>
+                <b>Description:</b> {{ event.description }} <br>
+                <b>Location:</b> {{ event.location }} <br>
+                <b>Start Time:</b> {{ event.start_time }} <br>
+                <b>End Time:</b> {{ event.end_time }} <br>
             </div>
 
-            {}
+            <div>
+                {% if is_organizer %}
+                    <b>You are the Organizer for this event. | <a href="{% url 'localevents:event_update' event.pk %}">Update Event</a></b>
+                {% elif is_signed_up %}
+                    <b>You are already signed up for this event.</b>
+                {% elif is_full %}
+                    <button disabled>Signup</button>
+                    <p>Sorry, this event is full.</p>
+                {% else %}
+                    {% if user.is_authenticated %}
+                        <form method="POST" action="{% url 'localevents:event_signup' event.pk %}">
+                            {% csrf_token %}
+                            <button type="submit">Signup</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'localevents:event_signup' event.pk %}">Signup</a>
+                    {% endif %}
+                {% endif %}
+            </div>
 
             <br>
             <i>Interested in another event?</i>
