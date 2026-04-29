@@ -1,0 +1,19 @@
+{% extends 'diyprojects/project_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <div class="contents-container">
+        <h2>{% if object %}Edit {{ object.title }}{% else %}Add a New Project{% endif %}</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <button type="submit" class="btn btn-success">
+                {% if object %}Save Changes{% else %}Create Project{% endif %}
+            </button>
+        
+            <a href="{% url 'diyprojects:all-projects' %}">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

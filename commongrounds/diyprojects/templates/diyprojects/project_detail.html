@@ -5,9 +5,17 @@
     <div class="contents-container">
         <ul>
             <h3><b>{{ project.category.name }}</b></h3>
+            
             <ul>
                 <h4><b>{{ project.title }}</b></h4>
                 <ul>
+                    <p><strong>Created by:</strong> {{ project.creator.display_name }}</p>
+  
+                    <div class="stats-box">
+                        <p>Average Rating: <strong>{{ avg_rating|default:"No ratings yet" }}</strong></p>
+                        <p>Total Favorites: <strong>{{ total_favorites }}</strong></p>
+                    </div>
+
                     Created on {{ project.created_on }}
                     <br/>
                     Last updated {{ project.updated_on }}
@@ -16,23 +24,27 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Title</th>
                                 <th>Category</th>
                                 <th>Description</th>
-                                <th>Materials</th>
-                                <th>Steps</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ project.title }}</td>
                                 <td>{{ project.category.name }}</td>
                                 <td>{{ project.description }}</td>
-                                <td>{{ project.materials }}</td>
-                                <td>{{ project.steps }}</td>
+
                             </tr>
                         </tbody>
                     </table>
+
+                    <h3>Materials</h3>
+                    <p>{{ project.materials|linebreaks }}</p>
+                    
+                    <br>
+
+                    <h3>Steps</h3>
+                    <p>{{ project.steps|linebreaks }}</p>
+
                     <br>
                     <i>See also:</i>
                     <br>
@@ -45,7 +57,58 @@
                     <br>
                 </ul>
             </ul>
-    
+
+            <hr>
+                {% if user.is_authenticated %}
+                <h3>Rate and Review</h3>
+
+                <form method="post" style="margin-bottom: 20px;">
+                    {% csrf_token %}
+                    {{ rating_form.as_p }}
+                    <button type="submit" name="submit_rating" class="btn btn-primary">Submit Rating</button>
+                </form>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ review_form.as_p }}
+                    <button type="submit" name="submit_review" class="btn btn-secondary">Submit Review</button>
+                </form>
+                {% else %}
+                <p><a href="{% url 'login' %}">Log in</a> to rate or review this project.</p>
+                {% endif %}
+            
+            <div class="favorite-section">
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" name="submit_favorite" class="btn btn-secondary">
+                        {% if is_favorited %}
+                            Unfavorite
+                        {% else %}
+                            Favorite
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+            
+            <hr>
+                <h3>User Reviews</h3>
+                {% for review in reviews %}
+                    <div class="review">
+                        <p><strong>{{ review.reviewer.display_name }}</strong> says:</p>
+                        <p>{{ review.comment }}</p>
+                        
+                        {% if review.image %}
+                            <img src={{ review.image.url }} alt="Review image" style="max-width: 200px;">
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <p>No reviews yet.</p>
+                    {% endfor %}
+
+            <br>
+            {% if user.is_authenticated and user.profile == project.creator %}
+                <a href="{% url 'diyprojects:project-edit' project.pk %}" class="btn btn-warning">Edit Project</a>
+            {% endif %}
             <br>
             <i>Want to know more projects?</i>
             <a href="/diyprojects/projects">Back to DIY Projects</a>
