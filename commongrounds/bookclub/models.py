@@ -65,7 +65,7 @@ class BookReview(models.Model):
     user_reviewer = models.ForeignKey(
         'accounts.Profile',
         on_delete=models.CASCADE,
-        related_name='reviews',
+        related_name='book_reviews',
         null=True,
         blank=True
     )
