@@ -77,7 +77,7 @@ class Favorite(models.Model):
 
 class ProjectReview(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='reviews')
-    reviewer = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='project_reviews')
+    reviewer = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='reviews')
     comment = models.TextField()
     image = models.ImageField(upload_to='project_reviews_imgs', null=True, blank=True)
 
