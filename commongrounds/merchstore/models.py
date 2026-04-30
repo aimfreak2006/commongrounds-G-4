@@ -39,7 +39,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(
         decimal_places=2, 
-        max_digits=100000
+        max_digits=20
     )
     stock = models.IntegerField()
     status = models.CharField(
