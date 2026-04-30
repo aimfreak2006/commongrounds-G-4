@@ -107,7 +107,7 @@
 
             <br>
             {% if user.is_authenticated and user.profile == project.creator %}
-                <a href="{% url 'diyprojects:project-edit' project.pk %}" class="btn btn-warning">Edit Project</a>
+                <a href="{% url 'diyprojects:project-update' project.pk %}" class="btn btn-warning">Edit Project</a>
             {% endif %}
             <br>
             <i>Want to know more projects?</i>
