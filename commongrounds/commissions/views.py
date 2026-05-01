@@ -4,6 +4,7 @@ from .models import Commission, Job, JobApplication
 from .forms import CommissionForm, JobForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from .services import CommissionService
 
 def get_applied_commissions(request):
     jobs = []
@@ -27,15 +28,12 @@ def get_remaining_commissions(request, applied_commissions):
 
     return remaining_commissions
 
-def get_jobs_current_manpowers(commission):
-    ACCEPTED = '1A'
-    jobs = Job.objects.filter(commission=commission)
-    current_manpowers = dict()
+def is_applied(request, jobs):
     for job in jobs:
-        accepted_applicants_count = JobApplication.objects.filter(job=job, status=ACCEPTED).count()
-        current_manpowers[job] = job.manpower_required - accepted_applicants_count
-
-    return current_manpowers
+        application_form = job.application.filter(applicant=request.user.profile)
+        if (application_form):
+            return (job, application_form[0])
+    return False
 
 @login_required
 def list_view(request):
@@ -58,26 +56,22 @@ def list_view(request):
     if (request.method == "POST"):
         commission_form = CommissionForm(request.POST)
         job_forms = JobFormSet(request.POST)
+
         if (commission_form.is_valid() and job_forms.is_valid()):
-            commission = commission_form.save(commit=False)
-            commission.maker = request.user.profile
-            commission.save()
-            job_forms.instance = commission 
-            job_forms.save()
+            commission_data = commission_form.cleaned_data
+            jobs_data = job_forms.cleaned_data
+            CommissionService.create_commission(
+                author = request.user.profile,
+                commission_data = commission_data,
+                jobs_data = jobs_data
+            )
             return redirect('/commissions/requests/')
     return render(request, 'commissions/commission_list.html', dictionary)
-
-def is_applied(request, jobs):
-    for job in jobs:
-        if (job.application.filter(applicant=request.user.profile)):
-            print(job.application.filter(applicant=request.user.profile))
-            return True
-    return False
 
 @login_required
 def detail_view(request, pk):
     commission = Commission.objects.get(pk=pk)
-    jobs = get_jobs_current_manpowers(commission)
+    jobs = CommissionService.get_commission_summary(commission)
     is_user_applied = is_applied(request, jobs)
 
     dictionary = {
@@ -96,11 +90,13 @@ def detail_view(request, pk):
             job_id = request.POST.get("job_id")
             job = Job.objects.get(pk=job_id)
             
-            JobApplication.objects.create(
-                job=job,
-                applicant=request.user.profile
+            CommissionService.apply_to_job(
+                applicant = request.user.profile,
+                job = job
             )
             return redirect('commissions:detail_view', pk=pk)
+        
+    CommissionService.sync_commission_status(commission)
     return render(request, 'commissions/commission_detail.html', dictionary)
 
 @login_required

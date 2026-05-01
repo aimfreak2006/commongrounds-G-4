@@ -38,9 +38,15 @@
                 {% else %}
                     <button type="button" disabled>Apply Job</button>
                 {% endif %}
+                
+                {% if is_applied.0 == job %}
+                    <p>Application Status: {{is_applied.1.get_status_display}}</p>
+                {% endif %}
+
+                <br>
+                <br>
             {% endfor %}
         </ul>
-
         {% if user.profile == commission.maker %}
             <a href="{{commission.get_edit_url}}">
                 <button type="button">Edit Commission</button>
