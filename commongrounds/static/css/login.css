@@ -1,0 +1,227 @@
+@import url(base.css);
+
+.fullscreen-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.fullscreen-center::before {
+    content:"";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height:-webkit-fill-available;
+    width:-webkit-fill-available;
+
+    background-image: 
+        radial-gradient(circle, rgb(215, 238, 244, 0.5), rgb(102, 155, 188, 0.8), rgb(0, 48, 73, 1)),
+        url('../images/bg-header.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;    
+    z-index: -1;
+}
+
+.box-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    position: relative;
+
+    height: 600px;
+    width: 350px;
+    gap: 0;
+
+    background-image: url('../images/bg-header.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.box-container .layer-1-logo {
+    height: 60%;
+    width: 100%;
+    display: flex;
+    align-items: top;
+    justify-content: center;
+    z-index: 3;
+}
+
+.box-container .layer-2-logo {
+    position: absolute;
+    top: 0;
+    height: 350px;
+    width: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    background-image: url('../images/bg-header.png');
+    background-size: cover;
+    background-position: center;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    width: 75%;
+    gap: 20px;
+}
+
+.logo {
+    width: 270px;
+    height: 70px;
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.logo-container #welcome-message {
+    text-align: center;
+    font-size: 11px;
+    font-style: italic;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.login-register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+    width: 100%;
+    background-color: #ffffff;
+
+    margin-top: -30px;
+    padding-top: 30px;
+    position: relative;
+
+    z-index: 1;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.login-register-container .login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 150px;
+    gap: 7px;
+}
+
+.login-register-container .login-form .auth-button {
+    text-decoration: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+
+    font-size: 12px;
+    border-radius: 18px;
+    margin-top: 10px;
+    width: 70%;
+    height: 30px;
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #780000;
+    color: #fdf0d5;
+
+    transform: scale(1);
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.login-register-container .auth-button:hover{
+    text-decoration: none;
+    background-color: #ffffff;
+    color: #471313;
+    transform: scale(1);
+}
+
+.form-title {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 5px;
+
+    font-family: "Inconsolata", monospace;
+    font-size: 26px;
+    font-weight: bold;
+    color: #780000;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.login-form .field-error-container {
+    width: 70%;
+    height: 20px;
+}
+
+.errorlist {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 10px;
+
+    color: #780000;
+    font-size: 10px;
+    text-align: center;
+}
+
+.field-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    gap: 10px;
+}
+
+.field-container input {
+    width: 100%;
+    height: 30px;
+    padding: 0 15px;
+    font-size: 14px;
+    
+    border: 1px solid #ccc; 
+    border-radius: 18px;
+    box-sizing: border-box;
+    
+    background-color: #fdf0d5;
+}
+
+
+.field-container input:focus {
+    outline: none;
+    border: 2px solid #780000;
+}
+
+.fp-btn {
+    text-decoration: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    margin-top: 10px;
+
+    color: #471313;
+    font-size: 12px;
+    width: 100%;
+    height: 20px;
+}
