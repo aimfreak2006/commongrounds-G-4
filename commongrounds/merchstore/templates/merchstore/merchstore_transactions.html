@@ -1,0 +1,17 @@
+{% extends 'merchstore/merchstore_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <br><br><br><br>
+    <h2>Your Transaction</h2>
+    {% regroup transactions by buyer as transactions_by_buyer %}
+    {% for group in transactions_by_buyer %}
+        <br>
+        <h3>{{ group.grouper }}</h3>
+        <ul>
+            {% for transaction in group.list %}
+                <li>{{ transaction.amount }} x {{ transaction.product.name }}: {{ transaction.status }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

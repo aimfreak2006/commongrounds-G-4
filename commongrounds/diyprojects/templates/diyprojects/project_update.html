@@ -1,0 +1,18 @@
+{% extends 'diyprojects/project_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <div class="contents-container">
+        <h2><b>Update Project</b></h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-success">
+                {% if object %}Save Changes{% else %}Update Project{% endif %}
+            </button>
+
+            <a href="{% url 'diyprojects:all-projects' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

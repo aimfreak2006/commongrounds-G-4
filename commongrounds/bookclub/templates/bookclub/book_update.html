@@ -1,0 +1,18 @@
+{% extends 'bookclub/book_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <div class="contents-container">
+        <h2>Edit {{ book.title }}</h2>
+        <br>
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save Changes</button>
+        </form>
+        <br>
+        
+        <a href="{{ book.get_absolute_url }}">Cancel</a>
+    </div>
+{% endblock %}

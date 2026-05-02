@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('accounts', '0002_alter_profile_user'),
+        ('accounts', '0001_initial'),
     ]
 
     operations = [

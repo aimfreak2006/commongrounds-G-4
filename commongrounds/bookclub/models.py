@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from datetime import date, timedelta
 
 
 class Genre(models.Model):
@@ -20,26 +21,102 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     genre = models.ForeignKey(
         Genre,
-        on_delete=models.CASCADE,
-        related_name='books'
+        on_delete=models.SET_NULL,
+        related_name='books',
+        null=True,
+    )
+    contributor = models.ForeignKey(
+        'accounts.Profile',
+        on_delete=models.SET_NULL,
+        related_name='contributed_books',
+        null=True
     )
     author = models.CharField(max_length=255)
+    synopsis = models.TextField()
     publication_year = models.IntegerField()
+    available_to_borrow = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return '{} last updated on {}'.format(self.title, self.updated_on)
+        return self.title
 
     def get_absolute_url(self):
         return reverse('bookclub:book_details', args=[str(self.pk)])
 
-    @property
-    def is_valid(self):
-        return self.created_on > self.updated_on
+    def update_availability(self):
+        today = date.today()
+        two_weeks_later = today + timedelta(weeks=2)
+        active_or_conflicting = self.borrows.filter(
+            date_borrowed__lt=two_weeks_later,
+            date_to_return__gt=today
+        ).exists()
+        self.available_to_borrow = not active_or_conflicting
+        self.save()
 
     class Meta:
         ordering = ['-publication_year',]
         unique_together = ['title', 'created_on',]
         verbose_name = 'book'
         verbose_name_plural = 'books'
+
+
+class BookReview(models.Model):
+    user_reviewer = models.ForeignKey(
+        'accounts.Profile',
+        on_delete=models.CASCADE,
+        related_name='book_reviews',
+        null=True,
+        blank=True
+    )
+    anon_reviewer = models.CharField(max_length=255, blank=True)
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+    title = models.CharField(max_length=255)
+    comment = models.TextField()
+
+    def __str__(self):
+        reviewer_name = self.user_reviewer or self.anon_reviewer or 'Anonymous'
+        return '{} on {}'.format(reviewer_name, self.book.title)
+
+
+class Bookmark(models.Model):
+    profile = models.ForeignKey(
+        'accounts.Profile',
+        on_delete=models.CASCADE,
+        related_name='bookmarks'
+    )
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name='bookmarks'
+    )
+    date_bookmarked = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return '{} bookmarked {}'.format(self.profile, self.book.title)
+
+
+class Borrow(models.Model):
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name='borrows'
+    )
+    borrower = models.ForeignKey(
+        'accounts.Profile',
+        on_delete=models.CASCADE,
+        related_name='borrows',
+        null=True,
+        blank=True
+    )
+    name = models.CharField(max_length=255, blank=True)
+    date_borrowed = models.DateField()
+    date_to_return = models.DateField()
+
+    def __str__(self):
+        borrower_name = self.borrower or self.name or 'Anonymous'
+        return '{} borrowed {}'.format(borrower_name, self.book.title)
