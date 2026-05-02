@@ -30,7 +30,7 @@ class JobForm(forms.ModelForm):
         label="Job Role",
         max_length=255
     )
-    manpower_required = forms.IntegerField()
+    manpower_required = forms.IntegerField(min_value=0)
 
     class Meta:
         model = Job
