@@ -1,9 +1,4 @@
-from django.shortcuts import render
-from django.forms import inlineformset_factory
 from .models import Commission, Job, JobApplication
-from .forms import CommissionForm, JobForm
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
 
 class CommissionService:
     def create_commission(author,commission_data,jobs_data):
