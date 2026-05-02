@@ -1,11 +1,35 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block home %}
-<h2>Update Display Name</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-</form>
-<a href="/">Home</a>
+    <link rel="stylesheet" href="{% static 'css/profile_update.css' %}">
+    <div class="fullscreen-center">
+        <div class="box-container">
+            <div class="layer-1-logo">
+                <div class="layer-2-logo">
+                    <div class="logo-container">
+                        <a href="/"><img src="{% static 'images/logo.png' %}" alt="Common Grounds Logo" class="logo"></a>
+                        <p id="welcome-message"><b>Welcome back to Common Grounds!</b>
+                            <br>Update your profile information below.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-register-container"> 
+                <h2 class="form-title">DISPLAY NAME</h2>
+
+                <form method="post" class="profile-update-form">
+                    {% csrf_token %}
+
+                    <div class="field-container">
+                        {{ form.display_name }}
+                    </div>
+
+                    <button type="submit" class="auth-button">Update</button>
+                </form>
+        
+                <a href="/" class="fp-btn">Home</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
