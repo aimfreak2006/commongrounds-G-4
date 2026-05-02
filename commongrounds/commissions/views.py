@@ -68,23 +68,30 @@ def list_view(request):
             return redirect('/commissions/requests/')
     return render(request, 'commissions/commission_list.html', dictionary)
 
+def edit_commission(commission, commission_form):
+    edited_fields = commission_form.cleaned_data
+
+    for field in edited_fields:
+        if (not edited_fields[field]):
+            print(field, edited_fields[field], "EMPTY")
+            continue
+        setattr(commission, field, edited_fields[field])
+    commission.save()
+
 @login_required
 def detail_view(request, pk):
     commission = Commission.objects.get(pk=pk)
     jobs = CommissionService.get_commission_summary(commission)
     is_user_applied = is_applied(request, jobs)
-
     dictionary = {
         "commission": commission,
         "jobs": jobs,
         "is_applied" : is_user_applied,
     }
-
-
     if (request.method == "POST"):
-        commission_form = CommissionForm(request.POST, instance=commission)
+        commission_form = CommissionForm(request.POST)
         if (commission_form.is_valid()):
-            commission_form.save()
+            edit_commission(commission, commission_form)
 
         if ("apply_to_job" in request.POST):
             job_id = request.POST.get("job_id")
@@ -95,7 +102,6 @@ def detail_view(request, pk):
                 job = job
             )
             return redirect('commissions:detail_view', pk=pk)
-        
     CommissionService.sync_commission_status(commission)
     return render(request, 'commissions/commission_detail.html', dictionary)
 
@@ -119,7 +125,7 @@ def add_view(request):
 @login_required
 def edit_view(request, pk):
     commission = Commission.objects.get(pk=pk)
-    commission_form = CommissionForm(request.POST, instance=commission)
+    commission_form = CommissionForm(request.POST)
     dictionary = {
         "commission": commission,
         "form": commission_form
