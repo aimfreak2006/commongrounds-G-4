@@ -45,7 +45,7 @@
 }
 
 .box-container .layer-1-logo {
-    height: 50%;
+    height: 40%;
     width: 100%;
     display: flex;
     align-items: top;
@@ -56,7 +56,7 @@
 .box-container .layer-2-logo {
     position: absolute;
     top: 0;
-    height: 300px;
+    height: 240px;
     width: 350px;
     display: flex;
     align-items: center;
@@ -69,6 +69,22 @@
     border-top-right-radius: 20px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+}
+
+.box-container .overlay {
+    display: flex;
+    align-items: top;
+    justify-content: center;
+    margin-top: -5px;
+    position: relative;
+    height: 10%;
+    width: 100%;
+    background-color: #780000;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    z-index: 2;
 }
 
 .logo-container {
@@ -100,7 +116,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 60%;
+    height: 70%;
     width: 100%;
     background-color: #ffffff;
 
@@ -113,17 +129,17 @@
     border-bottom-right-radius: 20px;
 }
 
-.login-register-container .login-form {
+.login-register-container .register-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 150px;
+    height: 200px;
     gap: 7px;
 }
 
-.login-register-container .login-form .auth-button {
+.login-register-container .register-form .auth-button {
     text-decoration: none;
     display: flex;
     text-align: center;
@@ -160,16 +176,24 @@
     justify-content: center;
     align-items: center;
 
-    margin-bottom: 5px;
-
     font-family: "Inconsolata", monospace;
-    font-size: 26px;
+    font-size: 33px;
     font-weight: bold;
     color: #780000;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
-.login-form .field-error-container {
+.form-description {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #000000;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    height: 10%;
+    text-align: center;
+}
+
+.register-form .field-error-container {
     width: 70%;
     height: 20px;
 }
@@ -194,9 +218,9 @@
 
 .field-container input {
     width: 100%;
-    height: 30px;
+    height: 25px;
     padding: 0 15px;
-    font-size: 14px;
+    font-size: 10px;
     
     border: 1px solid #ccc; 
     border-radius: 18px;
@@ -218,10 +242,10 @@
     align-items: center;
     justify-content: center;
     z-index: 2;
-    margin-top: 2px;;
+    margin-top: 10px;
 
     color: #471313;
-    font-size: 12px;
+    font-size: 13px;
     width: 100%;
     height: 20px;
 }

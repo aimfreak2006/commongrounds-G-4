@@ -195,10 +195,38 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.login-register-container .auth-button1 {
+    text-decoration: none;
+    border: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+
+    font-size: 14px;
+    border-radius: 18px;
+    margin-top: 10px;
+    width: 70%;
+    height: 40px;
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    background-color: #780000;
+    color: white;
+
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .login-register-container .auth-button:hover{
     text-decoration: none;
     background-color: #780000;
     color: #ffffff;
+}
+
+.login-register-container .auth-button1:hover{
+    text-decoration: none;
+    background-color: #ffffff;
+    color: #471313;
 }
 
 .form-title {

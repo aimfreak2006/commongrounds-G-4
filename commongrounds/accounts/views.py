@@ -4,13 +4,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView
 
-from .forms import ProfileUpdateForm, RegisterForm
+from .forms import CustomProfileUpdateForm, CustomRegisterForm
 from .models import Profile
 from merchstore.models import Product, Transaction
 
 
 class RegisterView(CreateView):
-    form_class = RegisterForm
+    form_class = CustomRegisterForm
     template_name = 'accounts/register.html'
     success_url = reverse_lazy('accounts:login')
 
@@ -23,7 +23,7 @@ class RegisterView(CreateView):
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
-    form_class = ProfileUpdateForm
+    form_class = CustomProfileUpdateForm
     template_name = 'accounts/profile_update.html'
     slug_field = 'display_name'
     slug_url_kwarg = 'display_name'

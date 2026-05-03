@@ -1,14 +1,49 @@
 {% extends 'base.html' %}
-
-{% block title %}Register{% endblock %}
+{% load static %}
 
 {% block home %}
-    <h2>Register</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-    </form>
-    <br>
-    <a href="{% url 'accounts:login' %}">Already have an account? Login</a>
+
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <div class="fullscreen-center">
+        <div class="box-container">
+            <div class="layer-1-logo">
+                <div class="layer-2-logo">
+                    <div class="logo-container">
+                        <a href="/"><img src="{% static 'images/logo.png' %}" alt="Common Grounds Logo" class="logo"></a>
+                        <p id="welcome-message"><b>Welcome back to Common Grounds!</b>
+                            <br>Please log in to continue exploring your interests.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overlay"></div>
+
+            <div class="login-register-container"> 
+                <h2 class="form-title">REGISTER</h2>
+
+                <form method="POST" class="register-form">
+                    {% csrf_token %}
+                    
+                    <div class="field-error-container">
+                        {% if form.non_field_errors %}
+                            <div class="login-error">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="field-container">
+                        {{ form.username }}
+                        {{ form.email }}
+                        {{ form.password1 }}
+                        {{ form.password2 }}
+                    </div>
+
+                    <button type="submit" class="auth-button"><b>Register</b></button>
+                </form>
+
+                <p class="form-description">Already have an account?<a href="{% url 'accounts:login' %}" class="fp-btn"> Login</a></p>
+            </div>
+        </div>
+    </div>
 {% endblock %}
