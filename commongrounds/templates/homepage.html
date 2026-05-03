@@ -12,7 +12,7 @@
 
             {% if user.is_authenticated %}
                 <div class="logout-register-container">
-                    <a href="{% url "accounts:profile_update" user.profile.display_name %}" class="display-name"><b>{{ user.profile.display_name }}</b></a>
+                    <a href="{% url "accounts:profile_update" user.profile.display_name %}" class="display-name"><b>Hi, {{ user.profile.display_name }}</b></a>
                     <form method="post" action="{% url "accounts:logout" %}" class="logout-form">
                         {% csrf_token %}
                         <button type="submit" class="auth-button"><b>Logout</b></button>
@@ -34,7 +34,7 @@
                 <div class="login-register-container">
                     <a href="{% url "accounts:login" %}" class="auth-button"><b>Login</b></a>
                     <br>
-                    <a href="{% url "accounts:register" %}" class="auth-button"><b>Register</b></a>
+                    <a href="{% url "accounts:register" %}" class="auth-button1"><b>Register</b></a>
                 </div>
             {% endif %}
         </div>
