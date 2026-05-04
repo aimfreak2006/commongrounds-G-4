@@ -2,25 +2,30 @@
 {% load static %}
 
 {% block contents %}
+    <link rel="stylesheet" href="{% static 'css/borrow_bookclub.css' %}">
+
     <div class="contents-container">
-        <h2>Borrow this book?</h2>
-        <br>
+        <div class="form-card">
+            <h2 class="form-title">Borrow this book?</h2>
 
-        <div>
-            <p><b>Title:</b> {{ book.title }}</p>
-            <p><b>Author:</b> {{ book.author }}</p>
-            <p><b>Genre:</b> {{ book.genre }}</p>
-            <p><b>Publication Year:</b> {{ book.publication_year }}</p>
+            <div class="book-summary">
+                <p><b>Title:</b> {{ book.title }}</p>
+                <p><b>Author:</b> {{ book.author }}</p>
+                <p><b>Genre:</b> {{ book.genre }}</p>
+                <p><b>Publication Year:</b> {{ book.publication_year }}</p>
+            </div>
+
+            <hr class="divider">
+
+            <form method="post" class="book-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Confirm Borrow</button>
+                    <a href="{{ book.get_absolute_url }}" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
         </div>
-
-        <br><hr><br>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Borrow</button>
-        </form>
-
-        <br>
-        <a href="{{ book.get_absolute_url }}">Cancel</a>
     </div>
 {% endblock %}

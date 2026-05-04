@@ -1,0 +1,118 @@
+@import url(app_view.css);
+
+.form-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+    max-width: 600px;
+    margin: -20px auto;
+}
+
+.form-title {
+    color: #003049;
+    font-size: 28px;
+    margin-bottom: 24px;
+    text-align: center;
+    font-family: "Archivo Black", sans-serif;
+}
+.book-form p {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.book-form label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.book-form input[type="text"],
+.book-form input[type="number"],
+.book-form input[type="date"],
+.book-form textarea,
+.book-form select {
+    padding: 12px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.book-form input:focus,
+.book-form textarea:focus,
+.book-form select:focus {
+    outline: none;
+    border-color: #669bbc;
+    box-shadow: 0 0 0 3px rgba(102, 155, 188, 0.2);
+}
+
+.book-form input[type="checkbox"] {
+    width: auto;
+    align-self: flex-start;
+    margin-top: 5px;
+    transform: scale(1.2);
+}
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.btn-primary {
+    background-color: #003049;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #669bbc;
+}
+
+.btn-secondary {
+    text-decoration: none;
+    background-color: #c16969;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #a81d1d;
+}
+
+.book-summary {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #669bbc;
+}
+.book-summary p {
+    margin: 8px 0;
+    color: #444;
+}
+
+.book-summary b {
+    color: #003049;
+}
+.divider {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 25px 0;
+}
