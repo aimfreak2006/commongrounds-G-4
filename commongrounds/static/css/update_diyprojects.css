@@ -1,0 +1,104 @@
+@import url(app_view.css);
+
+.form-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    max-width: 700px;
+    margin: 20px auto;
+    border-top: 8px solid #2a9d8f;
+}
+.form-title {
+    font-family: "Archivo Black", sans-serif;
+    color: #003049;
+    font-size: 36px;
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.diy-form p {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.diy-form label {
+    font-weight: bold;
+    color: #003049;
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.diy-form input[type="text"],
+.diy-form input[type="number"],
+.diy-form input[type="file"],
+.diy-form select,
+.diy-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+    color: #333;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.diy-form input:focus,
+.diy-form select:focus,
+.diy-form textarea:focus {
+    outline: none;
+    border-color: #2a9d8f;
+}
+
+.diy-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.diy-form .helptext {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid #e9ecef;
+}
+
+.btn-submit {
+    background-color: #2a9d8f;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.btn-submit:hover {
+    background-color: #21867a;
+}
+.btn-cancel {
+    background-color: #f8f9fa;
+    color: #003049;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.btn-cancel:hover {
+    background-color: #e9ecef;
+}

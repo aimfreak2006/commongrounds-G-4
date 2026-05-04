@@ -2,17 +2,21 @@
 {% load static %}
 
 {% block contents %}
+    <link rel="stylesheet" href="{% static 'css/update_diyprojects.css' %}">
+    
     <div class="contents-container">
-        <h2><b>Update Project</b></h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-
-            <button type="submit" class="btn btn-success">
-                {% if object %}Save Changes{% else %}Update Project{% endif %}
-            </button>
-
-            <a href="{% url 'diyprojects:all-projects' %}" class="btn btn-secondary">Cancel</a>
-        </form>
+        <div class="form-card">
+            <h2 class="form-title">Update Project</h2>
+            
+            <form method="post" class="diy-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">Save Changes</button>
+                    <a href="{% url 'diyprojects:all-projects' %}" class="btn-cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock %}
