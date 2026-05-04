@@ -3,7 +3,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from .models import Event, EventSignup
-from .forms import EventSignupForm, EventCreateForm, EventUpdateForm
+from .forms import EventSignupForm, CustomEventCreateForm, CustomEventUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect
@@ -82,7 +82,7 @@ class EventDetailView(DetailView):
 class EventCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Event
     template_name = "localevents/event_create.html"
-    form_class = EventCreateForm
+    form_class = CustomEventCreateForm
     context_object_name = "create_form"
 
     def test_func(self):
@@ -93,16 +93,16 @@ class EventCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return super().form_valid(form)
 
 
-
 class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Event
     template_name = "localevents/event_update.html"
-    form_class = EventUpdateForm
+    form_class = CustomEventUpdateForm
     context_object_name = "update_form"
 
     def test_func(self):
         profile = self.request.user.profile
         return profile.role == "Event Organizer" and self.get_object().organizer == profile
+
 
 class EventSignupView(CreateView):
     model = EventSignup

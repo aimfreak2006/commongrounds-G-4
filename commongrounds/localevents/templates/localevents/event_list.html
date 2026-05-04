@@ -2,42 +2,70 @@
 {% load static %}
 
 {% block contents %}
-    <div class="contents-container">
-        {% if user.is_authenticated %}
-        <div>
-            <h2>My Dashboard</h2>
-            <h3>Your Events</h3>
-            <ul>
-                {% for event in organized_events %}
-                <li><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></li>
-                {% empty %}
-                <li>You haven't organized any eveants.</li>
-                {% endfor %}
-            </ul>
+    <link rel="stylesheet" href="{% static 'css/localevents.css' %}">
 
-            <h3>Events Signed Up</h3>
-            <ul>
-                {% for event in signed_up_events %}
-                <li><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></li>
-                {% empty %}
-                <li>You haven't signed up for any events.</li>
-                {% endfor %}
-            </ul>
-        </div>
+    <div class="contents-container">
+        <h2 class="dashboard-title">My Events Dashboard</h2>
+        
+        {% if user.is_authenticated %}
+            <div class="dashboard-container">
+                
+                <div class="dashboard-panel">
+                    <h3>Your Organized Events</h3>
+                    <div class="event-scroll-row">
+                        {% for event in organized_events %}
+                            <a href="{{ event.get_absolute_url }}" class="event-card-mini">
+                                {{ event.title }}
+                            </a>
+                        {% empty %}
+                            <p class="empty-msg">You haven't organized any events.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="dashboard-panel">
+                    <h3>Signed Up Events</h3>
+                    <div class="event-scroll-row">
+                        {% for event in signed_up_events %}
+                            <a href="{{ event.get_absolute_url }}" class="event-card-mini signed-up-card">
+                                {{ event.title }}
+                            </a>
+                        {% empty %}
+                            <p class="empty-msg">You haven't signed up for any events.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         {% endif %}
 
-        <div>
-            <h2>Upcoming Events</h2>
-            <ul>
+        <div class="upcoming-section">
+
+            <div class="section-header">
+                <h2>Upcoming Events</h2>
+                {% if user.is_authenticated and user.profile.role == 'Event Organizer' %}
+                    <a href="{% url 'localevents:event_create' %}" class="btn-create">Create an Event</a>
+                {% endif %}
+            </div>
+
+            <div class="upcoming-grid">
                 {% for event in all_events %}
-                <li><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></li>
+                    <a href="{{ event.get_absolute_url }}" class="event-card-large">
+                        <div class="card-image-wrapper">
+                            {% if event.event_image %}
+                                <img src="{{ event.event_image.url }}" alt="{{ event.title }}">
+                            {% else %}
+                                <div class="no-image-text">No Image</div>
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">{{ event.title }}</h3>
+                            <p class="card-meta">{{ event.start_time|date:"M d, Y" }}</p>
+                        </div>
+                    </a>
                 {% empty %}
-                <li>No Upcoming Events.</li>
+                    <p class="empty-msg">No Upcoming Events.</p>
                 {% endfor %}
-            </ul>
-            {% if user.is_authenticated and user.profile.role == 'Event Organizer' %}
-            <a href="{% url 'localevents:event_create' %}" class="btn-success">Create an Event</a>
-            {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

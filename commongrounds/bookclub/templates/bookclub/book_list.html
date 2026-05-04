@@ -3,45 +3,62 @@
 
 {% block contents %}
     <div class="contents-container">
+        
         {% if user.is_authenticated %}
-            <h2 style="margin-bottom: 8px;">Books You Contributed</h2>
-            <ul>
+            <h2 class="book-dashboard-title">My Book Dashboard</h2>
+
+            <h3 class="section-title">Books You Contributed</h3>
+            <div class="book-grid">
                 {% for book in contributed_books %}
-                    <li>{{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a></li>
+                    <a href="{{ book.get_absolute_url }}" class="book-card">
+                        <div class="book-title">{{ book.title }}</div>
+                        <div class="book-meta">By: {{ book.author }}</div>
+                        <div class="book-meta">Genre: {{ book.genre }}</div>
+                    </a>
                 {% empty %}
-                    <li>You have not contributed any books.</li>
+                    <p style="color: white;">You have not contributed any books.</p>
                 {% endfor %}
-                {% if user.is_authenticated and user.profile.role == 'Book Contributor' %}
-                    <li><a href="{% url 'bookclub:book_create' %}">Add a new book</a></li>
-                {% endif %}
-            </ul><br><br>
+            </div>
+            {% if user.profile.role == 'Book Contributor' %}
+                <a href="{% url 'bookclub:book_create' %}" class="btn-action" style="margin-bottom: 30px;">+ Add a New Book</a>
+            {% endif %}
 
-            <h2 style="margin-bottom: 8px;">Books You Bookmarked</h2>
-            <ul>
+            <h3 class="section-title">Books You Bookmarked</h3>
+            <div class="book-grid">
                 {% for book in bookmarked_books %}
-                    <li>{{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a></li>
+                    <a href="{{ book.get_absolute_url }}" class="book-card">
+                        <div class="book-title">{{ book.title }}</div>
+                        <div class="book-meta">By: {{ book.author }}</div>
+                    </a>
                 {% empty %}
-                    <li>You have not bookmarked any books.</li>
+                    <p style="color: white;">You have not bookmarked any books.</p>
                 {% endfor %}
-            </ul><br><br>
+            </div>
 
-            <h2 style="margin-bottom: 8px;">Books You Reviewed</h2>
-            <ul>
+            <h3 class="section-title">Books You Reviewed</h3>
+            <div class="book-grid">
                 {% for book in reviewed_books %}
-                    <li>{{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a></li>
+                    <a href="{{ book.get_absolute_url }}" class="book-card">
+                        <div class="book-title">{{ book.title }}</div>
+                        <div class="book-meta">By: {{ book.author }}</div>
+                    </a>
                 {% empty %}
-                    <li>You have not reviewed any books.</li>
+                    <p style="color: white;">You have not reviewed any books.</p>
                 {% endfor %}
-            </ul><br><br>
+            </div>
         {% endif %}
 
-        <h2 style="margin-bottom: 8px;">All Books</h2>
-        <ul>
+        <h2 class="book-dashboard-title" style="margin-top: 40px;">Library Catalog</h2>
+        <div class="book-grid">
             {% for book in all_books %}
-                <li>{{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a></li>
+                <a href="{{ book.get_absolute_url }}" class="book-card">
+                    <div class="book-title">{{ book.title }}</div>
+                    <div class="book-meta">By: {{ book.author }}</div>
+                    <div class="book-meta">Year: {{ book.publication_year }}</div>
+                </a>
             {% empty %}
-                <li>No books available.</li>
+                <p style="color: white;">No books available in the library yet.</p>
             {% endfor %}
-        </ul><br>
+        </div>
     </div>
 {% endblock %}

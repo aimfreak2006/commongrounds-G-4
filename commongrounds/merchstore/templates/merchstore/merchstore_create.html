@@ -2,11 +2,31 @@
 {% load static %}
 
 {% block contents %}
-    <br><br><br><br>
-    <h1> Create a new product </h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create product</button>
-    </form>
+    <link rel="stylesheet" href="{% static 'css/create_merchstore.css' %}">
+    <div class="contents-container">
+        <form method="POST" enctype="multipart/form-data" class="product-create-form">
+            <h2 class="page-title"><b>CREATE A NEW PRODUCT</b></h2>
+
+            {% csrf_token %}
+            <div class="name-category-container">
+                {{ form.name }} 
+                <label>Type:</label> {{ form.product_type }}
+            </div>
+            <div class="description-container">
+                {{ form.description }}
+            </div>
+            <div class="stock-price-container">
+                {{ form.stock }}
+                {{ form.price }}
+            </div>
+            <div class="availability-container">
+                <label>Status:</label> {{ form.status}}      
+            </div>
+            <div class="image-container">
+                <label>Product Image:</label> {{ form.product_image }}
+            </div>
+            <button type="submit" class="form-button">Add Product</button>
+            <a href="{% url 'merchstore:merchstore-list' %}" class="other-button">Look for Other Products</a>
+        </form>
+    </div>
 {% endblock %}

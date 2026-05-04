@@ -3,7 +3,7 @@ from django.forms import inlineformset_factory
 from .models import Commission, Job, JobApplication
 from .forms import CommissionForm, JobForm
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 from .services import CommissionService
 
 def get_applied_commissions(request):
@@ -78,6 +78,7 @@ def edit_commission(commission, commission_form):
         setattr(commission, field, edited_fields[field])
     commission.save()
 
+
 @login_required
 def detail_view(request, pk):
     commission = Commission.objects.get(pk=pk)
@@ -105,6 +106,7 @@ def detail_view(request, pk):
     CommissionService.sync_commission_status(commission)
     return render(request, 'commissions/commission_detail.html', dictionary)
 
+
 @login_required
 def add_view(request):
     commission_form = CommissionForm()
@@ -125,9 +127,32 @@ def add_view(request):
 @login_required
 def edit_view(request, pk):
     commission = Commission.objects.get(pk=pk)
-    commission_form = CommissionForm(request.POST)
+    
+    JobFormSet = inlineformset_factory(
+        Commission, 
+        Job, 
+        form=JobForm, 
+        extra=1,
+        can_delete=True
+    )
+    
+    if request.method == "POST":
+        commission_form = CommissionForm(request.POST, instance=commission)
+        job_forms = JobFormSet(request.POST, instance=commission)
+        
+        if commission_form.is_valid() and job_forms.is_valid():
+            commission_form.save()
+            job_forms.save()
+            return redirect(commission.get_absolute_url()) 
+            
+    else:
+        commission_form = CommissionForm(instance=commission)
+        job_forms = JobFormSet(instance=commission)
+
     dictionary = {
         "commission": commission,
-        "form": commission_form
+        "commission_form": commission_form,
+        "job_forms": job_forms
     }
+    
     return render(request, 'commissions/commission_edit.html', dictionary)
