@@ -4,7 +4,7 @@ from django.views.generic import ListView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.mixins import RoleRequiredMixin
 
-from .forms import TransactionForm
+from .forms import TransactionForm, CustomProductCreateForm
 from .strategies import AuthenticatedPurchaseStrategy, GuestPurchaseStrategy
 from .models import Product, Transaction
 
@@ -60,8 +60,7 @@ class ProductCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     template_name = "merchstore/merchstore_create.html"
     model = Product
     allowed_roles = ["Market Seller"]
-    fields = ["name", "product_image", "description",
-              "price", "stock", "status"]
+    form_class = CustomProductCreateForm
 
     def form_valid(self, form):
         form.instance.owner = self.request.user.profile
@@ -72,8 +71,7 @@ class ProductUpdateView(LoginRequiredMixin, RoleRequiredMixin, UpdateView):
     template_name = "merchstore/merchstore_update.html"
     model = Product
     allowed_roles = ["Market Seller"]
-    fields = ["name", "product_image", "description",
-              "price", "stock", "status"]
+    form_class = CustomProductCreateForm
 
     def get_object(self):
         id_ = self.kwargs.get("id")
