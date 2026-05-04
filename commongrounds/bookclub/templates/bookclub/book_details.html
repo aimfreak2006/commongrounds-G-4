@@ -2,83 +2,72 @@
 {% load static %}
 
 {% block contents %}
+    <link rel="stylesheet" href="{% static 'css/detail_bookclub.css' %}">
     <div class="contents-container">
-        <div>
-            <h1>{{ book.title }}</h1>
-            <br>
-            <p><b>Author:</b> {{ book.author }}</p>
-            <p><b>Genre:</b> {{ book.genre }}</p>
-            <p><b>Genre Description:</b> {{ book.genre.description }}</p>
-            <p><b>Synopsis:</b> {{ book.synopsis }}</p>
-            <p><b>Publication Year:</b> {{ book.publication_year }}</p>
-            <br>
+        
+        <div class="book-detail-card">
+            <div class="detail-header">
+                <h1>{{ book.title }}</h1>
+            </div>
 
-            {% if is_contributor %}
-                <p>Make changes as the contributor of this book.</p>
-                <p><a href="{% url 'bookclub:book_update' pk=book.pk %}">Edit Book</a></p>
-                <br>
-            {% endif %}
+            <div class="info-row"><b>Author:</b> {{ book.author }}</div>
+            <div class="info-row"><b>Genre:</b> {{ book.genre }}</div>
+            <div class="info-row"><b>Genre Description:</b> {{ book.genre.description }}</div>
+            <div class="info-row"><b>Synopsis:</b> {{ book.synopsis }}</div>
+            <div class="info-row"><b>Publication Year:</b> {{ book.publication_year }}</div>
+            
+            <hr style="margin: 20px 0; border: 1px solid #eee;">
 
-            {% if book.available_to_borrow %}
-                <p>Available for borrowing.</p>
-                <p><a href="{% url 'bookclub:book_borrow' pk=book.pk %}">Borrow this Book</a></p>
-            {% else %}
-                <p>Unavailable for borrowing until {{ active_borrow.date_to_return }}.</p>
-                <p><a href="{% url 'bookclub:book_borrow' pk=book.pk %}">Schedule a borrow</a></p>
-            {% endif %}
-            <br>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                {% if is_contributor %}
+                    <a href="{% url 'bookclub:book_update' pk=book.pk %}" class="btn-action btn-secondary">Edit Book</a>
+                {% endif %}
 
-            <p>{{ bookmark_count }} people added this to their bookmarks.</p>
-            {% if user.is_authenticated %}
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="bookmark">
-                    <button type="submit">
-                        {% if is_bookmarked %} Unbookmark {% else %} Bookmark {% endif %}
-                    </button>
-                </form>
-            {% else %}
-                <p>Login to bookmark.</p>
-            {% endif %}
-            <br>
+                {% if book.available_to_borrow %}
+                    <a href="{% url 'bookclub:book_borrow' pk=book.pk %}" class="btn-action">Borrow this Book</a>
+                {% else %}
+                    <a href="{% url 'bookclub:book_borrow' pk=book.pk %}" class="btn-action btn-secondary">Schedule a Borrow (Until {{ active_borrow.date_to_return }})</a>
+                {% endif %}
 
-            <p>Created on {{ book.created_on }}</p>
-            <p>Last updated on {{ book.updated_on }}</p>
-            <br>
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'bookclub:book_details' pk=book.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-action {% if is_bookmarked %}btn-secondary{% endif %}">
+                            {% if is_bookmarked %} Unbookmark {% else %} Bookmark {% endif %}
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
 
-            <p><a href="{% url 'bookclub:book_list' %}">Back to all books</a></p>
+            <p style="margin-top: 15px; font-size: 0.85rem; color: #888;">
+                Bookmarks: {{ bookmark_count }} | Created: {{ book.created_on|date:"M d, Y" }}
+            </p>
+            <p><a href="{% url 'bookclub:book_list' %}" style="color: #669bbc; text-decoration: none; font-weight: bold;">← Back to Catalog</a></p>
         </div>
 
-        <br><hr><br>
-        <div>
-            <h4>Leave a Review?</h4>
-            <form method="post">
+        <div class="book-detail-card">
+            <h3>Leave a Review</h3>
+            <form method="post" class="book-form-card" style="box-shadow: none; padding: 15px 0;">
                 {% csrf_token %}
                 {{ review_form.as_p }}
-                <button type="submit">Submit Review</button>
+                <button type="submit" class="btn-action">Submit Review</button>
             </form>
+
+            <hr style="margin: 20px 0; border: 1px solid #eee;">
+            
+            <h3>Community Reviews</h3>
+            <div style="margin-top: 15px;">
+                {% for review in reviews %}
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+                        <h4 style="color: #003049; margin: 0 0 5px 0;">{{ review.title }}</h4>
+                        <small style="color: #666;">By {% if review.user_reviewer %}{{ review.user_reviewer }}{% else %}Anonymous{% endif %}</small>
+                        <p style="margin-top: 10px; line-height: 1.4;">{{ review.comment }}</p>
+                    </div>
+                {% empty %}
+                    <p>No reviews yet. Be the first!</p>
+                {% endfor %}
+            </div>
         </div>
 
-        <br><hr><br>
-        <div>
-            <h2>Reviews</h2>
-            <br>
-            <ul>
-                {% for review in reviews %}
-                    <li>
-                        <h3 style="display: inline;">{{ review.title }}</h3> | by
-                        {% if review.user_reviewer %}
-                            {{ review.user_reviewer }}
-                        {% else %}
-                            Anonymous
-                        {% endif %}
-                        <p style="margin-top: 8px;">{{ review.comment }}</p>
-                        <br>
-                    </li>
-                {% empty %}
-                    <li>No reviews yet.</li><br>
-                {% endfor %}
-            </ul>
-        </div>
     </div>
 {% endblock %}
