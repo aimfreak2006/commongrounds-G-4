@@ -1,0 +1,131 @@
+@import url(app_view.css);
+
+.event-detail-card {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch; 
+    gap: 40px;
+    width: 100%;
+    max-width: 1000px;
+    margin: -20px auto;
+    padding: 35px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+.event-image-container {
+    flex: 1;
+    max-width: 45%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.event-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    object-position: center;
+    display: block;
+}
+
+.no-image {
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-style: italic;
+}
+
+
+
+.event-detail-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.event-title {
+    font-family: "Archivo Black", sans-serif;
+    font-size: clamp(32px, 4vw, 56px); 
+    color: #003049;
+    margin: 0;
+    line-height: 1.1;
+    width: 100%;
+}
+
+.event-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.info-row b {
+    color: #669bbc;
+    margin-right: 5px;
+}
+
+.action-container {
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.status-msg {
+    color: #003049;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.error-msg {
+    color: #dc3545;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.action-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #003049;
+    color: #fdf0d5;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.action-button:hover {
+    background-color: #00456b;
+    transform: translateY(-2px);
+}
+
+.disabled-btn {
+    background-color: #ced4da;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.footer-links{
+    margin-top: 15px;
+    font-size: 15px;
+}
+
+.simple-link {
+    color: #669bbc;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.simple-link:hover {
+    color: #003049;
+    text-decoration: underline;
+}
