@@ -3,53 +3,72 @@
 
 {% block contents %}
     <div class="contents-container">
-        <h2> Created Commissions </h2>
-        <ul>
-            {% for commission in created_commissions %}
-                <h3>{{commission.title}}</h3>
-                <li> 
-                    <a href='{{ commission.get_absolute_url }}'>
-                        <button type="button">{{commission.title}} Details</button>
-                    </a> 
-                </li>
-                <p>{{commission.get_status_display}}</p>
-            {% endfor %}
-        </ul>
-        <br>
-        <br>
-        <h2> Applied Commissions </h2>
-        <ul>
-            {% for commission in applied_commissions %}
-                <h3>{{commission.title}}</h3>
-                <li> 
-                    <a href='{{ commission.get_absolute_url }}'>
-                        <button type="button">{{commission.title}} Details</button>
-                    </a> 
-                </li>
-                <p>{{commission.get_status_display}}</p>
-            {% endfor %}
-        </ul>
-        <br>
-        <br>
-        <h2> Other Commissions </h2>
-        <ul>
-            {% for commission in other_commissions %}
-                <h3>{{commission.title}}</h3>
-                <li> 
-                    <a href='{{ commission.get_absolute_url }}'>
-                        <button type="button">{{commission.title}} Details</button>
-                    </a> 
-                </li>
-                <p>{{commission.get_status_display}}</p>
-            {% endfor %}
-        </ul>
-        <br>
-        <br>
+        <h2 class="dashboard-title">My Commissions Dashboard</h2>
+        
+        {% if user.is_authenticated %}
+            <div class="dashboard-container">
+                
+                <div class="dashboard-panel">
+                    <h3>Commissions You Created</h3>
+                    <div class="event-scroll-row">
+                        {% if user.profile.role == "Commission Maker" %}
+                            {% for commission in created_commissions %}
+                                <a href="{{ commission.get_absolute_url }}" class="event-card-mini">
+                                    {{ commission.title }}
+                                </a>
+                            {% empty %}
+                                <p class="empty-msg">You haven't created any commissions.</p>
+                            {% endfor %}
+                        {% else %}
+                            {% for commission in created_commissions %}
+                                <a href="{{ commission.get_absolute_url }}" class="event-card-mini">
+                                    {{ commission.title }}
+                                </a>
+                            {% empty %}
+                                <p class="empty-msg">You can't create commissions for now.</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
 
-        {% if user.profile.role == 'Commission Maker' %}
-            <a href="/commissions/request/add"> 
-                <button type="button">Create Commission</button>
-            </a>
+                <div class="dashboard-panel">
+                    <h3>Commissions You Applied To</h3>
+                    <div class="event-scroll-row">
+                        {% for commission in applied_commissions %}
+                            <a href="{{ commission.get_absolute_url }}" class="event-card-mini signed-up-card">
+                                {{ commission.title }}
+                            </a>
+                        {% empty %}
+                            <p class="empty-msg">You haven't applied for any commissions.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         {% endif %}
+
+        <div class="upcoming-section">
+
+            <div class="section-header">
+                <h2>Other Commissions You Can Apply To</h2>
+                {% if user.is_authenticated and user.profile.role == 'Commission Maker' %}
+                    <a href="{% url 'commissions:add_view' %}" class="btn-create">Create Commission</a>
+                {% endif %}
+            </div>
+
+            <div class="project-grid">
+                {% for commission in other_commissions %}
+                    <a href="{{ project.get_absolute_url }}" class="project-card">
+                        <div class="card-body">
+                            <h3 class="card-title">{{ commission.title }}</h3>
+                            <p class="card-meta">By {{ commission.maker.display_name|default:project.creator }}</p>
+                            <p class="card-desc">{{ commission.description|truncatewords:15 }}</p>
+                        </div>
+                        <p class="current-status">{{commission.get_status_display}}</p>
+                    </a>
+                {% empty %}
+                    <p class="empty-msg">No Commissions available yet.</p>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}
