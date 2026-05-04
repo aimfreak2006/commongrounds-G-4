@@ -67,12 +67,14 @@ def list_view(request):
             return redirect('/commissions/requests/')
     return render(request, 'commissions/commission_list.html', dictionary)
 
+
 def is_applied(request, jobs):
     for job in jobs:
         if (job.application.filter(applicant=request.user.profile)):
             print(job.application.filter(applicant=request.user.profile))
             return True
     return False
+
 
 @login_required
 def detail_view(request, pk):
@@ -85,7 +87,6 @@ def detail_view(request, pk):
         "jobs": jobs,
         "is_applied" : is_user_applied,
     }
-
 
     if (request.method == "POST"):
         commission_form = CommissionForm(request.POST, instance=commission)
@@ -102,6 +103,7 @@ def detail_view(request, pk):
             )
             return redirect('commissions:detail_view', pk=pk)
     return render(request, 'commissions/commission_detail.html', dictionary)
+
 
 @login_required
 def add_view(request):
@@ -120,12 +122,34 @@ def add_view(request):
     }
     return render(request, 'commissions/commission_add.html', dictionary)
 
+
 @login_required
 def edit_view(request, pk):
     commission = Commission.objects.get(pk=pk)
-    commission_form = CommissionForm(request.POST, instance=commission)
+
+    JobFormSet = inlineformset_factory(
+        Commission, 
+        Job, 
+        form=JobForm, 
+        extra=1,
+        can_delete=True
+    )
+
+    if request.method == "POST":
+        commission_form = CommissionForm(request.POST, instance=commission)
+        job_forms = JobFormSet(request.POST, instance=commission)
+
+        if commission_form.is_valid() and job_forms.is_valid():
+            commission_form.save()
+            job_forms.save()
+            return redirect('commissions:detail_view', pk=commission.pk)
+    else:
+        commission_form = CommissionForm(instance=commission)
+        job_forms = JobFormSet(instance=commission)
+
     dictionary = {
         "commission": commission,
-        "form": commission_form
+        "commission_form": commission_form,
+        "job_forms": job_forms
     }
     return render(request, 'commissions/commission_edit.html', dictionary)
