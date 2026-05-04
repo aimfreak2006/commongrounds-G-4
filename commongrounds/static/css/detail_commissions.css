@@ -6,9 +6,10 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
     padding: 40px;
     max-width: 800px;
-    margin: -20px auto;
+    margin: 20px auto;
     border-top: 6px solid #f4d03f;
 }
+
 .detail-title {
     color: #f4d03f;
     font-size: 36px;
@@ -16,6 +17,7 @@
     text-align: center;
     font-family: "Archivo Black", sans-serif;
 }
+
 .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -30,9 +32,8 @@
     border: 1px solid #343a40;
 }
 
-.info-item.full-width {
-    grid-column: 1 / -1;
-}
+.info-item.full-width { grid-column: 1 / -1; }
+
 .info-label {
     display: block;
     color: #adb5bd;
@@ -54,6 +55,7 @@
     border-top: 1px solid #343a40;
     margin: 40px 0 30px 0;
 }
+
 .section-title {
     color: #f8f9fa;
     font-size: 24px;
@@ -88,19 +90,17 @@
     font-size: 20px;
     flex: 1 1 100%;
 }
+
 .job-stats p {
     margin: 5px 0;
     color: #e9ecef;
     font-size: 15px;
 }
 
-.highlight-yellow {
-    color: #f4d03f;
-}
+.highlight-yellow { color: #f4d03f; }
 
-.apply-form {
-    margin: 0;
-}
+.apply-form { margin: 0; }
+
 .btn-primary {
     background-color: #f4d03f;
     color: #1a1d20;
@@ -128,6 +128,7 @@
     font-weight: bold;
     cursor: not-allowed;
 }
+
 .action-footer {
     display: flex;
     justify-content: center;
@@ -163,6 +164,5 @@
     border: 2px solid #343a40;
     transition: all 0.2s ease;
 }
-.btn-cancel:hover {
-    background-color: #343a40;
-}
+
+.btn-cancel:hover { background-color: #343a40; }
