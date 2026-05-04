@@ -2,16 +2,49 @@
 {% load static %}
 
 {% block contents %}
-    <br><br><br><br>
-    <h2>Your Transaction</h2>
-    {% regroup transactions by buyer as transactions_by_buyer %}
-    {% for group in transactions_by_buyer %}
-        <br>
-        <h3>{{ group.grouper }}</h3>
-        <ul>
-            {% for transaction in group.list %}
-                <li>{{ transaction.amount }} x {{ transaction.product.name }}: {{ transaction.status }}</li>
-            {% endfor %}
-        </ul>
-    {% endfor %}
+    <link rel="stylesheet" href="{% static 'css/transactions_merchstore.css' %}">
+    
+    <div class="contents-container">
+        <h1 class="page-title">Customer Orders</h1>
+        
+        {% regroup transactions by buyer as transactions_by_buyer %}
+        
+        {% if transactions_by_buyer %}
+            <div class="groups-container">
+                {% for group in transactions_by_buyer %}
+                    <div class="group-card">
+                        <h2 class="group-header">Buyer: {{ group.grouper.display_name|default:group.grouper }}</h2>
+                        
+                        <div class="items-list">
+                            {% for transaction in group.list %}
+                                <div class="item-card">
+                                    <div class="item-image">
+                                        {% if transaction.product.product_image %}
+                                            <img src="{{ transaction.product.product_image.url }}" alt="{{ transaction.product.name }}">
+                                        {% else %}
+                                            <div class="no-image">No Image</div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="item-details">
+                                        <h3 class="item-name">{{ transaction.product.name }}</h3>
+                                        <p class="item-meta">Status: <span class="status-badge status-{{ transaction.status|slugify }}">{{ transaction.status }}</span></p>
+                                    </div>
+                                    
+                                    <div class="item-pricing">
+                                        <p class="item-amount">Ordered Qty: {{ transaction.amount }}</p>
+                                        <p class="item-price">₱{{ transaction.product.price }} each</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p style="font-size: 20px; color: #6c757d; margin-bottom: 20px;">No customers have ordered your products yet.</p>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
