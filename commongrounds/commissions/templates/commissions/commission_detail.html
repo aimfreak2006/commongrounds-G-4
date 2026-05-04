@@ -6,6 +6,55 @@
     <div class="contents-container">
         <div class="detail-card">
             <h2 class="detail-title">{{commission.title}}</h2>
+        <h3> {{commission.title}} </h3>
+        <ul>
+            <li>Creator: {{commission.maker.display_name}}</li>
+            <li>Description: {{commission.description}}</li>
+            <li>Number of People Required: {{commission.people_required}}</li>
+            <li>Status: {{commission.get_status_display}}</li>
+            <li>Created on: {{commission.created_on}}</li>
+            <li>Updated on: {{commission.updated_on}}</li>
+        </ul>
+
+        <br>
+        <br>
+
+        <h2> Jobs Needed </h2>
+        <ul>
+            {% for job, current_manpower in jobs.items %}
+                <li>{{job.role}}</li>
+                <p>Total Manpower Required: {{job.manpower_required}}</p>
+                <p>Open Manpower Slots: {{current_manpower}}</p>
+
+                {% if user.is_authenticated %}
+                    {% if is_applied %}
+                        <button type="button" disabled> You already Applied For a Job</button>
+                    {% elif current_manpower == 0 %}
+                        <button type="button" disabled>Job Full</button>
+                    {% else %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="job_id" value="{{ job.pk }}">
+                            <button type="submit" name="apply_to_job">Apply Job</button>
+                        </form>
+                    {% endif %}
+                {% else %}
+                    <button type="button" disabled>Apply Job</button>
+                {% endif %}
+                
+                {% if is_applied.0 == job %}
+                    <p>Application Status: {{is_applied.1.get_status_display}}</p>
+                {% endif %}
+
+                <br>
+                <br>
+            {% endfor %}
+        </ul>
+        {% if user.profile == commission.maker %}
+            <a href="{{commission.get_edit_url}}">
+                <button type="button">Edit Commission</button>
+            </a>
+        {% endif %}
             
             <div class="info-grid">
                 <div class="info-item">

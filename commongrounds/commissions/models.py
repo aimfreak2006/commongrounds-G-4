@@ -35,7 +35,7 @@ class Commission(models.Model):
         on_delete=models.CASCADE,
         null=True
     )
-    people_required = models.IntegerField()
+    people_required = models.PositiveIntegerField()
     status = models.CharField(
         choices=Status,
         default=Status.OPEN
@@ -69,7 +69,7 @@ class Job(models.Model):
     )
 
     role = models.CharField(max_length=255)
-    manpower_required = models.IntegerField()
+    manpower_required = models.PositiveIntegerField()
     status = models.CharField(
         max_length=255,
         choices=Status,
@@ -97,7 +97,6 @@ class JobApplication(models.Model):
     applicant = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
-        related_name='application'
     )
     status = models.CharField(
         max_length=255,
