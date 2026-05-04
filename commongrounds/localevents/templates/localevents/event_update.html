@@ -2,17 +2,35 @@
 {% load static %}
 
 {% block contents %}
-<div class="contents-container">
-    <h2>{{ event.title }}</h2>
-    <br>
+    <link rel="stylesheet" href="{% static 'css/create_localevents.css' %}">
+    <div class="contents-container">
+        <form method="POST" enctype="multipart/form-data" class="event-create-form">
+            <h2 class="page-title"><b>EDIT EVENT</b></h2>
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save Changes</button>
-    </form>
-
-    <a href="{% url 'localevents:event_list' %}">Look for Upcoming Events</a>
-</div>
-
+            {% csrf_token %}
+            <div class="title-category-container">
+                {{ form.title }} 
+                <label>Category:</label> {{ form.category }}
+            </div>
+            <div class="description-container">
+                {{ form.description }}
+            </div>
+            <div class="time-container">
+                <label>Start:</label> {{ form.start_time }}
+                <label>End:</label> {{ form.end_time }}
+            </div>
+            <div class="event-capacity-container">
+                {{ form.event_capacity }} 
+                <label>Status:</label> {{ form.status}}      
+            </div>
+            <div class="location-container">
+                {{ form.location }}
+            </div>
+            <div class="image-container">
+                <label>Event Image:</label> {{ form.event_image }}
+            </div>
+            <button type="submit" class="form-button">Save Changes</button>
+            <a href="{% url 'localevents:event_list' %}" class="other-button">Look for Upcoming Events</a>
+        </form>
+    </div>
 {% endblock %}
