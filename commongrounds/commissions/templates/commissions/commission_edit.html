@@ -20,7 +20,7 @@
 
                 <div class="form-section">
                     <h3>Job Roles Needed</h3>
-                    <p class="section-desc">Update the manpower or roles required for this commission.</p>
+                    <p class="section-desc">Update the manpower, status, or remove roles required for this commission.</p>
                     
                     {{ job_forms.management_form }}
                     
@@ -36,7 +36,7 @@
 
                 <div class="form-actions">
                     <button type="submit" name="submit" class="btn-primary">Save Changes</button>
-                    <a href="{{ commission.get_absolute_url }}" class="btn-cancel">Cancel</a>
+                    <a href="/commissions/requests/" class="btn-cancel">Cancel</a>
                 </div>
             </form>
         </div>

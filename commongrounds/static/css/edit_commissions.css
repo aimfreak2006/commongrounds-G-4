@@ -5,11 +5,10 @@
     border-radius: 15px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
     padding: 40px;
-    max-width: 600px;
-    margin: -20px auto;
+    max-width: 750px;
+    margin: -20px auto 40px auto;
     border-top: 6px solid #f4d03f;
 }
-
 .form-title {
     color: #f4d03f;
     font-size: 32px;
@@ -17,10 +16,31 @@
     text-align: center;
     font-family: "Archivo Black", sans-serif;
 }
-
 .form-section { 
     margin-bottom: 30px; 
 }
+
+.form-section h3 {
+    color: #f8f9fa;
+    font-size: 22px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #343a40;
+    padding-bottom: 10px;
+}
+
+.section-desc {
+    color: #adb5bd;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+.job-item-title {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #f4d03f;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .form-card p {
     margin: 0 0 20px 0;
     display: flex;
@@ -42,7 +62,7 @@
     background-color: #212529;
     color: #f8f9fa;
     border: 2px solid #343a40;
-    padding: 12px 15px ;
+    padding: 12px 15px;
     border-radius: 8px;
     width: 100%;
     box-sizing: border-box;
@@ -50,26 +70,51 @@
     font-size: 15px;
     transition: border-color 0.3s ease;
 }
+
 .form-card input:not([type="checkbox"]):focus,
 .form-card textarea:focus,
 .form-card select:focus {
     outline: none;
-    border-color: #f4d03f;
+    border-color: #f4d03f; 
+}
+
+.form-card p:has(input[type="checkbox"]) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-top: 15px;
+    padding: 10px;
+    background-color: rgba(255, 107, 107, 0.05);
+    border-radius: 8px;
+    border: 1px dashed #ff6b6b;
+}
+
+.form-card p:has(input[type="checkbox"]) label {
+    display: inline-block;
+    margin: 0;
+    width: auto;
+    color: #ff6b6b;
 }
 
 .form-card input[type="checkbox"] {
-    margin-right: 8px;
-    transform: scale(1.2);
-    accent-color: #f4d03f;
+    margin: 0;
+    transform: scale(1.3);
+    accent-color: #ff6b6b;
     cursor: pointer;
-    align-self: flex-start;
 }
-
-.helptext {
-    font-size: 12px;
-    color: #adb5bd;
-    display: block;
-    margin-top: 5px;
+.job-form-item {
+    background-color: #212529;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #343a40;
+    border-left: 5px solid #f4d03f;
+}
+.divider {
+    border: none;
+    border-top: 1px solid #343a40;
+    margin: 40px 0;
 }
 .form-actions {
     display: flex;
@@ -79,7 +124,6 @@
     padding-top: 20px;
     border-top: 1px solid #343a40;
 }
-
 .btn-primary {
     background-color: #f4d03f;
     color: #1a1d20;
@@ -91,6 +135,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
 .btn-primary:hover {
     background-color: #d4b232; 
     transform: translateY(-2px);
@@ -111,6 +156,7 @@
     background-color: #343a40; 
     color: #ffffff;
 }
+
 .errorlist {
     color: #ff6b6b;
     list-style-type: none;
@@ -120,49 +166,4 @@
     font-weight: bold;
 }
 
-.errorlist li {
-    margin-bottom: 5px;
-}
-
-.form-section h3 {
-    color: #f8f9fa;
-    font-size: 22px;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #343a40;
-    padding-bottom: 10px;
-}
-
-.section-desc {
-    color: #adb5bd;
-    font-size: 14px;
-    margin-bottom: 20px;
-}
-
-.job-item-title {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #f4d03f;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.form-card p:has(input[type="checkbox"]) {
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 12px;
-    margin-top: 15px;
-}
-.form-card p:has(input[type="checkbox"]) label {
-    display: inline-block;
-    margin: 0;
-    width: auto;
-    color: #ff6b6b;
-}
-
-.form-card input[type="checkbox"] {
-    margin: 0;
-    transform: scale(1.3);
-    accent-color: #ff6b6b;
-    cursor: pointer;
-}
+.errorlist li { margin-bottom: 5px; }
