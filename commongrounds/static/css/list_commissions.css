@@ -180,7 +180,7 @@
 .project-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    border-left-color: #2a9d8f;
+    border-left-color: #f4ff5a;
 }
 
 .card-body {
@@ -194,13 +194,13 @@
     margin: 0;
     font-family: "Archivo Black", sans-serif;
     font-size: 20px;
-    color: #003049;
+    color: #f4ff5a;
 }
 
 .card-meta {
     margin: 0;
     font-size: 14px;
-    color: #2a9d8f;
+    color: #feffd1;
     font-weight: bold;
 }
 
