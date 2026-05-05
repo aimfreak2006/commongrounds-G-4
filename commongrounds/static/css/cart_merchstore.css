@@ -1,13 +1,41 @@
 @import url(app_view.css);
 
-.page-title {
-    font-family: "Archivo Black", sans-serif;
-    font-size: 40px;
-    color: #9bceea;
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 30px;
     border-bottom: 3px solid #669bbc;
     padding-bottom: 10px;
+}
+.page-title {
+    font-family: "Archivo Black", sans-serif;
+    font-size: 40px;
+    color: #9cceea;
+    margin: 0;
+    padding: 0;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    border: none;
+}
+.btn-dashboard {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #669bbc;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
+.btn-dashboard:hover {
+    background-color: #003049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    color: white;
 }
 
 .groups-container {

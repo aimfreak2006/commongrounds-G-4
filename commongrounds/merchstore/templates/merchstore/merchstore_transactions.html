@@ -5,7 +5,10 @@
     <link rel="stylesheet" href="{% static 'css/transactions_merchstore.css' %}">
     
     <div class="contents-container">
-        <h1 class="page-title">Customer Orders</h1>
+        <div class="page-header">
+            <h1 class="page-title">Customer Orders</h1> 
+            <a href="{% url 'merchstore:merchstore-list' %}" class="btn-dashboard">&larr; Back to Dashboard</a>
+        </div>
         
         {% regroup transactions by buyer as transactions_by_buyer %}
         
