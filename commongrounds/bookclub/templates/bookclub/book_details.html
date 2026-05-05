@@ -32,7 +32,7 @@
                 {% if user.is_authenticated %}
                     <form method="post" action="{% url 'bookclub:book_details' pk=book.pk %}" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" class="btn-action {% if is_bookmarked %}btn-secondary{% endif %}">
+                        <button type="submit" name="bookmark" class="btn-action {% if is_bookmarked %}btn-secondary{% endif %}">
                             {% if is_bookmarked %} Unbookmark {% else %} Bookmark {% endif %}
                         </button>
                     </form>
