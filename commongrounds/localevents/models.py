@@ -95,10 +95,10 @@ class EventSignup(models.Model):
         Profile,
         on_delete=models.CASCADE,
         null=True,
-        blank=True,        
+        blank=True,
     )
     new_registrant = models.CharField(
         max_length=255,
-        null=True, 
+        null=True,
         blank=True,
         )
