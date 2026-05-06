@@ -44,17 +44,17 @@ class Commission(models.Model):
     updated_on = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
-        ordering = ['status','created_on']
+        ordering = ['status', 'created_on']
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         return reverse('commissions:detail_view', args=[int(self.id)])
-    
+
     def get_edit_url(self):
         return reverse('commissions:edit_view', args=[int(self.id)])
-    
+
 
 class Job(models.Model):
     class Status(models.TextChoices):
@@ -81,6 +81,7 @@ class Job(models.Model):
 
     def __str__(self):
         return self.role
+
 
 class JobApplication(models.Model):
     class Status(models.TextChoices):

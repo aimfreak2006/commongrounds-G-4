@@ -1,7 +1,8 @@
 from .models import Commission, Job, JobApplication
 
+
 class CommissionService:
-    def create_commission(author,commission_data,jobs_data):
+    def create_commission(author, commission_data, jobs_data):
         commission = Commission.objects.create(maker=author, **commission_data)
         commission.save()
 
@@ -16,10 +17,15 @@ class CommissionService:
             job.save()
 
     def apply_to_job(applicant, job):
-        applications = JobApplication.objects.filter(job=job, applicant=applicant)
+        applications = JobApplication.objects.filter(job=job,
+                                                     applicant=applicant
+                                                     )
         open_manpower = job.manpower_required
         if (open_manpower and not applications):
-            job_application = JobApplication.objects.create(applicant=applicant, job=job)
+            job_application = JobApplication.objects.create(
+                applicant=applicant,
+                job=job
+                )
             job_application.save()
 
     def get_commission_summary(commission):
@@ -27,12 +33,14 @@ class CommissionService:
         summary = dict()
         jobs = Job.objects.filter(commission=commission)
         for job in jobs:
-            accepted_count = JobApplication.objects.filter(job=job, status=ACCEPTED).count()
+            accepted_count = JobApplication.objects.filter(job=job,
+                                                           status=ACCEPTED
+                                                           ).count()
             open_manpower = job.manpower_required - accepted_count
             summary[job] = open_manpower
 
         return summary
-    
+
     def sync_job_status(commission):
         FULL = 'F'
         summary = CommissionService.get_commission_summary(commission)
