@@ -1,10 +1,10 @@
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from .models import (Project, ProjectReview, 
-                     ProjectRating, ProjectCategory, 
+from .models import (Project, ProjectReview,
+                     ProjectRating, ProjectCategory,
                      Favorite)
 from django.db.models import Avg
-from django.contrib.auth.mixins import (LoginRequiredMixin, 
+from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         UserPassesTestMixin)
 from django.views.generic.edit import CreateView, UpdateView
 from .forms import ProjectReviewForm, ProjectRatingForm
@@ -17,18 +17,24 @@ class ProjectCategoryListView(ListView):
     context_object_name = 'all_projects'
 
     def get_context_data(self, **kwargs):
-            
+
         context = super().get_context_data(**kwargs)
         user = self.request.user
 
         context['categories'] = ProjectCategory.objects.all()
-        
+
         if user.is_authenticated and hasattr(user, 'profile'):
             profile = user.profile
-            context['created_projects'] = Project.objects.filter(creator=profile)
-            context['favorited_projects'] = Project.objects.filter(favorites__profile=profile)
-            context['reviewed_projects'] = Project.objects.filter(reviews__reviewer=profile)
-        
+            context['created_projects'] = Project.objects.filter(
+                creator=profile
+                )
+            context['favorited_projects'] = Project.objects.filter(
+                favorites__profile=profile
+                )
+            context['reviewed_projects'] = Project.objects.filter(
+                reviews__reviewer=profile
+                )
+
         return context
 
 
@@ -50,11 +56,13 @@ class ProjectDetailView(DetailView):
 
         is_favorited = False
         if user.is_authenticated and hasattr(user, 'profile'):
-            is_favorited = project.favorites.filter(profile=user.profile).exists()
+            is_favorited = project.favorites.filter(
+                profile=user.profile
+                ).exists()
         context['is_favorited'] = is_favorited
-        
+
         return context
-    
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         user_profile = request.user.profile
@@ -63,13 +71,13 @@ class ProjectDetailView(DetailView):
             form = ProjectRatingForm(request.POST)
             if form.is_valid():
                 ProjectRating.objects.update_or_create(
-                    profile=request.user.profile,
+                    profile=user_profile,
                     project=self.object,
                     defaults={
                         'score': form.cleaned_data['score']
                     }
                 )
-                
+
         elif 'submit_review' in request.POST:
 
             form = ProjectReviewForm(request.POST, request.FILES)
@@ -84,17 +92,16 @@ class ProjectDetailView(DetailView):
                 )
 
         elif 'submit_favorite' in request.POST:
-            from .models import Favorite # Import here or at top
             favorite_qs = Favorite.objects.filter(
-                project=self.object, 
+                project=self.object,
                 profile=request.user.profile
             )
-            
+
             if favorite_qs.exists():
                 favorite_qs.delete()
             else:
                 Favorite.objects.create(
-                    project=self.object, 
+                    project=self.object,
                     profile=request.user.profile
                 )
         return redirect('diyprojects:project-details', pk=self.object.pk)
@@ -120,5 +127,5 @@ class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         profile = self.request.user.profile
-        return profile.role == "Project Creator" and self.get_object().creator == profile
-
+        return profile.role == (("Project Creator") and
+                                (self.get_object().creator == profile))

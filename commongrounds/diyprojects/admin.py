@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Project, ProjectCategory, ProjectReview, ProjectRating, Favorite
+from .models import (Project, ProjectCategory,
+                     ProjectReview, ProjectRating,
+                     Favorite
+                     )
 
 
 class ProjectInLine(admin.TabularInline):
