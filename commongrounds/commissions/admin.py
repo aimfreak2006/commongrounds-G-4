@@ -10,8 +10,10 @@ class CommissionAdmin(admin.ModelAdmin):
 class CommissionTypeAdmin(admin.ModelAdmin):
     model = CommissionType
 
+
 class JobAdmin(admin.ModelAdmin):
     model = Job
+
 
 class JobApplicationAdmin(admin.ModelAdmin):
     model = JobApplication

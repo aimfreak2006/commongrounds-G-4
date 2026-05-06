@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import (ProjectCategoryListView, ProjectDetailView, 
+from .views import (ProjectCategoryListView, ProjectDetailView,
                     ProjectCreateView, ProjectUpdateView)
 
 urlpatterns = [
@@ -13,7 +13,7 @@ urlpatterns = [
       name='project-details'),
     path(
       'project/add',
-      ProjectCreateView.as_view(), 
+      ProjectCreateView.as_view(),
       name='project-add'),
     path(
       'project/<int:pk>/edit',

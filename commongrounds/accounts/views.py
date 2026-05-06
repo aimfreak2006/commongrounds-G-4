@@ -29,7 +29,9 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     slug_url_kwarg = 'display_name'
 
     def get_success_url(self):
-        return reverse_lazy('accounts:profile_update', kwargs={'display_name': self.object.display_name})
+        return reverse_lazy('accounts:profile_update',
+                            kwargs={'display_name': self.object.display_name}
+                            )
 
 
 class CustomLoginView(BaseLoginView):
@@ -39,10 +41,10 @@ class CustomLoginView(BaseLoginView):
         if pending:
             product = Product.objects.get(id=pending["product_id"])
             Transaction.objects.create(
-                buyer = self.request.user.profile,
-                product = product,
-                amount = pending["amount"],
-                status = "On cart"
+                buyer=self.request.user.profile,
+                product=product,
+                amount=pending["amount"],
+                status="On cart"
             )
             del self.request.session["pending_transaction"]
             return redirect("merchstore:merchstore-cart")

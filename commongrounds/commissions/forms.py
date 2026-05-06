@@ -1,6 +1,6 @@
 from django import forms
-from accounts.models import Profile
 from .models import Commission, CommissionType, Job
+
 
 class CommissionForm(forms.ModelForm):
     title = forms.CharField(

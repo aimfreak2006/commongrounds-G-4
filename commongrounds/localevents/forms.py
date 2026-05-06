@@ -1,14 +1,15 @@
 from django import forms
 from .models import Event, EventSignup
 
+
 class EventCreateForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = [
-        'title', 'category', 'event_image',
-        'description', 'location', 'start_time', 
-        'end_time', 'event_capacity', 'status',
-        ]
+            'title', 'category', 'event_image',
+            'description', 'location', 'start_time',
+            'end_time', 'event_capacity', 'status',
+            ]
 
 
 class CustomEventCreateForm(EventCreateForm):
@@ -16,17 +17,17 @@ class CustomEventCreateForm(EventCreateForm):
         super().__init__(*args, **kwargs)
 
         self.fields['title'].label = ''
-        self.fields['title'].help_text = '' 
+        self.fields['title'].help_text = ''
         self.fields['title'].widget.attrs.update({
             'placeholder': 'Event Title'
         })
 
         self.fields['category'].label = ''
-        self.fields['category'].help_text = '' 
+        self.fields['category'].help_text = ''
         self.fields['category'].widget.attrs.update({
             'placeholder': 'Event Category'
         })
-        
+
         self.fields['description'].label = ''
         self.fields['description'].help_text = ''
         self.fields['description'].widget.attrs.update({
@@ -56,16 +57,16 @@ class CustomEventCreateForm(EventCreateForm):
         self.fields['event_capacity'].widget.attrs.update({
             'placeholder': 'Event Capacity'
         })
-        
+
 
 class EventUpdateForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = [
-        'title', 'category', 'event_image',
-        'description', 'location', 'start_time', 
-        'end_time', 'event_capacity', 'status',
-        ]
+            'title', 'category', 'event_image',
+            'description', 'location', 'start_time',
+            'end_time', 'event_capacity', 'status',
+            ]
 
 
 class CustomEventUpdateForm(EventUpdateForm):
@@ -73,17 +74,17 @@ class CustomEventUpdateForm(EventUpdateForm):
         super().__init__(*args, **kwargs)
 
         self.fields['title'].label = ''
-        self.fields['title'].help_text = '' 
+        self.fields['title'].help_text = ''
         self.fields['title'].widget.attrs.update({
             'placeholder': 'Event Title'
         })
 
         self.fields['category'].label = ''
-        self.fields['category'].help_text = '' 
+        self.fields['category'].help_text = ''
         self.fields['category'].widget.attrs.update({
             'placeholder': 'Event Category'
         })
-        
+
         self.fields['description'].label = ''
         self.fields['description'].help_text = ''
         self.fields['description'].widget.attrs.update({
@@ -121,4 +122,4 @@ class EventSignupForm(forms.ModelForm):
         fields = ['new_registrant']
         labels = {
             'new_registrant': 'Your Full Name',
-        }
+            }

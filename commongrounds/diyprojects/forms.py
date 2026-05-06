@@ -7,7 +7,9 @@ class ProjectReviewForm(forms.ModelForm):
         model = ProjectReview
         fields = ['comment', 'image']
         widgets = {
-            'comment': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Write your review here...'}),
+            'comment': forms.Textarea(
+                attrs={'rows': 4, 'placeholder': 'Write your review here...'}
+                ),
         }
 
 
@@ -16,5 +18,7 @@ class ProjectRatingForm(forms.ModelForm):
         model = ProjectRating
         fields = ['score']
         widgets = {
-            'score': forms.NumberInput(attrs={'min': 1, 'max': 10, 'placeholder': '1-10'}),
+            'score': forms.NumberInput(
+                attrs={'min': 1, 'max': 10, 'placeholder': '1-10'}
+                ),
         }

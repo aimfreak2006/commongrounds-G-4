@@ -10,10 +10,10 @@ class ProfileUpdateForm(forms.ModelForm):
         fields = ['display_name']
 
 
-class CustomProfileUpdateForm(ProfileUpdateForm):   
+class CustomProfileUpdateForm(ProfileUpdateForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
         self.fields['display_name'].label = ''
         self.fields['display_name'].help_text = ''
         self.fields['display_name'].widget.attrs.update({
@@ -34,23 +34,23 @@ class CustomRegisterForm(RegisterForm):
         super().__init__(*args, **kwargs)
 
         self.fields['username'].label = ''
-        self.fields['username'].help_text = '' 
+        self.fields['username'].help_text = ''
         self.fields['username'].widget.attrs.update({
             'placeholder': 'Username'
         })
 
         self.fields['email'].label = ''
-        self.fields['email'].help_text = '' 
+        self.fields['email'].help_text = ''
         self.fields['email'].widget.attrs.update({
             'placeholder': 'Email'
         })
 
         self.fields['password1'].label = ''
-        self.fields['password1'].help_text = '' 
+        self.fields['password1'].help_text = ''
         self.fields['password1'].widget.attrs.update({
             'placeholder': 'Password'
         })
-        
+
         self.fields['password2'].label = ''
         self.fields['password2'].help_text = ''
         self.fields['password2'].widget.attrs.update({

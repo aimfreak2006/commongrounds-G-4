@@ -3,7 +3,8 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from .models import Event, EventSignup
-from .forms import EventSignupForm, CustomEventCreateForm, CustomEventUpdateForm
+from .forms import (EventSignupForm, CustomEventCreateForm,
+                    CustomEventUpdateForm)
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect
@@ -21,7 +22,8 @@ class EventListView(ListView):
         if self.request.user.is_authenticated:
             profile = self.request.user.profile
             organized = Event.objects.filter(organizer=profile)
-            signed_up = Event.objects.filter(event_signups__user_registrant=profile)
+            signed_up = Event.objects.filter(
+                event_signups__user_registrant=profile)
 
             grouped_pks = (
                 organized.values('pk') |
@@ -42,7 +44,7 @@ class EventDetailView(DetailView):
     model = Event
     template_name = "localevents/event_detail.html"
     context_object_name = "event"
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         event = self.get_object()
@@ -60,14 +62,15 @@ class EventDetailView(DetailView):
             ).exists()
 
         return context
-    
+
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('event_signup', pk=self.get_object().pk)
-        
-        event = self.get_object()
 
-        if EventSignup.objects.filter(event=event).count() >= event.event_capacity:
+        event = self.get_object()
+        sign_ups_count = EventSignup.objects.filter(event=event).count()
+
+        if (sign_ups_count >= event.event_capacity):
             messages.error(request, "This event is full.")
         else:
             EventSignup.objects.get_or_create(
@@ -75,7 +78,7 @@ class EventDetailView(DetailView):
                 user_registrant=request.user
             )
             messages.success(request, "Thank you for signing up.")
-        
+
         return redirect('event_detail', pk=event.pk)
 
 
@@ -87,7 +90,7 @@ class EventCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def test_func(self):
         return self.request.user.profile.role == 'Event Organizer'
-    
+
     def form_valid(self, form):
         form.instance.organizer = self.request.user.profile
         return super().form_valid(form)
@@ -101,7 +104,8 @@ class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         profile = self.request.user.profile
-        return profile.role == "Event Organizer" and self.get_object().organizer == profile
+        return profile.role == ("Event Organizer" and
+                                self.get_object().organizer == profile)
 
 
 class EventSignupView(CreateView):
@@ -116,25 +120,27 @@ class EventSignupView(CreateView):
         if current_count >= event.event_capacity:
             messages.error(self.request, "This event is now full.")
             return redirect('localevents:event_detail', pk=event.pk)
-        
+
         form.instance.event = event
 
         if self.request.user.is_authenticated:
             form.instance.user_registrant = self.request.user.profile
             if not form.cleaned_data.get('new_registrant'):
-                form.instance.new_registrant = self.request.user.get_full_name()
+                form.instance.new_registrant = (
+                    self.request.user.get_full_name())
 
         response = super().form_valid(form)
         event.save()
 
         messages.success(self.request, "Thank you for signing up.")
         return response
-    
+
     def get_success_url(self):
-        return reverse('localevents:event_detail', kwargs={'pk': self.kwargs['pk']})
-    
+        return reverse(
+            'localevents:event_detail',
+            kwargs={'pk': self.kwargs['pk']})
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['event'] = get_object_or_404(Event, pk=self.kwargs['pk'])
         return context
-    
