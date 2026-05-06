@@ -20,9 +20,9 @@ class ProductAdmin(admin.ModelAdmin):
     fieldsets = (
         ("Details", {
             "fields": (
-                "name", 
-                "product_type", 
-                "description", 
+                "name",
+                "product_type",
+                "description",
                 "price")}),
     )
 

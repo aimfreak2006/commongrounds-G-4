@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinValueValidator
-
 from accounts.models import Profile
 
 
@@ -32,13 +31,13 @@ class Product(models.Model):
         related_name='products'
     )
     product_image = models.ImageField(
-        upload_to='product_images/', 
-        null=True, 
+        upload_to='product_images/',
+        null=True,
         blank=True
     )
     description = models.TextField()
     price = models.DecimalField(
-        decimal_places=2, 
+        decimal_places=2,
         max_digits=20
     )
     stock = models.IntegerField()

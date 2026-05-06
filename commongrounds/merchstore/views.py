@@ -1,9 +1,7 @@
-from django.shortcuts import get_object_or_404, render, redirect
-
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.mixins import RoleRequiredMixin
-
 from .forms import TransactionForm, CustomProductCreateForm
 from .strategies import AuthenticatedPurchaseStrategy, GuestPurchaseStrategy
 from .models import Product, Transaction
@@ -90,7 +88,8 @@ class CartView(LoginRequiredMixin, ListView):
     context_object_name = "transactions"
 
     def get_queryset(self):
-        return Transaction.objects.filter(buyer=self.request.user.profile).order_by("product__owner")
+        return Transaction.objects.filter(
+            buyer=self.request.user.profile).order_by("product__owner")
 
 
 class TransactionListView(LoginRequiredMixin, ListView):
@@ -98,4 +97,5 @@ class TransactionListView(LoginRequiredMixin, ListView):
     context_object_name = "transactions"
 
     def get_queryset(self):
-        return Transaction.objects.filter(product__owner=self.request.user.profile).order_by("buyer")
+        return Transaction.objects.filter(
+            product__owner=self.request.user.profile).order_by("buyer")
