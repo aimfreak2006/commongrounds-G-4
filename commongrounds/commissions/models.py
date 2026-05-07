@@ -26,13 +26,13 @@ class Commission(models.Model):
     description = models.TextField()
     type = models.ForeignKey(
         CommissionType,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='commissions',
         null=True
     )
     maker = models.ForeignKey(
         Profile,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True
     )
     people_required = models.PositiveIntegerField()
