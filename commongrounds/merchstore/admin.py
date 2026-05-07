@@ -8,7 +8,7 @@ class ProductInLine(admin.TabularInline):
 
 class ProductTypeAdmin(admin.ModelAdmin):
     model = ProductType
-    inline = [Product,]
+    inlines = [ProductInLine,]
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -16,15 +16,6 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description', 'product_type__name')
     list_display = ('name', 'product_type', 'price')
     list_filter = ('product_type',)
-
-    fieldsets = (
-        ("Details", {
-            "fields": (
-                "name",
-                "product_type",
-                "description",
-                "price")}),
-    )
 
 
 class TransactionAdmin(admin.ModelAdmin):

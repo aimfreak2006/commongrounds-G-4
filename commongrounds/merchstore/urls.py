@@ -5,7 +5,7 @@ from .views import (
     ProductCreateView,
     ProductUpdateView,
     CartView,
-    TransactionListView,
+    transaction_list_view,
 
 )
 
@@ -21,7 +21,7 @@ urlpatterns = [
          name="merchstore-update"),
     path("cart/", CartView.as_view(),
          name="merchstore-cart"),
-    path("transactions/", TransactionListView.as_view(),
+    path("transactions/", transaction_list_view,
          name="merchstore-transactions"),
 
 ]

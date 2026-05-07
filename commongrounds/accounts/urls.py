@@ -1,6 +1,6 @@
 from django.urls import path
-
 from django.contrib.auth import views
+
 from .views import ProfileUpdateView, RegisterView, CustomLoginView
 
 app_name = 'accounts'
