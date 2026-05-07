@@ -41,18 +41,16 @@
                             </p>
                         {% endif %}
                     {% else %}
-                        {% if user.is_authenticated %}
-                            <form method="post" class="buy-form">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <label for="{{ form.amount.id_for_label }}">Amount:</label>
-                                    {{ form.amount }}
-                                </div>
-                                <button type="submit" {% if object.stock == 0 %}disabled{% endif %} class="action-button">
-                                    Buy Now
-                                </button>
-                            </form>
-                        {% endif %}
+                        <form method="post" class="buy-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="{{ form.amount.id_for_label }}">Amount:</label>
+                                {{ form.amount }}
+                            </div>
+                            <button type="submit" {% if object.stock == 0 %}disabled{% endif %} class="action-button">
+                                Buy Now
+                            </button>
+                        </form>
                     {% endif %}
                 </div>
 
