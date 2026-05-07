@@ -1,0 +1,22 @@
+{% extends 'bookclub/book_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <link rel="stylesheet" href="{% static 'css/update_bookclub.css' %}">
+
+    <div class="contents-container">
+        <div class="form-card">
+            <h2 class="form-title">Edit "{{ book.title }}"</h2>
+            
+            <form method="post" class="book-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                    <a href="{{ book.get_absolute_url }}" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

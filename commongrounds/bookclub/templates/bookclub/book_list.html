@@ -2,24 +2,63 @@
 {% load static %}
 
 {% block contents %}
+    <link rel="stylesheet" href="{% static 'css/list_bookclub.css' %}">
     <div class="contents-container">
-        <div>
-            {% for genre in genre_list %}
-                <h3><b>{{ genre.name }}</b></h3>
-                <div>
-                    <b>Description:</b> {{ genre.description }}
-                    <h4><b>Books Available</b></h4>
-                    <ul>
-                        {% for book in genre.books.all %}
-                            <li>
-                                {{ book.title }} | <a href="{{ book.get_absolute_url }}">Details</a>
-                            </li>
-                            {% empty %} <li>There are no books for this genre.</li>
-                        {% endfor %}
-                        <br>
-                    </ul>
-                </div>
-                {% empty %} <li>No books available.</li>
+        
+        {% if user.is_authenticated %}
+            <h2 class="book-dashboard-title">My Book Dashboard</h2>
+
+            <h3 class="section-title">Books You Contributed</h3>
+            <div class="book-grid">
+                {% for book in contributed_books %}
+                    <a href="{{ book.get_absolute_url }}" class="book-card">
+                        <div class="book-title">{{ book.title }}</div>
+                        <div class="book-meta">By: {{ book.author }}</div>
+                        <div class="book-meta">Genre: {{ book.genre }}</div>
+                    </a>
+                {% empty %}
+                    <p style="color: white;">You have not contributed any books.</p>
+                {% endfor %}
+            </div>
+            {% if user.profile.role == 'Book Contributor' %}
+                <a href="{% url 'bookclub:book_create' %}" class="btn-action" style="margin-bottom: 30px;">+ Add a New Book</a>
+            {% endif %}
+
+            <h3 class="section-title">Books You Bookmarked</h3>
+            <div class="book-grid">
+                {% for book in bookmarked_books %}
+                    <a href="{{ book.get_absolute_url }}" class="book-card">
+                        <div class="book-title">{{ book.title }}</div>
+                        <div class="book-meta">By: {{ book.author }}</div>
+                    </a>
+                {% empty %}
+                    <p style="color: white;">You have not bookmarked any books.</p>
+                {% endfor %}
+            </div>
+
+            <h3 class="section-title">Books You Reviewed</h3>
+            <div class="book-grid">
+                {% for book in reviewed_books %}
+                    <a href="{{ book.get_absolute_url }}" class="book-card">
+                        <div class="book-title">{{ book.title }}</div>
+                        <div class="book-meta">By: {{ book.author }}</div>
+                    </a>
+                {% empty %}
+                    <p style="color: white;">You have not reviewed any books.</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <h2 class="book-dashboard-title" style="margin-top: 40px;">Library Catalog</h2>
+        <div class="book-grid">
+            {% for book in all_books %}
+                <a href="{{ book.get_absolute_url }}" class="book-card">
+                    <div class="book-title">{{ book.title }}</div>
+                    <div class="book-meta">By: {{ book.author }}</div>
+                    <div class="book-meta">Year: {{ book.publication_year }}</div>
+                </a>
+            {% empty %}
+                <p style="color: white;">No books available in the library yet.</p>
             {% endfor %}
         </div>
     </div>

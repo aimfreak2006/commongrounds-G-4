@@ -1,0 +1,34 @@
+{% extends 'localevents/event_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <link rel="stylesheet" href="{% static 'css/create_localevents.css' %}">
+    <div class="contents-container">
+        <form method="POST" enctype="multipart/form-data" class="event-create-form">
+            <h2 class="page-title"><b>CREATE A NEW EVENT</b></h2>
+
+            {% csrf_token %}
+            <div class="title-category-container">
+                {{ form.title }} 
+                <label>Category:</label> {{ form.category }}
+            </div>
+            <div class="description-container">
+                {{ form.description }}
+            </div>
+            <div class="time-container">
+                <label>Start:</label> {{ form.start_time }}
+                <label>End:</label> {{ form.end_time }}
+            </div>
+            <div class="event-capacity-container">
+                {{ form.event_capacity }} 
+                <label>Status:</label> {{ form.status}}      
+            </div>
+            <div class="location-image-container">
+                {{ form.location }}
+                <label>Event Image:</label> {{ form.event_image }}
+            </div>
+            <button type="submit" class="form-button">Add Event</button>
+            <a href="{% url 'localevents:event_list' %}" class="other-button">Look for Upcoming Events</a>
+        </form>
+    </div>
+{% endblock %}

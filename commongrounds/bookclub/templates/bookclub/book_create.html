@@ -1,0 +1,22 @@
+{% extends 'bookclub/book_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <link rel="stylesheet" href="{% static 'css/create_bookclub.css' %}">
+    
+    <div class="contents-container">
+        <div class="form-card">
+            <h2 class="form-title">Add a Book</h2>
+            
+            <form method="post" class="book-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Add Book</button>
+                    <a href="{% url 'bookclub:book_list' %}" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -2,24 +2,76 @@
 {% load static %}
 
 {% block contents %}
-    <div class="contents-container">
-        <div class="merch-contents">
-                <a href="{% url "merchstore:merchstore-create" %}">Create a new product</a>
-                <h2>Your Products</h2>
-                {% if my_products %}
-                    <ul>
-                        {% for product in my_products %}
-                            <li><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+    <link rel="stylesheet" href="{% static 'css/list_merchstore.css' %}">
 
+    <div class="contents-container">
+        <h2 class="dashboard-title">Merchstore Dashboard</h2>
+        
+        {% if user.is_authenticated %}
+            <div class="dashboard-container">
+                
+                <div class="dashboard-panel">
+                    <h3>Your Products</h3>
+                    <div class="product-scroll-row">
+                        {% if user.profile.role == "Market Seller" %}
+                            {% for product in my_products %}
+                                <a href="{{ product.get_absolute_url }}" class="product-card-mini">
+                                    {{ product.name }}
+                                </a>
+                            {% empty %}
+                                <p class="empty-msg">You haven't listed any products yet.</p>
+                            {% endfor %}
+                        {% else %}
+                            {% for product in my_products %}
+                                <a href="{{ product.get_absolute_url }}" class="product-card-mini">
+                                    {{ product.name }}
+                                </a>
+                            {% empty %}
+                                <p class="empty-msg">You can't add products at this time. Contact admin for inquiry.</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="dashboard-panel">
+                    <h3>Quick Actions</h3>
+                    <div class="action-panel-content">
+                        {% if user.profile.role == 'Market Seller' %}
+                            <p>Ready to sell more items?</p>
+                            <a href="{% url 'merchstore:merchstore-create' %}" class="btn-create">Create a New Product</a>
+                        {% else %}
+                            <p>Welcome to the Merchstore! Browse all our available products below.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        {% endif %}
+
+        <div class="all-products-section">
+            <div class="section-header">
                 <h2>All Products</h2>
-                <ul>
-                        {% for product in all_products %}
-                            <li><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></li>
-                        {% endfor %}
-                </ul>
+            </div>
+
+            <div class="product-grid">
+                {% for product in all_products %}
+                    <a href="{{ product.get_absolute_url }}" class="product-card-large">
+                        <div class="card-image-wrapper">
+                            {% if product.product_image %}
+                                <img src="{{ product.product_image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                                <div class="no-image-text">Merch Image</div>
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">{{ product.name }}</h3>
+                            <p class="card-meta">View Details</p>
+                        </div>
+                    </a>
+                {% empty %}
+                    <p class="empty-msg">No products available at the moment.</p>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

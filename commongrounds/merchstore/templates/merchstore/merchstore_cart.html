@@ -2,16 +2,53 @@
 {% load static %}
 
 {% block contents %}
-    <br><br><br><br>
-    <h2>Your Cart</h2>
-    {% regroup transactions by product.owner as transactions_by_seller %}
-    {% for group in transactions_by_seller %}
-        <br>
-        <h3>{{ group.grouper }}</h3>
-        <ul>
-            {% for transaction in group.list %}
-                <li>{{ transaction.amount }} x {{ transaction.product.name }}: {{ transaction.status }}</li>
-            {% endfor %}
-        </ul>
-    {% endfor %}
+    <link rel="stylesheet" href="{% static 'css/cart_merchstore.css' %}">
+    
+    <div class="contents-container">
+        <div class="page-header">
+            <h1 class="page-title">Your Shopping Cart</h1> 
+            <a href="{% url 'merchstore:merchstore-list' %}" class="btn-dashboard">&larr; Back to Dashboard</a>
+        </div>
+        
+        {% regroup transactions by product.owner as transactions_by_seller %}
+        
+        {% if transactions_by_seller %}
+            <div class="groups-container">
+                {% for group in transactions_by_seller %}
+                    <div class="group-card">
+                        <h2 class="group-header">Seller: {{ group.grouper.display_name|default:group.grouper }}</h2>
+                        
+                        <div class="items-list">
+                            {% for transaction in group.list %}
+                                <div class="item-card">
+                                    <div class="item-image">
+                                        {% if transaction.product.product_image %}
+                                            <img src="{{ transaction.product.product_image.url }}" alt="{{ transaction.product.name }}">
+                                        {% else %}
+                                            <div class="no-image">No Image</div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="item-details">
+                                        <h3 class="item-name">{{ transaction.product.name }}</h3>
+                                        <p class="item-meta">Status: <span class="status-badge status-{{ transaction.status|slugify }}">{{ transaction.status }}</span></p>
+                                    </div>
+                                    
+                                    <div class="item-pricing">
+                                        <p class="item-amount">Qty: {{ transaction.amount }}</p>
+                                        <p class="item-price">₱{{ transaction.product.price }} each</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p style="font-size: 20px; color: #6c757d; margin-bottom: 20px;">Your cart is currently empty!</p>
+                <a href="{% url 'merchstore:merchstore-list' %}" style="display: inline-block; padding: 10px 20px; background-color: #003049; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">Browse Products</a>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

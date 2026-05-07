@@ -1,21 +1,48 @@
 {% extends 'base.html' %}
-
-{% block title %}User Login{% endblock %}
-
+{% load static %}
 
 {% block home %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <div class="fullscreen-center">
+        <div class="box-container">
+            <div class="layer-1-logo">
+                <div class="layer-2-logo">
+                    <div class="logo-container">
+                        <a href="/"><img src="{% static 'images/logo.png' %}" alt="Common Grounds Logo" class="logo"></a>
+                        <p id="welcome-message"><b>Welcome back to Common Grounds!</b>
+                            <br>Please log in to continue exploring your interests.</p>
+                    </div>
+                </div>
+            </div>
 
-    <h2>Login</h2>
+            <div class="login-register-container"> 
+                <h2 class="form-title">LOG IN</h2>
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {% if next %}
-            <input type="hidden" name="next" value="{{ next }}">
-        {% endif %}
-        <button type="submit">Login</button>
-    </form>
+                <form method="POST" class="login-form">
+                    {% csrf_token %}
+                    
+                    <div class="field-error-container">
+                        {% if form.non_field_errors %}
+                            <div class="login-error">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                    </div>
 
-    <br>
-    <a href="{% url 'accounts:password_reset' %}">Forgot Password?</a>
+                    <div class="field-container">
+                        {{ form.username }}
+                        {{ form.password }}
+                    </div>
+
+                    {% if next %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                    {% endif %}
+                    <button type="submit" class="auth-button"><b>Login</b></button>
+                </form>
+
+                <a href="{% url 'accounts:password_reset' %}" class="fp-btn">Forgot Password?</a>
+                <a href="{% url "accounts:register" %}" class="fp-btn"><b>or Register</b></a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

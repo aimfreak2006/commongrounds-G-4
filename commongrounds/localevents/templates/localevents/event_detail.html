@@ -2,21 +2,59 @@
 {% load static %}
 
 {% block contents %}
+    <link rel="stylesheet" href="{% static 'css/detail_localevents.css' %}">
+    
     <div class="contents-container">
-        <div>
-            <h3><b>{{ event.title }}</b></h3>
-            <div>
-                <b>Category:</b> {{event.category}} <br>
-                <b>Description:</b> {{event.description}} <br>
-                <b>Location:</b> {{event.location}} <br>
-                <b>Start Time:</b> {{event.start_time}} <br>
-                <b>End Time:</b> {{event.end_time}} <br>
+        <div class="event-detail-card">
+            
+            <div class="event-image-container">
+                {% if event.event_image %}
+                    <img src="{{ event.event_image.url }}" alt="{{ event.title }}">
+                {% else %}
+                    <div class="no-image">No image available</div>
+                {% endif %}
             </div>
 
+            <div class="event-detail-container">
+                
+                <h1 class="event-title">{{ event.title }}</h1>
 
-            <br>
-            <i>Interested in another event?</i>
-            <a href="/localevents/events">See more local events.</a>
+                <div class="event-info-container">
+                    <div class="info-row"><b>Organizer:</b> {{ event.organizer }}</div>
+                    <div class="info-row"><b>Category:</b> {{ event.category }}</div>
+                    <div class="info-row"><b>Description:</b> {{ event.description }}</div>
+                    <div class="info-row"><b>Location:</b> {{ event.location }}</div>
+                    <div class="info-row"><b>Start Time:</b> {{ event.start_time }}</div>
+                    <div class="info-row"><b>End Time:</b> {{ event.end_time }}</div>
+                </div>
+
+                <div class="action-container">
+                    {% if is_organizer %}
+                        <p class="status-msg">You are the Organizer for this event.</p>
+                        <a href="{% url 'localevents:event_update' event.pk %}" class="action-button">Update Event</a>
+                    {% elif is_signed_up %}
+                        <p class="status-msg">You are already signed up for this event.</p>
+                    {% elif is_full %}
+                        <button disabled class="action-button disabled-btn">Signup</button>
+                        <p class="error-msg">Sorry, this event is full.</p>
+                    {% else %}
+                        {% if user.is_authenticated %}
+                            <form method="POST" action="{% url 'localevents:event_signup' event.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="action-button">Signup</button>
+                            </form>
+                        {% else %}
+                            <a href="{% url 'localevents:event_signup' event.pk %}" class="action-button">Signup</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                <div class="footer-links">
+                    <i>Interested in another event?</i><br>
+                    <a href="/localevents/events" class="simple-link">See more local events.</a>
+                </div>
+                
+            </div>
         </div>
     </div>
 {% endblock %}

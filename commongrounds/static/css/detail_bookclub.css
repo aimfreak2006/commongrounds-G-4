@@ -1,0 +1,75 @@
+@import url(app_view.css);
+
+.book-detail-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 900px;
+    margin: 0 auto 30px auto;
+}
+.detail-header h1 {
+    color: #003049;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.info-row {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #333;
+}
+.info-row b {
+    color: #669bbc;
+    margin-right: 5px;
+}
+.btn-action {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #003049;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-action:hover {
+    background-color: #669bbc;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.book-form-card p {
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #003049;
+}
+
+.book-form-card input, 
+.book-form-card textarea, 
+.book-form-card select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    margin-top: 5px;
+    font-family: inherit;
+}
+
+.book-form-card input:focus, 
+.book-form-card textarea:focus {
+    outline: none;
+    border-color: #669bbc;
+}

@@ -61,8 +61,7 @@ class ProductCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     template_name = "merchstore/merchstore_create.html"
     model = Product
     allowed_roles = ["Market Seller"]
-    fields = ["name", "product_image", "description",
-              "price", "stock", "status"]
+    form_class = CustomProductCreateForm
 
     def form_valid(self, form):
         form.instance.owner = self.request.user.profile
@@ -73,8 +72,7 @@ class ProductUpdateView(LoginRequiredMixin, RoleRequiredMixin, UpdateView):
     template_name = "merchstore/merchstore_update.html"
     model = Product
     allowed_roles = ["Market Seller"]
-    fields = ["name", "product_image", "description",
-              "price", "stock", "status"]
+    form_class = CustomProductCreateForm
 
     def get_object(self):
         id_ = self.kwargs.get("id")

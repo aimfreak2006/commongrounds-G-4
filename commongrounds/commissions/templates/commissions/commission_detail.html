@@ -2,17 +2,77 @@
 {% load static %}
 
 {% block contents %}
-    <div class="contents-container">
-        <h3> {{commission.title}} </h3>
-        <ul>
-            <li>Description: {{commission.description}}</li>
-            <li>Number of People Required: {{commission.people_required}}</li>
-            <li>Created on: {{commission.created_on}}</li>
-            <li>Updated on: {{commission.updated_on}}</li>
-        </ul>
+    <link rel="stylesheet" href="{% static 'css/detail_commissions.css' %}">
     
-        <a href="/commissions/requests/">
-            <button type="button">Back to Commission</button>
-        </a>
+    <div class="contents-container">
+        <div class="detail-card">
+            <h2 class="detail-title">{{commission.title}}</h2>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Creator</span>
+                    <span class="info-value">{{commission.maker.display_name}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Status</span>
+                    <span class="info-value">{{commission.get_status_display}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">People Required</span>
+                    <span class="info-value">{{commission.people_required}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Created / Updated</span>
+                    <span class="info-value">{{commission.created_on|date:"M d, Y"}}</span>
+                </div>
+                <div class="info-item full-width">
+                    <span class="info-label">Description</span>
+                    <span class="info-value">{{commission.description}}</span>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <h3 class="section-title">Jobs Needed</h3>
+            
+            <div class="jobs-container">
+                {% for job, current_manpower in jobs.items %}
+                    <div class="job-card">
+                        <h4 class="job-role">{{job.role}}</h4>
+                        
+                        <div class="job-stats">
+                            <p>Total Manpower Required: <b>{{job.manpower_required}}</b></p>
+                            <p>Open Manpower Slots: <b class="highlight-yellow">{{current_manpower}}</b></p>
+                        </div>
+
+                        <div class="job-action">
+                            {% if user.is_authenticated %}
+                                {% if is_applied %}
+                                    <button type="button" class="btn-disabled" disabled>You already Applied</button>
+                                {% elif current_manpower == 0 %}
+                                    <button type="button" class="btn-disabled" disabled>Job Full</button>
+                                {% else %}
+                                    <form method="POST" class="apply-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="job_id" value="{{ job.pk }}">
+                                        <button type="submit" name="apply_to_job" class="btn-primary">Apply for Job</button>
+                                    </form>
+                                {% endif %}
+                            {% else %}
+                                <button type="button" class="btn-disabled" disabled>Log in to Apply</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="action-footer">
+                {% if user.profile == commission.maker %}
+                    <a href="{{commission.get_edit_url}}" class="btn-secondary">Edit Commission</a>
+                {% endif %}
+                    
+                <a href="/commissions/requests/" class="btn-cancel">Back to Commissions</a>
+            </div>
+        </div>
     </div>
 {% endblock %}

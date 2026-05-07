@@ -2,26 +2,75 @@
 {% load static %}
 
 {% block contents %}
+    <link rel="stylesheet" href="{% static 'css/list_commissions.css' %}">
+    
     <div class="contents-container">
-        <h2> Types of Requests </h2>
-        <div>
-            <ul>
-                {% for type in types %}
-                    <h3>{{type.name}}</h3>
-                    <p>{{type.description}}</p>
+        <h2 class="dashboard-title">My Commissions Dashboard</h2>
+        
+        {% if user.is_authenticated %}
+            <div class="dashboard-container">
+                
+                <div class="dashboard-panel">
+                    <h3>Commissions You Created</h3>
+                    <div class="event-scroll-row">
+                        {% if user.profile.role == "Commission Maker" %}
+                            {% for commission in created_commissions %}
+                                <a href="{{ commission.get_absolute_url }}" class="event-card-mini">
+                                    {{ commission.title }}
+                                </a>
+                            {% empty %}
+                                <p class="empty-msg">You haven't created any commissions.</p>
+                            {% endfor %}
+                        {% else %}
+                            {% for commission in created_commissions %}
+                                <a href="{{ commission.get_absolute_url }}" class="event-card-mini">
+                                    {{ commission.title }}
+                                </a>
+                            {% empty %}
+                                <p class="empty-msg">You can't create commissions for now.</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="dashboard-panel">
+                    <h3>Commissions You Applied To</h3>
+                    <div class="event-scroll-row">
+                        {% for commission in applied_commissions %}
+                            <a href="{{ commission.get_absolute_url }}" class="event-card-mini signed-up-card">
+                                {{ commission.title }}
+                            </a>
+                        {% empty %}
+                            <p class="empty-msg">You haven't applied for any commissions.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="upcoming-section">
+
+            <div class="section-header">
+                <h2>Other Commissions You Can Apply To</h2>
+                {% if user.is_authenticated and user.profile.role == 'Commission Maker' %}
+                    <a href="{% url 'commissions:add_view' %}" class="btn-create">Create Commission</a>
+                {% endif %}
+            </div>
+
+            <div class="project-grid">
+                {% for commission in other_commissions %}
+                    <a href="{{ commission.get_absolute_url }}" class="project-card">
+                        <div class="card-body">
+                            <h3 class="card-title">{{ commission.title }}</h3>
+                            <p class="card-meta">By {{ commission.maker.display_name }}</p>
+                            <p class="card-desc">{{ commission.description|truncatewords:15 }}</p>
+                        </div>
+                        <p class="current-status">{{commission.get_status_display}}</p>
+                    </a>
+                {% empty %}
+                    <p class="empty-msg">No Commissions available yet.</p>
                 {% endfor %}
-            </ul>
-        </div>
-        </br>
-        </br>
-        <div>
-            <h2> Current Requests </h2>
-            <ul>
-                {% for request in requests %}
-                    <h3>{{request.title}}</h3>
-                    <li> <a href='{{ request.get_absolute_url }}'>{{request.title}}_details</a> </li>
-                {% endfor %}
-            </ul>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -1,0 +1,44 @@
+{% extends "commissions/commission_base.html" %}
+{% load static %}
+
+{% block contents %}
+    <link rel="stylesheet" href="{% static 'css/edit_commissions.css' %}">
+
+    <div class="contents-container">
+        <div class="form-card">
+            <h2 class="form-title">Edit: {{ commission.title }}</h2>
+
+            <form action="" method="POST" class="commission-form">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                    <h3>Commission Details</h3>
+                    {{ commission_form.as_p }}
+                </div>
+
+                <hr class="divider">
+
+                <div class="form-section">
+                    <h3>Job Roles Needed</h3>
+                    <p class="section-desc">Update the manpower, status, or remove roles required for this commission.</p>
+                    
+                    {{ job_forms.management_form }}
+                    
+                    <div class="job-forms-container">
+                        {% for job_form in job_forms %}
+                            <div class="job-form-item">
+                                <h4 class="job-item-title">Role #{{ forloop.counter }}</h4>
+                                {{ job_form.as_p }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" name="submit" class="btn-primary">Save Changes</button>
+                    <a href="/commissions/requests/" class="btn-cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'localevents/event_base.html' %}
+{% load static %}
+
+{% block contents %}
+    <div class="contents-container">
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+
+        <h2>Signup for {{ event.title }}</h2>
+        <br>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+
+        <a href="{% url 'localevents:event_list' %}">Look for Upcoming Events</a>
+    </div>
+{% endblock %}
