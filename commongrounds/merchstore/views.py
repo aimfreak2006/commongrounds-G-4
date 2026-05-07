@@ -1,12 +1,13 @@
-from django.shortcuts import get_object_or_404, render, redirect
-
-from django.views.generic import ListView, CreateView, UpdateView
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from accounts.mixins import RoleRequiredMixin
+from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView, CreateView, UpdateView
 
+from accounts.decorators import role_required
+from accounts.mixins import RoleRequiredMixin
 from .forms import TransactionForm
-from .strategies import AuthenticatedPurchaseStrategy, GuestPurchaseStrategy
 from .models import Product, Transaction
+from .strategies import AuthenticatedPurchaseStrategy, GuestPurchaseStrategy
 
 
 class ProductListView(ListView):
@@ -92,12 +93,17 @@ class CartView(LoginRequiredMixin, ListView):
     context_object_name = "transactions"
 
     def get_queryset(self):
-        return Transaction.objects.filter(buyer=self.request.user.profile).order_by("product__owner")
+        return Transaction.objects.filter(
+            buyer=self.request.user.profile
+        ).order_by("product__owner")
 
 
-class TransactionListView(LoginRequiredMixin, ListView):
-    template_name = "merchstore/merchstore_transactions.html"
-    context_object_name = "transactions"
-
-    def get_queryset(self):
-        return Transaction.objects.filter(product__owner=self.request.user.profile).order_by("buyer")
+@login_required
+@role_required(["Market Seller"])
+def transaction_list_view(request):
+    transactions = Transaction.objects.filter(
+        product__owner=request.user.profile
+    ).order_by("buyer")
+    return render(request, "merchstore/merchstore_transactions.html", {
+        "transactions": transactions
+    })

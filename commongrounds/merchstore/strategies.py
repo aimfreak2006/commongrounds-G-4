@@ -17,5 +17,8 @@ class AuthenticatedPurchaseStrategy(BaseTransactionStrategy):
 
 class GuestPurchaseStrategy(BaseTransactionStrategy):
     def execute(self, request, product, form):
-        request.session["pending_transaction"]={"product_id": product.id, "amount": form.cleaned_data["amount"]}
+        request.session["pending_transaction"] = {
+            "product_id": product.id,
+            "amount": form.cleaned_data["amount"]
+        }
         return redirect("accounts:login")
