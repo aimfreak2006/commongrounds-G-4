@@ -1,4 +1,4 @@
-# commongrounds-G-4
+# commongrounds-4
 ## Project Group 4
 ### ACERON, Calil
 ### FLORIN, Cedric
