@@ -26,7 +26,7 @@
                 {% if book.available_to_borrow %}
                     <a href="{% url 'bookclub:book_borrow' pk=book.pk %}" class="btn-action">Borrow this Book</a>
                 {% else %}
-                    <a href="{% url 'bookclub:book_borrow' pk=book.pk %}" class="btn-action btn-secondary">Schedule a Borrow (Until {{ active_borrow.date_to_return }})</a>
+                    <a href="{% url 'bookclub:book_borrow' pk=book.pk %}" class="btn-action btn-secondary">Schedule a Borrow (Not available until {{ active_borrow.date_to_return }})</a>
                 {% endif %}
 
                 {% if user.is_authenticated %}
