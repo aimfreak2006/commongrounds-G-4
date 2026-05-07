@@ -5,7 +5,7 @@ from django.views.generic import ListView, CreateView, UpdateView
 
 from accounts.decorators import role_required
 from accounts.mixins import RoleRequiredMixin
-from .forms import TransactionForm
+from .forms import TransactionForm, CustomProductCreateForm
 from .models import Product, Transaction
 from .strategies import AuthenticatedPurchaseStrategy, GuestPurchaseStrategy
 
