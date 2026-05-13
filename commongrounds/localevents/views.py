@@ -5,7 +5,8 @@ from django.views.generic.edit import CreateView, UpdateView
 from .models import Event, EventSignup
 from .forms import (EventSignupForm, CustomEventCreateForm,
                     CustomEventUpdateForm)
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from accounts.mixins import RoleRequiredMixin
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect
 
@@ -99,7 +100,7 @@ class EventCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 
 # !! Added 'Event Organizer' as an allowed_role in update view to avoid 403 Forbidden View.
-class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class EventUpdateView(LoginRequiredMixin, RoleRequiredMixin, UpdateView):
     model = Event
     template_name = "localevents/event_update.html"
     form_class = CustomEventUpdateForm
