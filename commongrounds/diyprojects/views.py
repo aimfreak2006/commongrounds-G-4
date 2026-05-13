@@ -4,8 +4,8 @@ from .models import (Project, ProjectReview,
                      ProjectRating, ProjectCategory,
                      Favorite)
 from django.db.models import Avg
-from django.contrib.auth.mixins import (LoginRequiredMixin,
-                                        UserPassesTestMixin)
+from django.contrib.auth.mixins import LoginRequiredMixin
+from accounts.mixins import RoleRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView
 from .forms import ProjectReviewForm, ProjectRatingForm
 from django.shortcuts import redirect
@@ -107,10 +107,13 @@ class ProjectDetailView(DetailView):
         return redirect('diyprojects:project-details', pk=self.object.pk)
 
 
-class ProjectCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+# Replaced UserPassesTestMixin to RoleRequiredMixin 
+# and Added 'Project Creator' as an allowed role for ProjectCreateView
+class ProjectCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     model = Project
     fields = ['title', 'category', 'description', 'materials', 'steps']
     template_name = "diyprojects/project_create.html"
+    allowed_roles = ["Project Creator"]
 
     def test_func(self):
         return self.request.user.profile.role == "Project Creator"
@@ -120,10 +123,13 @@ class ProjectCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+# Replaced UserPassesTestMixin to RoleRequiredMixin 
+# and Added 'Project Creator' as an allowed role for ProjectUpdateView
+class ProjectUpdateView(LoginRequiredMixin, RoleRequiredMixin, UpdateView):
     model = Project
     fields = ['title', 'category', 'description', 'materials', 'steps']
     template_name = "diyprojects/project_update.html"
+    allowed_roles = ["Project Creator"]
 
     def test_func(self):
         profile = self.request.user.profile
