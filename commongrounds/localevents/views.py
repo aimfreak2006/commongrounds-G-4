@@ -82,11 +82,13 @@ class EventDetailView(DetailView):
         return redirect('event_detail', pk=event.pk)
 
 
+# !! Added 'Event Organizer' as an allowed_role in create view to avoid 403 Forbidden View.
 class EventCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Event
     template_name = "localevents/event_create.html"
     form_class = CustomEventCreateForm
     context_object_name = "create_form"
+    allowed_roles = ["Event Organizer"]
 
     def test_func(self):
         return self.request.user.profile.role == 'Event Organizer'
@@ -96,11 +98,13 @@ class EventCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return super().form_valid(form)
 
 
+# !! Added 'Event Organizer' as an allowed_role in update view to avoid 403 Forbidden View.
 class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Event
     template_name = "localevents/event_update.html"
     form_class = CustomEventUpdateForm
     context_object_name = "update_form"
+    allowed_roles = ["Event Organizer"]
 
     def test_func(self):
         profile = self.request.user.profile
