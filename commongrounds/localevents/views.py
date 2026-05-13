@@ -84,7 +84,7 @@ class EventDetailView(DetailView):
 
 
 # !! Added 'Event Organizer' as an allowed_role in create view to avoid 403 Forbidden View.
-class EventCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class EventCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     model = Event
     template_name = "localevents/event_create.html"
     form_class = CustomEventCreateForm
